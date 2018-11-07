@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/main_gradient"
-    tools:context=".MainActivity">
+    tools:context=".LogInActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,12 +22,12 @@
                 android:id="@+id/imageViewLogo"
                 android:layout_width="wrap_content"
                 android:layout_height="62dp"
+                android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:adjustViewBounds="false"
                 android:cropToPadding="false"
                 android:foregroundGravity="right"
                 android:scaleType="fitEnd"
-                android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/ic_logo"
                 tools:ignore="VectorDrawableCompat" />
 
@@ -35,8 +35,8 @@
                 android:id="@+id/textViewAppName"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="0.5"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="0.5"
                 android:gravity="center_vertical"
                 android:text=" GOTCHYA"
                 android:textColor="@android:color/white"
@@ -48,40 +48,16 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textViewDescription"
+                android:id="@+id/textView2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20sp"
-                android:layout_marginBottom="10sp"
-                android:layout_weight="1"
-                android:text="@string/description1"
+                android:text="ZALOGUJ SIĘ"
                 android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/textViewDescription2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10sp"
-                android:layout_marginBottom="20sp"
-                android:layout_weight="1"
-                android:text="@string/description2"
-                android:textAlignment="center"
-                android:textColor="@android:color/white"
-                android:textSize="18sp" />
-
-            <Button
-                android:id="@+id/buttonGetStarted"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Rozpocznij"
-                android:textAlignment="center" />
+                android:textColor="@android:color/white" />
         </LinearLayout>
 
     </LinearLayout>

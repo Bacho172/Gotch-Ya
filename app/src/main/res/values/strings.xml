@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Gotch Ya</string>
+    <string name="description1">W czasach gdy większość urządzeń działa w sieci, kiedy jesteśmy w posiadaniu rozmaitych technologii,
+        a naszym najbliższym "przyjacielem" jest smartphone, to potrzebna jest także jego dobra i dyskretna ochrona</string>
+    <string name="description2">Z pomocą przychodzi aplikacja GOTCHYA. Niewykrywalna i skuteczna przeciwko potencjalnemu sprawcy</string>
+    <string name="user_config_path">/GotchYa/</string>
+    <string name="user_config_file_name">UserConfig.txt</string>
+    <string name="data_file_separator">;</string>
+
 </resources>
