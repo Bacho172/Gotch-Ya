@@ -1,18 +1,18 @@
 package com.example.adars.gotchya;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Button;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.adars.gotchya.Core.Functions;
 import com.example.adars.gotchya.Core.Fonts;
-import com.example.adars.gotchya.DataModel.DomainModel.User;
+import com.example.adars.gotchya.Core.Functions;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button buttonGetStarted;
+    private ImageButton imageButtonGetStarted;
+
     private TextView textViewDescription1;
     private TextView textViewDescription2;
 
@@ -27,13 +27,13 @@ public class MainActivity extends AppCompatActivity {
         Functions.setFont(this, textViewDescription1, Fonts.FONT_AVENIR_NextLTProRegular);
         Functions.setFont(this, textViewDescription2, Fonts.FONT_AVENIR_NextLTProRegular);
 
-        buttonGetStarted = findViewById(R.id.buttonGetStarted);
-        buttonGetStarted.setOnClickListener((l) -> buttonGetStartedClick());
+        imageButtonGetStarted = findViewById(R.id.imageButtonGetStarted);
+        imageButtonGetStarted.setOnClickListener((l) -> imageButtonGetStartedClick());
 
     }
 
-    private void buttonGetStartedClick() {
-        Toast.makeText(this, "Test",Toast.LENGTH_LONG).show();
+    private void imageButtonGetStartedClick() {
+        startActivity(new Intent(this, LogInActivity.class));
     }
 
 }

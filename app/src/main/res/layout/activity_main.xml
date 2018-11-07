@@ -29,7 +29,8 @@
                 android:scaleType="fitEnd"
                 android:layout_gravity="center_vertical"
                 app:srcCompat="@drawable/ic_logo"
-                tools:ignore="VectorDrawableCompat" />
+                tools:ignore="VectorDrawableCompat"
+                android:contentDescription="TODO" />
 
             <TextView
                 android:id="@+id/textViewAppName"
@@ -75,13 +76,14 @@
                 android:textColor="@android:color/white"
                 android:textSize="18sp" />
 
-            <Button
-                android:id="@+id/buttonGetStarted"
-                android:layout_width="wrap_content"
+            <ImageButton
+                android:id="@+id/imageButtonGetStarted"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Rozpocznij"
-                android:textAlignment="center" />
+                android:background="@android:color/transparent"
+                app:srcCompat="@drawable/button_rozpocznij" />
+
         </LinearLayout>
 
     </LinearLayout>

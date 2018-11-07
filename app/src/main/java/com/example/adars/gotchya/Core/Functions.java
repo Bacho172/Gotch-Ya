@@ -1,21 +1,14 @@
 package com.example.adars.gotchya.Core;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.os.Environment;
 import android.util.Log;
-import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.adars.gotchya.DataModel.DomainModel.User;
 import com.example.adars.gotchya.R;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -30,11 +23,9 @@ public final class Functions {
         textView.setTypeface(Typeface.createFromAsset(context.getAssets(), font));
     }
 
-    public static void saveUserData(Context context, User user) { //TODO: test
+    public static void saveUserData(Context context, User user) {
         try {
             String fileName = context.getString(R.string.user_config_file_name);
-            String path = context.getString(R.string.user_config_path);
-
             FileOutputStream fileout = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
             String data = getDataVector(user.getID(), user.getLogin(), user.getPassword());
@@ -46,7 +37,7 @@ public final class Functions {
         }
     }
 
-    public static User loadUserData(Context context) { //TODO: Test
+    public static User loadUserData(Context context) { 
         String fileName = context.getString(R.string.user_config_file_name);
 
         try {
