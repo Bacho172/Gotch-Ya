@@ -37,7 +37,7 @@ public final class Functions {
         }
     }
 
-    public static User loadUserData(Context context) { 
+    public static User loadUserData(Context context) {
         String fileName = context.getString(R.string.user_config_file_name);
 
         try {

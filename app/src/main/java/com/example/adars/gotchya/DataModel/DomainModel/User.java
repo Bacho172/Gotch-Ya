@@ -7,7 +7,12 @@ public class User extends Entity {
     private String login;
     private String password;
 
-    public static User currentUser;
+    public User(){}
+    public User(Integer ID, String login, String password) {
+        super(ID);
+        this.login = login;
+        this.password = password;
+    }
 
     public String getLogin() {
         return login;
