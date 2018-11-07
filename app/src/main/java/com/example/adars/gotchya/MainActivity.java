@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import com.example.adars.gotchya.Core.Fonts;
 import com.example.adars.gotchya.Core.Functions;
+import com.example.adars.gotchya.DataModel.DataModel.UserModel;
+import com.example.adars.gotchya.DataModel.DomainModel.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -29,11 +31,12 @@ public class MainActivity extends AppCompatActivity {
 
         imageButtonGetStarted = findViewById(R.id.imageButtonGetStarted);
         imageButtonGetStarted.setOnClickListener((l) -> imageButtonGetStartedClick());
-
     }
 
     private void imageButtonGetStartedClick() {
-        startActivity(new Intent(this, LogInActivity.class));
+        User rememberedUser = Functions.loadUserData(this);
+        if (rememberedUser != null) UserModel.getInstance().logIn(rememberedUser);
+        startActivity(new Intent(this, rememberedUser != null ? MainMenuActivity.class : LogInActivity.class));
     }
 
 }

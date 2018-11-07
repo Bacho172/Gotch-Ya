@@ -25,6 +25,11 @@ public final class UserModel {
         return incommingUser;
     }
 
+    public User logIn(User user){
+        currentUser = user;
+        return user;
+    }
+
     public User logOut() {
         User user = currentUser;
         currentUser = null;

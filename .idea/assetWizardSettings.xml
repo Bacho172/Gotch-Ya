@@ -19,8 +19,11 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_logo" />
-                            <entry key="sourceFile" value="F:\Projekty_AndroidStudio\GotchYa\app\src\main\res\drawable\logo.svg" />
+                            <entry key="height" value="70" />
+                            <entry key="outputName" value="ic_logo7full" />
+                            <entry key="overrideSize" value="true" />
+                            <entry key="sourceFile" value="F:\Projekty_AndroidStudio\GotchYa\app\src\main\res\drawable\logo7full.svg" />
+                            <entry key="width" value="278" />
                           </map>
                         </option>
                       </PersistentState>
