@@ -37,6 +37,19 @@ public final class Functions {
         }
     }
 
+    public static void clearUserDataConfig(Context context) {
+        try {
+            String fileName = context.getString(R.string.user_config_file_name);
+            FileOutputStream fileout = context.openFileOutput(fileName, Context.MODE_PRIVATE);
+            OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
+            outputWriter.write("");
+            outputWriter.close();
+        }
+        catch (IOException e) {
+            Log.e("Exception", "Nieudane czyszczenie pliku: " + e.toString());
+        }
+    }
+
     public static User loadUserData(Context context) {
         String fileName = context.getString(R.string.user_config_file_name);
 
@@ -53,7 +66,7 @@ public final class Functions {
                 result += readstring;
             }
             InputRead.close();
-            return splitDataVector(context, result);
+            return !result.trim().isEmpty() ? splitDataVector(context, result) : null;
 
         } catch (Exception e) {
             e.printStackTrace();
