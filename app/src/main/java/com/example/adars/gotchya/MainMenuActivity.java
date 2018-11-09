@@ -12,10 +12,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.adars.gotchya.Core.Functions;
+import com.example.adars.gotchya.Core.Threading.Services.GhostCounter;
+import com.example.adars.gotchya.Core.Threading.Services.GhostThreadHelper;
 import com.example.adars.gotchya.DataModel.DataModel.UserModel;
+
+import java.util.concurrent.TimeUnit;
 
 public class MainMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    GhostCounter ghostCounter;
+    Intent ghostCounterIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +44,17 @@ public class MainMenuActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        long interval = GhostThreadHelper.convertToMillis(1, TimeUnit.SECONDS);
+        ghostCounter = new GhostCounter(this, interval, true, true);
+        ghostCounterIntent = new Intent(this, ghostCounter.getClass());
+        if (!GhostThreadHelper.threadIsRunning(this, ghostCounter.getClass())){
+            startService(ghostCounterIntent);
+        }
+
     }
+
 
     @Override
     public void onBackPressed() {
@@ -82,5 +99,11 @@ public class MainMenuActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        stopService(ghostCounterIntent);
+        super.onDestroy();
     }
 }

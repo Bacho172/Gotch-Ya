@@ -18,7 +18,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView textViewDescription1;
     private TextView textViewDescription2;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
         imageButtonGetStarted = findViewById(R.id.imageButtonGetStarted);
         imageButtonGetStarted.setOnClickListener((l) -> imageButtonGetStartedClick());
+
     }
 
     private void imageButtonGetStartedClick() {

@@ -13,57 +13,30 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
 
-        <LinearLayout
+        <include
+            layout="@layout/logo_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/imageViewLogo"
-                android:layout_width="wrap_content"
-                android:layout_height="62dp"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:adjustViewBounds="false"
-                android:cropToPadding="false"
-                android:foregroundGravity="right"
-                android:scaleType="fitEnd"
-                app:srcCompat="@drawable/ic_logo"
-                tools:ignore="VectorDrawableCompat" />
-
-            <TextView
-                android:id="@+id/textViewAppName"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="0.5"
-                android:gravity="center_vertical"
-                android:text=" GOTCHYA"
-                android:textColor="@android:color/white"
-                android:textSize="36sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
+            android:layout_marginTop="50sp"
+            android:text="ZALOGUJ SIĘ"
+            android:textAlignment="center"
+            android:textColor="@android:color/white" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical|center_horizontal|center"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50sp"
-                android:text="ZALOGUJ SIĘ"
-                android:textAlignment="center"
-                android:textColor="@android:color/white" />
 
             <EditText
                 android:id="@+id/editTextLogin"
                 style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
-                android:layout_width="300dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Login"
@@ -73,7 +46,7 @@
             <EditText
                 android:id="@+id/editTextPassword"
                 style="@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox"
-                android:layout_width="300dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:hint="Hasło"
@@ -99,22 +72,21 @@
                     android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:textAlignment="textEnd"
                     android:gravity="center_vertical"
                     android:text="Przypomnij hasło"
+                    android:textAlignment="textEnd"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/imageButtonLogIn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20sp"
-                android:background="@android:color/transparent"
-                app:srcCompat="@drawable/button_zaloguj_sie" />
-
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/imageButtonLogIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:background="@android:color/transparent"
+            app:srcCompat="@drawable/button_zaloguj_sie" />
 
     </LinearLayout>
 
