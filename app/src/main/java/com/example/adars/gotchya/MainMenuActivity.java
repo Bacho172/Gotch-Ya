@@ -10,10 +10,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.adars.gotchya.Core.Functions;
-import com.example.adars.gotchya.Core.Threading.Services.GhostCounter;
-import com.example.adars.gotchya.Core.Threading.Services.GhostThreadHelper;
+import com.example.adars.gotchya.Core.Threading.GhostThreads.GhostCounter;
+import com.example.adars.gotchya.Core.Threading.ThreadHelper;
 import com.example.adars.gotchya.DataModel.DataModel.UserModel;
 
 import java.util.concurrent.TimeUnit;
@@ -21,8 +23,10 @@ import java.util.concurrent.TimeUnit;
 public class MainMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private ImageButton imageButtonRun;
+    private boolean toggled = false;
+
     GhostCounter ghostCounter;
-    Intent ghostCounterIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +49,21 @@ public class MainMenuActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        imageButtonRun = findViewById(R.id.imageButtonToggleSecurity);
+        imageButtonRun.setOnClickListener((l) -> imageButtonRunClick());
 
-        long interval = GhostThreadHelper.convertToMillis(1, TimeUnit.SECONDS);
-        ghostCounter = new GhostCounter(this, interval, true, true);
-        ghostCounterIntent = new Intent(this, ghostCounter.getClass());
-        if (!GhostThreadHelper.threadIsRunning(this, ghostCounter.getClass())){
-            startService(ghostCounterIntent);
-        }
+        long interval = ThreadHelper.convertToMillis(1, TimeUnit.SECONDS);
+        ghostCounter = new GhostCounter(this, interval, true);
+        startService(ghostCounter.getIntent());
+    }
 
+    private void imageButtonRunClick() {
+        toggled = !toggled;
+        int drawableID = toggled ?
+                R.drawable.button_wylacz_zabezpieczenie :
+                R.drawable.button_uruchom_zabezpieczenie;
+        imageButtonRun.setImageDrawable(getResources().getDrawable(drawableID));
+        Toast.makeText(this, "TBE", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -103,7 +114,7 @@ public class MainMenuActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        stopService(ghostCounterIntent);
+        stopService(ghostCounter.getIntent());
         super.onDestroy();
     }
 }

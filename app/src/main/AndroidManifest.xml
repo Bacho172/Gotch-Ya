@@ -16,7 +16,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -25,19 +24,20 @@
         <activity
             android:name=".MainMenuActivity"
             android:label="@string/title_activity_main_menu"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="locked"/>
         <activity android:name=".AboutUsActivity" />
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"></activity>
 
         <service
-            android:name=".Core.Threading.Services.GhostCounter"
+            android:name=".Core.Threading.GhostThreads.GhostCounter"
             android:enabled="true" >
         </service>
 
         <receiver
-            android:name=".Core.Threading.Services.Revivors.GhostCounterRevivalist"
+            android:name=".Core.Threading.GhostThreads.Revivors.GhostCounterRevivalist"
             android:enabled="true"
             android:exported="true"
             android:label="RestartServiceWhenStopped">

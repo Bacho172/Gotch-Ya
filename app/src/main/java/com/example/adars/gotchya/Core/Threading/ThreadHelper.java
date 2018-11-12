@@ -1,4 +1,4 @@
-package com.example.adars.gotchya.Core.Threading.Services;
+package com.example.adars.gotchya.Core.Threading;
 
 import android.app.ActivityManager;
 import android.app.Service;
@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.example.adars.gotchya.Core.ExtendedMap;
+
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,57 +16,72 @@ import java.util.logging.Logger;
 /**
  * Created by Adam Bachorz on 09.11.2018.
  */
-public abstract class GhostThreadHelper extends Service {
+public abstract class ThreadHelper extends Service {
 
     private Thread thread;
     private Context context;
-    protected boolean running, paused = false, infinite = true;
-    protected static boolean stickyUninterrupted, stickyImmortal = true, continueWork = true;
-    protected static long stickyInterval = 100;
+    private Intent intent;
+    protected long interval = 100;
+    protected boolean running, paused = false, infinite = true,
+            immortal = false, continueWork = false;
+    protected static ExtendedMap<Integer, String, Object> stickyValues;
     protected static String stickyClassName;
+    protected static Integer stickyHashCode;
 
+    static {
+        stickyValues = new ExtendedMap<>();
+    }
 
+    protected abstract class STICKY_LABEL {
+        public static final String INTERVAL = "interval";
+        public static final String IMMORTAL = "immortal";
+        public static final String UNINTERRUPTED = "uninterrupted";
+        public static final String CONTINUE_WORK = "continueWork";
+    }
 
-
-    public GhostThreadHelper() {
+    public ThreadHelper() {
         super();
         init();
     }
 
-    public GhostThreadHelper(Context context, long interval, boolean immortal, boolean uninterrupted) {
+    public ThreadHelper(Context context, long interval) {
         super();
-        stickyInterval = interval;
+        this.interval = interval;
         this.context = context;
-        stickyImmortal = immortal;
-        stickyUninterrupted = uninterrupted;
+        intent = new Intent(context, getClass());
         init();
     }
 
-    public GhostThreadHelper(Context context, long interval, boolean immortal, boolean uninterrupted, boolean infinite) {
+    public ThreadHelper(Context context, long interval, boolean immortal) {
         super();
-        stickyInterval = interval;
-        stickyImmortal = immortal;
-        stickyUninterrupted = uninterrupted;
-        this.infinite = infinite;
-        this.context =  context;
+        this.interval = interval;
+        this.context = context;
+        this.immortal = immortal;
+        intent = new Intent(context, getClass());
+        stickyHashCode = hashCode();
+        stickyValues.put(stickyHashCode,
+                new String[] {STICKY_LABEL.INTERVAL, STICKY_LABEL.IMMORTAL, STICKY_LABEL.CONTINUE_WORK},
+                new Object[] {interval, immortal, continueWork});
         init();
     }
 
     private void init() {
         stickyClassName = getClass().getSimpleName();
-        System.out.println(getGhostThreadState());
+        boolean isImmortal = (boolean) stickyValues.get(stickyHashCode, STICKY_LABEL.IMMORTAL);
+        System.out.println(getGhostThreadState(isImmortal));
         thread = new Thread(() -> {
-            while(running) {
+            while (running) {
                 if (paused) continue;
                 onRun();
                 if (!infinite) break;
-                delay(stickyInterval);
+                long interval = (long) stickyValues.get(stickyHashCode, STICKY_LABEL.INTERVAL);
+                delay(interval);
             }
-            onExit();
         });
     }
 
     protected void onStart() {
+        System.out.println("KOD OBIEKTU " + (stickyHashCode != null ? stickyHashCode : "BRAK"));
     }
     protected void onExit() {
     }
@@ -80,11 +97,15 @@ public abstract class GhostThreadHelper extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         onStart();
-        if (continueWork) {
-            startThread();
-            continueWork = false;
-        }
+        continueWork = (boolean) stickyValues.get(stickyHashCode, STICKY_LABEL.CONTINUE_WORK);
+        if (!continueWork) startThread();
         return START_STICKY;
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        System.out.println("taskRem");
+        super.onTaskRemoved(rootIntent);
     }
 
     @Override
@@ -92,9 +113,11 @@ public abstract class GhostThreadHelper extends Service {
         super.onDestroy();
         onExit();
 
-        if (stickyImmortal) {
+        boolean immortal = (boolean) stickyValues.get(stickyHashCode, STICKY_LABEL.IMMORTAL);
 
-            if (reviveSpell() == null) {
+        if (immortal) {
+
+            if (reviveSpell() == null || reviveSpell().trim().equals("")) {
                 try {
                     throw new Exception("Zaklęcie wskrzeszające nie zostało zaimplementowane");
                 } catch (Exception e) {
@@ -102,15 +125,8 @@ public abstract class GhostThreadHelper extends Service {
                 }
             }
 
+            stickyValues.put(stickyHashCode, STICKY_LABEL.CONTINUE_WORK,  true);
             sendBroadcast(new Intent(reviveSpell()));
-
-            if (stickyUninterrupted) {
-                continueWork = true;
-            }
-            else {
-                stopThread();
-                thread = null;
-            }
         }
     }
 
@@ -136,7 +152,7 @@ public abstract class GhostThreadHelper extends Service {
         try {
             Thread.sleep(interval);
         } catch (InterruptedException ex) {
-            Logger.getLogger(GhostThreadHelper.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ThreadHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -183,7 +199,7 @@ public abstract class GhostThreadHelper extends Service {
         try {
             thread.join();
         } catch (InterruptedException ex) {
-            Logger.getLogger(GhostThreadHelper.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ThreadHelper.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -201,12 +217,10 @@ public abstract class GhostThreadHelper extends Service {
         return "Wątek: '" + getClass().getSimpleName() + "' został " + (running ? "URUCHOMIONY" : "ZATRZYMANY");
     }
 
-    public static String getGhostThreadState() {
-        return String.format("Autonomiczny wątek: '%s' został utworzony. \nBędzie on %s oraz %s %s",
+    public static String getGhostThreadState(boolean immortal) {
+        return String.format("Autonomiczny wątek: '%s' został utworzony. \nBędzie on %s",
                 stickyClassName,
-                stickyImmortal ? "NIEŚMIERTELNY" : "ŚMIERTELNY",
-                stickyUninterrupted ? "BĘDZIE KONTUNUOWAŁ SWOJE DZIAŁANIE" : "ROZPOCZNIE SWOJE DZIAŁANIE OD NOWA",
-                stickyImmortal ? "po wskrzeszeniu" : "");
+                immortal ? "NIEŚMIERTELNY" : "ŚMIERTELNY");
     }
 
     public static String getGhostThreadRevivedInfo(Class <?> mClass) {
@@ -219,11 +233,11 @@ public abstract class GhostThreadHelper extends Service {
     }
 
     public long getInterval() {
-        return stickyInterval;
+        return interval;
     }
 
     public void setInterval(long interval) {
-        stickyInterval = interval;
+        this.interval = interval;
     }
 
     public boolean isRunning() {
@@ -234,11 +248,11 @@ public abstract class GhostThreadHelper extends Service {
         return paused;
     }
 
-    public boolean isUninterrupted() {
-        return stickyUninterrupted;
+    public boolean isImmortal() {
+        return immortal;
     }
 
-    public boolean isImmortal() {
-        return stickyImmortal;
+    public Intent getIntent() {
+        return intent;
     }
 }
