@@ -11,11 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -24,17 +23,16 @@
         <activity
             android:name=".MainMenuActivity"
             android:label="@string/title_activity_main_menu"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:screenOrientation="locked"/>
+            android:screenOrientation="locked"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AboutUsActivity" />
         <activity
             android:name=".SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
 
         <service
             android:name=".Core.Threading.GhostThreads.GhostCounter"
-            android:enabled="true" >
-        </service>
+            android:enabled="true"></service>
 
         <receiver
             android:name=".Core.Threading.GhostThreads.Revivors.GhostCounterRevivalist"
@@ -42,10 +40,11 @@
             android:exported="true"
             android:label="RestartServiceWhenStopped">
             <intent-filter>
-                <action android:name="ReviveMe"/>
+                <action android:name="ReviveMe" />
             </intent-filter>
         </receiver>
 
+        <activity android:name=".Sensors.TestAccelometerActivity"></activity>
     </application>
 
 </manifest>
