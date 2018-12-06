@@ -26,7 +26,6 @@ public class Accelometer implements SensorEventListener {
         lastAccelY = 0;
         lastAccelZ = 0;
         sensorManager.registerListener(this, accelometerHandle, samplingPeriodUs);
-
     }
 
     public static Boolean isAvaible(Context context) {
@@ -71,9 +70,9 @@ public class Accelometer implements SensorEventListener {
     @Override
     public void onSensorChanged(SensorEvent event) {
 
-        lastAccelX -= event.values[0];
-        lastAccelY -= event.values[1];
-        lastAccelZ -= event.values[2];
+        lastAccelX = event.values[0];
+        lastAccelY = event.values[1];
+        lastAccelZ = event.values[2];
     }
 
     @Override
