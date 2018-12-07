@@ -3,8 +3,10 @@
     package="com.example.adars.gotchya">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-feature android:name="android.hardware.location.gps" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -35,7 +37,7 @@
 
         <service
             android:name=".Core.Threading.GhostThreads.GhostCounter"
-            android:enabled="true"></service>
+            android:enabled="true" />
 
         <receiver
             android:name=".Core.Threading.GhostThreads.Revivors.GhostCounterRevivalist"
@@ -47,7 +49,9 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".Sensors.TestAccelometerActivity"></activity>
+        <activity android:name=".Sensors.TestAccelometerActivity" />
+        <activity android:name=".Sensors.TestGPSActivity" />
+        <activity android:name=".Sensors.DevOptionsActivity"></activity>
     </application>
 
 </manifest>

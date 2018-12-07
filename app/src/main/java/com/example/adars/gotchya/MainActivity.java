@@ -14,7 +14,7 @@ import com.example.adars.gotchya.Core.Functions;
 import com.example.adars.gotchya.DataModel.DataModel.UserModel;
 import com.example.adars.gotchya.DataModel.DomainModel.User;
 import com.example.adars.gotchya.Sensors.TestAccelometerActivity;
-
+import com.example.adars.gotchya.Sensors.DevOptionsActivity;
 public class MainActivity extends AppCompatActivity {
     private Button buttonDeveloperMode;
     private ImageButton imageButtonGetStarted;
@@ -36,13 +36,10 @@ public class MainActivity extends AppCompatActivity {
         buttonDeveloperMode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               Intent intent= new Intent(getApplicationContext(),TestAccelometerActivity.class);
+               Intent intent= new Intent(getApplicationContext(), DevOptionsActivity.class);
                 startActivity(intent);
             }
         });
-    }
-    private void setButtonDeveloperModeClick(){
-        startActivity(new Intent(this,TestAccelometerActivity.class));
     }
     private void imageButtonGetStartedClick() {
         User rememberedUser = Functions.loadUserData(this);
