@@ -18,8 +18,7 @@ import java.io.OutputStreamWriter;
  * Created by Adam Bachorz on 06.11.2018.
  */
 public final class Functions {
-
-    public static void setFont(Context context, TextView textView, String font){
+    public static void setFont(Context context, TextView textView, String font) {
         textView.setTypeface(Typeface.createFromAsset(context.getAssets(), font));
     }
 
@@ -31,8 +30,7 @@ public final class Functions {
             String data = getDataVector(user.getID(), user.getLogin(), user.getPassword());
             outputWriter.write(data);
             outputWriter.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             Log.e("Exception", "Nieudany zapis do pliku: " + e.toString());
         }
     }
@@ -44,8 +42,7 @@ public final class Functions {
             OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
             outputWriter.write("");
             outputWriter.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             Log.e("Exception", "Nieudane czyszczenie pliku: " + e.toString());
         }
     }
@@ -55,14 +52,14 @@ public final class Functions {
 
         try {
             FileInputStream fileIn = context.openFileInput(fileName);
-            InputStreamReader InputRead= new InputStreamReader(fileIn);
+            InputStreamReader InputRead = new InputStreamReader(fileIn);
 
             char[] inputBuffer = new char[100];
             String result = "";
             int charRead;
 
             while ((charRead = InputRead.read(inputBuffer)) > 0) {
-                String readstring = String.copyValueOf(inputBuffer,0,charRead);
+                String readstring = String.copyValueOf(inputBuffer, 0, charRead);
                 result += readstring;
             }
             InputRead.close();
@@ -86,8 +83,9 @@ public final class Functions {
     public static String getDataVector(Object... data) {
         String result = "";
         for (Object o : data) {
-            result += o.toString() + (!o.equals(data[data.length-1]) ? ";" : "");
+            result += o.toString() + (!o.equals(data[data.length - 1]) ? ";" : "");
         }
         return result;
     }
 }
+

@@ -26,13 +26,13 @@ public class TestGPSActivity extends AppCompatActivity {
         longitute=findViewById(R.id.textViewLongitute);
         latitute=findViewById(R.id.textViewLatitute);
         gps= new GPS(this);
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 longitute.setText(String.valueOf(gps.getLongitute()));
-                latitute.setText(String.valueOf(gps.getLongitute()));
+                latitute.setText(String.valueOf(gps.getLatitute()));
             }
         });
     }
