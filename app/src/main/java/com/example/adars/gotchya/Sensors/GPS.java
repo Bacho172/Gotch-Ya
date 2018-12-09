@@ -1,5 +1,4 @@
 package com.example.adars.gotchya.Sensors;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
