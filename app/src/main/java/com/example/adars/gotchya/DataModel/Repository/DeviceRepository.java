@@ -7,7 +7,15 @@ import java.util.ArrayList;
 /**
  * Created by Adam Bachorz on 10.12.2018.
  */
-public class DeviceRepository implements IRepository<Device> {
+public final class DeviceRepository implements IRepository<Device> {
+
+    private static DeviceRepository instance;
+    public static DeviceRepository getInstance() {
+        if (instance == null) {
+            instance = new DeviceRepository();
+        }
+        return instance;
+    }
 
     @Override
     public ArrayList<Device> getAll() {

@@ -61,6 +61,6 @@ public final class UserRepository implements IRepository<User> {
 
     @Override
     public String getTableName() {
-        return "Users";
+        return "users";
     }
 }
