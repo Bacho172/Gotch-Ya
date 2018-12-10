@@ -1,11 +1,13 @@
 package com.example.adars.gotchya.DataModel.Repository;
 
+import com.example.adars.gotchya.DataModel.DomainModel.Privilege;
+
 import java.util.ArrayList;
 
 /**
  * Created by Adam Bachorz on 10.12.2018.
  */
-public final class PrivilegeRepository implements IRepository {
+public final class PrivilegeRepository implements IRepository<Privilege> {
 
     private static PrivilegeRepository instance;
     public static PrivilegeRepository getInstance() {
@@ -16,27 +18,27 @@ public final class PrivilegeRepository implements IRepository {
     }
 
     @Override
-    public ArrayList getAll() {
+    public ArrayList<Privilege> getAll() {
         return null;
     }
 
     @Override
-    public Object getOneByID(Integer ID) {
+    public Privilege getOneByID(Integer ID) {
         return null;
     }
 
     @Override
-    public void insert(Object entity) {
+    public void insert(Privilege entity) {
 
     }
 
     @Override
-    public void update(Object entity) {
+    public void update(Privilege entity) {
 
     }
 
     @Override
-    public void delete(Object entity) {
+    public void delete(Privilege entity) {
 
     }
 
