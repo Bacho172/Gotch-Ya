@@ -21,7 +21,13 @@ public class TestGPSActivity extends AppCompatActivity {
     Button refresh;
     TextView longitute;
     TextView latitute;
-    BroadcastReceiver broadcastReceiver;
+    BroadcastReceiver broadcastReceiver= new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+
+        }
+    };
+    IntentFilter intentFilter=new IntentFilter("gps_update");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,14 +37,6 @@ public class TestGPSActivity extends AppCompatActivity {
         refresh=findViewById(R.id.button_refresh);
         longitute=findViewById(R.id.textViewLongitute);
         latitute=findViewById(R.id.textViewLatitute);
-        registerReceiver(broadcastReceiver, new IntentFilter("gps_update"));
-        broadcastReceiver=new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                longitute.setText(intent.getExtras().get("longitude").toString());
-            int a=3;
-            }
-        };
         refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

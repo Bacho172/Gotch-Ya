@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".LogInActivity" />
-        <activity android:name=".SignInActivity" />
+
         <activity
             android:name=".MainMenuActivity"
             android:label="@string/title_activity_main_menu"
@@ -37,10 +37,17 @@
             android:name=".Sensors.GPSService"
             android:enabled="true">
         </service>
+        <receiver
+            android:name=".Sensors.GPSReceiver"
+            android:enabled="true"
+            android:label="GPSUPdate">
+            <intent-filter>
+                <action android:name="gps_update" />
+            </intent-filter>
+        </receiver>
         <service
             android:name=".Core.Threading.GhostThreads.GhostCounter"
             android:enabled="true" />
-
         <receiver
             android:name=".Core.Threading.GhostThreads.Revivors.GhostCounterRevivalist"
             android:enabled="true"
