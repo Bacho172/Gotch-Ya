@@ -19,16 +19,16 @@ public final class UserRepository implements IRepository<User> {
     }
 
     @Override
-    public ArrayList<User> getAll() { //TODO: Przerobić na JDBC po implementacji bazy
+    public ArrayList<User> getAll() {
         return new ArrayList<>(Arrays.asList(
-                new User(1, "user1", "pass1"),
-                new User(2, "user2", "pass2"),
-                new User(3, "user3", "pass3")
+                new User(1, "user1", "pass1", "u1@gmail.com"),
+                new User(2, "user2", "pass2", "u2@gmail.com"),
+                new User(3, "user3", "pass3", "u3@gmail.com")
         ));
     }
 
     @Override
-    public User getOneByID(Integer ID) { //TODO: Przerobić na JDBC po implementacji bazy
+    public User getOneByID(Integer ID) {
         for (User user : getAll()) {
             if (user.getID() == ID) return user;
         }
@@ -61,6 +61,6 @@ public final class UserRepository implements IRepository<User> {
 
     @Override
     public String getTableName() {
-        return "Users"; //TODO: Do weryfikacji po implementacji bazy danych
+        return "Users";
     }
 }

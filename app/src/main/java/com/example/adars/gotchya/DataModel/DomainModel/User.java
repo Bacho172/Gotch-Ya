@@ -6,12 +6,15 @@ package com.example.adars.gotchya.DataModel.DomainModel;
 public class User extends Entity {
     private String login;
     private String password;
+    private String emial;
 
     public User(){}
-    public User(Integer ID, String login, String password) {
+
+    public User(Integer ID, String login, String password, String emial) {
         super(ID);
         this.login = login;
         this.password = password;
+        this.emial = emial;
     }
 
     public String getLogin() {
@@ -28,5 +31,13 @@ public class User extends Entity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getEmial() {
+        return emial;
+    }
+
+    public void setEmial(String emial) {
+        this.emial = emial;
     }
 }
