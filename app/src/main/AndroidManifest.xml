@@ -32,19 +32,19 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
-
-        <service
-            android:name=".Sensors.GPSService"
-            android:enabled="true">
-        </service>
-        <receiver
-            android:name=".Sensors.GPSReceiver"
+        <service android:name=".Sensors.GPSService"
+            android:enabled="true"/>
+        <receiver android:name=".Sensors.SensorsReceiver"
             android:enabled="true"
-            android:label="GPSUPdate">
+            android:label="gps_updates"
+            >
             <intent-filter>
-                <action android:name="gps_update" />
+                <action android:name="gps_update"/>
             </intent-filter>
         </receiver>
+
+
+
         <service
             android:name=".Core.Threading.GhostThreads.GhostCounter"
             android:enabled="true" />
@@ -58,8 +58,6 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".Sensors.TestAccelometerActivity" />
-        <activity android:name=".Sensors.TestGPSActivity" />
         <activity android:name=".Sensors.DevOptionsActivity"></activity>
     </application>
 

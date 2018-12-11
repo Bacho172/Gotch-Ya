@@ -1,6 +1,5 @@
 package com.example.adars.gotchya;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -13,7 +12,6 @@ import com.example.adars.gotchya.Core.Fonts;
 import com.example.adars.gotchya.Core.Functions;
 import com.example.adars.gotchya.DataModel.DataModel.UserModel;
 import com.example.adars.gotchya.DataModel.DomainModel.User;
-import com.example.adars.gotchya.Sensors.TestAccelometerActivity;
 import com.example.adars.gotchya.Sensors.DevOptionsActivity;
 public class MainActivity extends AppCompatActivity {
     private Button buttonDeveloperMode;

@@ -27,15 +27,13 @@ public class DevOptionsActivity extends AppCompatActivity {
         accel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(getApplicationContext(), TestAccelometerActivity.class);
-                startActivity(intent);
+
             }
         });
         gps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent= new Intent(getApplicationContext(),TestGPSActivity.class);
-                startActivity(intent);
+
             }
         });
     }
