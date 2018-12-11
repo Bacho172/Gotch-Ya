@@ -31,7 +31,7 @@ public final class Functions {
             String fileName = context.getString(R.string.user_config_file_name);
             FileOutputStream fileout = context.openFileOutput(fileName, Context.MODE_PRIVATE);
             OutputStreamWriter outputWriter = new OutputStreamWriter(fileout);
-            String data = getDataVector(user.getID(), user.getLogin(), user.getPassword());
+            String data = getDataVector(false, user.getID(), user.getLogin(), user.getPassword());
             outputWriter.write(data);
             outputWriter.close();
         } catch (IOException e) {
@@ -87,7 +87,7 @@ public final class Functions {
     public static String getDataVector(boolean toURL, Object... objects){
         String result = "";
         for (int i = 0; i < objects.length; i++) {
-            result += (toURL ? "/" : "") + (i == objects.length - 1 ? objects[i] : objects[i]) + (toURL ? "" : ",");
+            result += (toURL ? "/" : "") + (i == objects.length - 1 ? objects[i] : objects[i] + (toURL ? "" : ";")) ;
         }
         return result;
     }

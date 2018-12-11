@@ -10,7 +10,7 @@ public class WebServiceUrlParser {
     private Object[] routeParameters;
 
     public WebServiceUrlParser(Object... routeParameters) {
-        this.apiUrl = "http://gotch-ya.herokuapp.com/api";
+        this.apiUrl = "https://gotch-ya.herokuapp.com/api";
         this.routeParameters = routeParameters;
     }
 

@@ -1,9 +1,20 @@
 package com.example.adars.gotchya.DataModel.Repository;
 
+import android.graphics.drawable.Drawable;
+
+import com.example.adars.gotchya.Core.API.JSONHelper;
+import com.example.adars.gotchya.Core.API.WebServiceUrlParser;
+import com.example.adars.gotchya.Core.Functions;
+import com.example.adars.gotchya.DataModel.DomainModel.Privilege;
+import com.example.adars.gotchya.DataModel.DomainModel.Status;
 import com.example.adars.gotchya.DataModel.DomainModel.User;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Adam Bachorz on 07.11.2018.
@@ -20,11 +31,34 @@ public final class UserRepository implements IRepository<User> {
 
     @Override
     public ArrayList<User> getAll() {
-        return new ArrayList<>(Arrays.asList(
-                new User(1, "user1", "pass1", "u1@gmail.com"),
-                new User(2, "user2", "pass2", "u2@gmail.com"),
-                new User(3, "user3", "pass3", "u3@gmail.com")
-        ));
+        ArrayList<User> list = new ArrayList<>();
+        try {
+
+            WebServiceUrlParser parser = new WebServiceUrlParser("users");
+            JSONArray jsonArray = JSONHelper.readJsonFromUrl(parser.getURL());
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                User user = new User();
+                user.setID(jsonObject.getInt("iduser"));
+                user.setLogin(jsonObject.getString("name"));
+                user.setEmail(jsonObject.getString("email"));
+                Drawable image = Functions.imageFromURL(jsonObject.getString("image"), user.getID());
+                user.setImage(image);
+                user.setPrivilege(new Privilege(jsonObject.getString("privilege")));
+                user.setStatus(new Status(jsonObject.getString("status")));
+
+
+                list.add(user);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return list;
     }
 
     @Override
@@ -35,7 +69,7 @@ public final class UserRepository implements IRepository<User> {
         return null;
     }
 
-    public User getOneByLoginAndPassword(String login, String password) { //TODO: Przerobić na JDBC po implementacji bazy
+    public User getOneByLoginAndPassword(String login, String password) {
         for (User user : getAll()) {
             if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
                 return user;

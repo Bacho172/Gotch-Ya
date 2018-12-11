@@ -1,16 +1,11 @@
 package com.example.adars.gotchya;
 
-import android.app.Activity;
-import android.content.Context;
-
+import com.example.adars.gotchya.Core.API.WebServiceUrlParser;
 import com.example.adars.gotchya.Core.Functions;
-import com.example.adars.gotchya.DataModel.DomainModel.User;
 
 import org.junit.Test;
 
-import androidx.test.core.app.ApplicationProvider;
-
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 /**
  * Created by Adam Bachorz on 06.11.2018.
  */
@@ -22,7 +17,13 @@ public class FunctionsUnitTest {
 
     @Test
     public void correct_createDataVector() {
-        assertEquals("dataA;dataB;1", Functions.getDataVector("dataA","dataB",1));
+        assertEquals("dataA;dataB;1", Functions.getDataVector(false,"dataA","dataB",1));
+    }
+
+    @Test
+    public void correct_WebServiceURL() {
+        WebServiceUrlParser parser = new WebServiceUrlParser("users");
+        assertEquals("https://gotch-ya.herokuapp.com/api/users", parser.getURL());
     }
 
 }
