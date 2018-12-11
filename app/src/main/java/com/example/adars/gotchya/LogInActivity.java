@@ -23,6 +23,14 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 
+import java.io.BufferedOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
+
 public class LogInActivity extends AppCompatActivity {
 
     //TBE
@@ -34,6 +42,7 @@ public class LogInActivity extends AppCompatActivity {
     private SignInButton signInButtonGoogle;
     private Button check;
     private GoogleSignInAccount acc;
+    private GoogleSignInClient mGoogleSignInClient;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,12 +57,56 @@ public class LogInActivity extends AppCompatActivity {
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
-        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                acc=GoogleSignIn.getLastSignedInAccount(getApplicationContext());
-                Toast.makeText(LogInActivity.this, "email:" + acc.getEmail(), Toast.LENGTH_SHORT).show();
+                String email=acc.getEmail();
+                String mac_address="123";
+                String model= "iphone";
+                String name= "X20";
+                String system= "Kali linux";
+                URL url = null;
+                try {
+                    url = new URL("https://gotch-ya.herokuapp.com/api/devices");
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    HttpURLConnection client = (HttpURLConnection) url.openConnection();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                HttpURLConnection client = null;
+                try {
+                    client.setRequestMethod("POST");
+                } catch (ProtocolException e) {
+                    e.printStackTrace();
+                }
+                client.setRequestProperty("gmail",email);
+                client.setRequestProperty("mac_address",mac_address);
+                client.setRequestProperty("model",model);
+                client.setRequestProperty("name",name);
+                client.setRequestProperty("system",system);
+                client.setDoOutput(true);
+                OutputStream outputPost = null;
+                try {
+                    outputPost = new BufferedOutputStream(client.getOutputStream());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+              //  writeStream(outputPost);
+                try {
+                    outputPost.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    outputPost.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
             }
         });
         signInButtonGoogle = findViewById(R.id.sign_in_button);
@@ -72,7 +125,7 @@ public class LogInActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        int a = 7;
+
     }
 
     @Override
@@ -86,7 +139,8 @@ public class LogInActivity extends AppCompatActivity {
 
     private void updateUI(@Nullable GoogleSignInAccount account) {
         if (account != null) {
-            Toast.makeText(getApplicationContext(), "email:" + account.getEmail() + " id token:" + account.getIdToken(), Toast.LENGTH_LONG).show();
+           acc=account;
+                   Toast.makeText(getApplicationContext(), "email:" + account.getEmail() + " id token:" + account.getIdToken(), Toast.LENGTH_LONG).show();
             signInButtonGoogle.setVisibility(View.GONE);
         } else {
             signInButtonGoogle.setVisibility(View.VISIBLE);
