@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,28 +26,36 @@ import com.google.android.gms.tasks.Task;
 public class LogInActivity extends AppCompatActivity {
 
     //TBE
-    private static final int RC_SIGN_IN = 1;
-    private static final int COMPLETED = 2;
-    private static final int ERROR = 0;
+    private static final int RC_SIGN_IN = 9001;
     private EditText editTextLogin;
     private EditText editTextPassword;
     private CheckBox checkBoxRemember;
     private ImageButton imageButtonLogIn;
     private SignInButton signInButtonGoogle;
-    private GoogleSignInClient mGoogleSignInClient;
-    private GoogleSignInOptions gso;
-    private GoogleSignInAccount account;
-
+    private Button check;
+    private GoogleSignInAccount acc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-
+        check = findViewById(R.id.button_check);
         editTextLogin = findViewById(R.id.editTextLogin);
         editTextPassword = findViewById(R.id.editTextPassword);
         checkBoxRemember = findViewById(R.id.checkBoxRemember);
         imageButtonLogIn = findViewById(R.id.imageButtonLogIn);
         imageButtonLogIn.setOnClickListener(l -> imageButtonLogInClick());
+        GoogleSignInOptions gso;
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        check.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                acc=GoogleSignIn.getLastSignedInAccount(getApplicationContext());
+                Toast.makeText(LogInActivity.this, "email:" + acc.getEmail(), Toast.LENGTH_SHORT).show();
+            }
+        });
         signInButtonGoogle = findViewById(R.id.sign_in_button);
         signInButtonGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,16 +65,14 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
         signInButtonGoogle.setSize(SignInButton.SIZE_STANDARD);
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account == null) {
-            //  signInButtonGoogle.setVisibility(View.INVISIBLE);
-        } else {
-            signInButtonGoogle.setVisibility(View.VISIBLE);
-        }
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        int a = 7;
     }
 
     @Override
@@ -77,25 +84,25 @@ public class LogInActivity extends AppCompatActivity {
         }
     }
 
-    private void updateUI(int CODE) {
-        if (CODE == COMPLETED) {
+    private void updateUI(@Nullable GoogleSignInAccount account) {
+        if (account != null) {
             Toast.makeText(getApplicationContext(), "email:" + account.getEmail() + " id token:" + account.getIdToken(), Toast.LENGTH_LONG).show();
-        } else if (CODE == ERROR) {
+            signInButtonGoogle.setVisibility(View.GONE);
+        } else {
+            signInButtonGoogle.setVisibility(View.VISIBLE);
             Toast.makeText(getApplicationContext(), "Sign in google error", Toast.LENGTH_LONG).show();
         }
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
-            account = completedTask.getResult(ApiException.class);
-
+            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             // Signed in successfully, show authenticated UI.
-            updateUI(COMPLETED);
+            updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Toast.makeText(getApplicationContext(),String.valueOf(e.getStatusCode()), Toast.LENGTH_LONG).show();
-            updateUI(ERROR);
+            updateUI(null);
         }
     }
 
