@@ -84,10 +84,10 @@ public final class Functions {
         return user;
     }
 
-    public static String getDataVector(Object... data) {
+    public static String getDataVector(boolean toURL, Object... objects){
         String result = "";
-        for (Object o : data) {
-            result += o.toString() + (!o.equals(data[data.length - 1]) ? ";" : "");
+        for (int i = 0; i < objects.length; i++) {
+            result += (toURL ? "/" : "") + (i == objects.length - 1 ? objects[i] : objects[i]) + (toURL ? "" : ",");
         }
         return result;
     }
