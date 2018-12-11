@@ -2,6 +2,7 @@ package com.example.adars.gotchya.Core;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -11,13 +12,16 @@ import com.example.adars.gotchya.R;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.net.URL;
 
 /**
  * Created by Adam Bachorz on 06.11.2018.
  */
 public final class Functions {
+
     public static void setFont(Context context, TextView textView, String font) {
         textView.setTypeface(Typeface.createFromAsset(context.getAssets(), font));
     }
@@ -86,6 +90,16 @@ public final class Functions {
             result += o.toString() + (!o.equals(data[data.length - 1]) ? ";" : "");
         }
         return result;
+    }
+
+    public static Drawable imageFromURL(String url, int userID) {
+        try {
+            InputStream inputStream = (InputStream) new URL(url).getContent();
+            return Drawable.createFromStream(inputStream, "userImage" + userID);
+        } catch (Exception e) {
+            System.err.println("Nie można wczytać obrazka: \nURL: " + url + "\nUserID: " + userID);
+            return null;
+        }
     }
 }
 
