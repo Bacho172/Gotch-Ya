@@ -2,6 +2,7 @@ package com.example.adars.gotchya;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -9,17 +10,16 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.adars.gotchya.Core.Functions;
-import com.example.adars.gotchya.DataModel.DataModel.UserModel;
-import com.example.adars.gotchya.DataModel.DomainModel.User;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.BufferedOutputStream;
@@ -34,37 +34,40 @@ public class LogInActivity extends AppCompatActivity {
 
     //TBE
     private static final int RC_SIGN_IN = 9001;
-    private EditText editTextLogin;
-    private EditText editTextPassword;
-    private CheckBox checkBoxRemember;
-    private ImageButton imageButtonLogIn;
+    /*
+     private EditText editTextLogin;
+     private EditText editTextPassword;
+     private CheckBox checkBoxRemember;
+     */
+    private ImageButton imageButtonLogOut;
     private SignInButton signInButtonGoogle;
     private Button check;
+    private TextView textViewSignedUser;
+    private GoogleSignInAccount account;
     private GoogleSignInAccount acc;
     private GoogleSignInClient mGoogleSignInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
         check = findViewById(R.id.button_check);
-        editTextLogin = findViewById(R.id.editTextLogin);
-        editTextPassword = findViewById(R.id.editTextPassword);
-        checkBoxRemember = findViewById(R.id.checkBoxRemember);
-        imageButtonLogIn = findViewById(R.id.imageButtonLogOut);
-        imageButtonLogIn.setOnClickListener(l -> imageButtonLogInClick());
-        GoogleSignInOptions gso;
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        // editTextLogin = findViewById(R.id.editTextLogin);
+        //editTextPassword = findViewById(R.id.editTextPassword);
+        //checkBoxRemember = findViewById(R.id.checkBoxRemember);
+        imageButtonLogOut = findViewById(R.id.imageButtonLogOut);
+        imageButtonLogOut.setOnClickListener(l -> imageButtonLogInClick());
+        signInButtonGoogle = findViewById(R.id.sign_out_button);
+        signInButtonGoogle.setSize(SignInButton.SIZE_STANDARD);
+        textViewSignedUser = findViewById(R.id.textViewSignedUser);
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email=acc.getEmail();
-                String mac_address="123";
-                String model= "iphone";
-                String name= "X20";
-                String system= "Kali linux";
+                String email = acc.getEmail();
+                String mac_address = "123";
+                String model = "iphone";
+                String name = "X20";
+                String system = "Kali linux";
                 URL url = null;
                 try {
                     url = new URL("https://gotch-ya.herokuapp.com/api/devices");
@@ -82,11 +85,11 @@ public class LogInActivity extends AppCompatActivity {
                 } catch (ProtocolException e) {
                     e.printStackTrace();
                 }
-                client.setRequestProperty("gmail",email);
-                client.setRequestProperty("mac_address",mac_address);
-                client.setRequestProperty("model",model);
-                client.setRequestProperty("name",name);
-                client.setRequestProperty("system",system);
+                client.setRequestProperty("gmail", email);
+                client.setRequestProperty("mac_address", mac_address);
+                client.setRequestProperty("model", model);
+                client.setRequestProperty("name", name);
+                client.setRequestProperty("system", system);
                 client.setDoOutput(true);
                 OutputStream outputPost = null;
                 try {
@@ -94,7 +97,7 @@ public class LogInActivity extends AppCompatActivity {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-              //  writeStream(outputPost);
+                //  writeStream(outputPost);
                 try {
                     outputPost.flush();
                 } catch (IOException e) {
@@ -108,7 +111,11 @@ public class LogInActivity extends AppCompatActivity {
 
             }
         });
-        signInButtonGoogle = findViewById(R.id.sign_out_button);
+        GoogleSignInOptions gso;
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
         signInButtonGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,14 +123,13 @@ public class LogInActivity extends AppCompatActivity {
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
-        signInButtonGoogle.setSize(SignInButton.SIZE_STANDARD);
 
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+        account = GoogleSignIn.getLastSignedInAccount(this);
 
     }
 
@@ -138,12 +144,14 @@ public class LogInActivity extends AppCompatActivity {
 
     private void updateUI(@Nullable GoogleSignInAccount account) {
         if (account != null) {
-           acc=account;
-                   Toast.makeText(getApplicationContext(), "email:" + account.getEmail() + " id token:" + account.getIdToken(), Toast.LENGTH_LONG).show();
+            imageButtonLogOut.setVisibility(View.VISIBLE);
             signInButtonGoogle.setVisibility(View.GONE);
+            textViewSignedUser.setText(account.getEmail());
         } else {
+            imageButtonLogOut.setVisibility(View.GONE);
             signInButtonGoogle.setVisibility(View.VISIBLE);
-            Toast.makeText(getApplicationContext(), "Sign in google error", Toast.LENGTH_LONG).show();
+            textViewSignedUser.setText(" ");
+            Toast.makeText(getApplicationContext(), "Log out ", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -160,6 +168,15 @@ public class LogInActivity extends AppCompatActivity {
     }
 
     private void imageButtonLogInClick() {
+
+        mGoogleSignInClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                updateUI(null);
+            }
+        });
+        
+        /*
         String login = editTextLogin.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         if (login.isEmpty() || password.isEmpty()) {
@@ -175,6 +192,6 @@ public class LogInActivity extends AppCompatActivity {
             }
             startActivity(new Intent(this, MainMenuActivity.class));
         }
-
+*/
     }
 }
