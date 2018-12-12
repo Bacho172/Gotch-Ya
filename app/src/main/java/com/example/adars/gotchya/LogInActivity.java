@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -51,7 +50,7 @@ public class LogInActivity extends AppCompatActivity {
         editTextLogin = findViewById(R.id.editTextLogin);
         editTextPassword = findViewById(R.id.editTextPassword);
         checkBoxRemember = findViewById(R.id.checkBoxRemember);
-        imageButtonLogIn = findViewById(R.id.imageButtonLogIn);
+        imageButtonLogIn = findViewById(R.id.imageButtonLogOut);
         imageButtonLogIn.setOnClickListener(l -> imageButtonLogInClick());
         GoogleSignInOptions gso;
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -109,7 +108,7 @@ public class LogInActivity extends AppCompatActivity {
 
             }
         });
-        signInButtonGoogle = findViewById(R.id.sign_in_button);
+        signInButtonGoogle = findViewById(R.id.sign_out_button);
         signInButtonGoogle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
