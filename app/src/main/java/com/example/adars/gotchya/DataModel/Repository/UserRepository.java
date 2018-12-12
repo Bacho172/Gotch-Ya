@@ -2,8 +2,7 @@ package com.example.adars.gotchya.DataModel.Repository;
 
 import android.graphics.drawable.Drawable;
 
-import com.example.adars.gotchya.Core.API.JSONHelper;
-import com.example.adars.gotchya.Core.API.WebServiceUrlParser;
+import com.example.adars.gotchya.Core.API.WebServiceAccess;
 import com.example.adars.gotchya.Core.Functions;
 import com.example.adars.gotchya.DataModel.DomainModel.Privilege;
 import com.example.adars.gotchya.DataModel.DomainModel.Status;
@@ -13,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -34,8 +32,8 @@ public final class UserRepository implements IRepository<User> {
         ArrayList<User> list = new ArrayList<>();
         try {
 
-            WebServiceUrlParser parser = new WebServiceUrlParser("users");
-            JSONArray jsonArray = JSONHelper.readJsonFromUrlToArray(parser.getURL());
+            WebServiceAccess access = new WebServiceAccess("users");
+            JSONArray jsonArray = access.getJsonArray();
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -53,9 +51,10 @@ public final class UserRepository implements IRepository<User> {
                 list.add(user);
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
+        }
+        catch (JSONException e) {
+            String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+            System.err.println(Functions.getExecutionError(getClass(), methodName, e));
             e.printStackTrace();
         }
         return list;

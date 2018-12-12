@@ -1,6 +1,5 @@
 package com.example.adars.gotchya;
 
-import com.example.adars.gotchya.Core.API.WebServiceUrlParser;
 import com.example.adars.gotchya.Core.Functions;
 
 import org.junit.Test;

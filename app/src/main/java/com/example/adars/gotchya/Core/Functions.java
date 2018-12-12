@@ -101,5 +101,23 @@ public final class Functions {
             return null;
         }
     }
+
+    /**
+     * Zwraca komunikat błędu wraz z klasa i metodą, w której wystąpił
+     *
+     * @param c klasa źródłowa
+     * @param methodName nazwa metody
+     * @param ex wyjątek
+     *
+     * @return Komunikat błędu wraz z klasa i metodą, w której wystąpił
+     *
+     * @author Adam Bachorz
+     */
+    public static String getExecutionError(Class c, String methodName, Exception ex){
+        return "\nBŁĄD WYKONYWANIA FUNKCJI !!! \n" +
+                "Klasa: " + c.getSimpleName().toUpperCase() + "\n" +
+                "Funkcja: " + methodName + "\n" +
+                "Komunikat błędu: " + ex.getMessage() + "\n\n";
+    }
 }
 
