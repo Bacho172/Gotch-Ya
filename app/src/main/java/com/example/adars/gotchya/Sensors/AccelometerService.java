@@ -23,7 +23,7 @@ public class AccelometerService extends Service {
         public Accelometer(Context context) {
             sensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
             accelometerHandle = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            sensorManager.registerListener(this, accelometerHandle, 1000 * US_TO_MS);
+            sensorManager.registerListener(this, accelometerHandle, 100 * US_TO_MS);
         }
 
         @Override

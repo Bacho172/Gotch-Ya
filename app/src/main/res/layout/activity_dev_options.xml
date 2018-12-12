@@ -18,14 +18,6 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/textViewMoving"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="137dp"
-        tools:layout_editor_absoluteY="293dp" />
-
-    <TextView
         android:id="@+id/textViewLatitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,6 +1,9 @@
 package com.example.adars.gotchya.Sensors;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -28,10 +31,11 @@ public class DevOptionsActivity extends AppCompatActivity {
                 isRunning=!isRunning;
                 if (isRunning) {
                         startService(new Intent(getApplicationContext(), GPSService.class));
-
+                        startService(new Intent(getApplicationContext(),AccelometerService.class));
                 }
             else{
                     stopService(new Intent(getApplicationContext(),GPSService.class));
+                    stopService(new Intent(getApplicationContext(),Accelometer.class));
 
                 }
             }
