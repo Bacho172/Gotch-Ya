@@ -21,15 +21,19 @@
         android:id="@+id/textViewLatitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="137dp"
+        android:layout_marginLeft="137dp"
+        android:layout_marginBottom="134dp"
         android:text="TextView"
-        tools:layout_editor_absoluteX="137dp"
-        tools:layout_editor_absoluteY="358dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textViewLongitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
         android:text="TextView"
-        tools:layout_editor_absoluteX="137dp"
-        tools:layout_editor_absoluteY="325dp" />
+        app:layout_constraintBottom_toTopOf="@+id/textViewLatitude"
+        app:layout_constraintStart_toStartOf="@+id/textViewLatitude" />
 </android.support.constraint.ConstraintLayout>

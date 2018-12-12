@@ -27,7 +27,8 @@ public class SensorsReceiver extends BroadcastReceiver {
             sensors_data.isMoving = isMoving;
             Toast.makeText(context, sensors_data.isMoving, Toast.LENGTH_SHORT).show();
         }
-        */ if (intent.getAction() == "gps_update") {
+        */
+      //if (intent.getAction() == "gps_update") {
             String latitude = intent.getStringExtra("latitude");
             String longitude = intent.getStringExtra("longitude");
             Geocoder geocoder = new Geocoder(context, Locale.getDefault());
@@ -44,7 +45,7 @@ public class SensorsReceiver extends BroadcastReceiver {
             sensors_data.longitde = longitude;
             Intent i = new Intent("new_data");
             context.sendBroadcast(i);
-        }
+    //    }
 
     }
 
