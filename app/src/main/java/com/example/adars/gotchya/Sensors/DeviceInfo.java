@@ -53,12 +53,11 @@ public class DeviceInfo {
     }
 
     private String collectName() {
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        return bluetoothAdapter.getName();
+        return "Telefon "+Build.MANUFACTURER;
     }
 
     private String collectSystem() {
-        return Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
+        return "Android "+Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
     }
 
     void DeviceInfo() {
@@ -67,29 +66,29 @@ public class DeviceInfo {
 
     void collectData() {
         email = collectEmail();
-        macAddress=collectMacAddress();
-        model=collectModel();
-        name=collectName();
-        system=collectSystem();
+        macAddress = collectMacAddress();
+        model = collectModel();
+        name = collectName();
+        system = collectSystem();
     }
-    public String getEmail()
-    {
+
+    public String getEmail() {
         return email;
     }
-    public String getMAcAddress()
-    {
+
+    public String getMAcAddress() {
         return macAddress;
     }
-    public String getModel()
-    {
+
+    public String getModel() {
         return model;
     }
-    public String getName()
-    {
+
+    public String getName() {
         return name;
     }
-    public String getSystem()
-    {
+
+    public String getSystem() {
         return system;
     }
 }

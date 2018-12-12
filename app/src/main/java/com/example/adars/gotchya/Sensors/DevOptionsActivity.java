@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.adars.gotchya.R;
 
@@ -37,6 +38,9 @@ public class DevOptionsActivity extends AppCompatActivity {
             }
         };
         registerReceiver(receiver, new IntentFilter("new_data"));
+        DeviceInfo deviceInfo=new DeviceInfo();
+        deviceInfo.collectData();
+        //Toast.makeText(this,deviceInfo.getMAcAddress(), Toast.LENGTH_SHORT).show();
         Buttonstart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
