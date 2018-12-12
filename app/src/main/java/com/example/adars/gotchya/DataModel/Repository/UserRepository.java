@@ -35,7 +35,7 @@ public final class UserRepository implements IRepository<User> {
         try {
 
             WebServiceUrlParser parser = new WebServiceUrlParser("users");
-            JSONArray jsonArray = JSONHelper.readJsonFromUrl(parser.getURL());
+            JSONArray jsonArray = JSONHelper.readJsonFromUrlToArray(parser.getURL());
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);

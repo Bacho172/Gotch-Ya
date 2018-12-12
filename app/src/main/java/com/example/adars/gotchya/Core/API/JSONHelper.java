@@ -2,6 +2,7 @@ package com.example.adars.gotchya.Core.API;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,7 +27,21 @@ public abstract class JSONHelper {
         return stringBuilder.toString();
     }
 
-    public static JSONArray readJsonFromUrl(String url) throws IOException, JSONException {
+    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+        /* Otwarcie strumienia wejściowego */
+        InputStream inputStream = new URL(url).openStream();
+        try {
+            /* Utworzenie czytnika znaków na podstawie strumienia wejściowego */
+            BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(inputStream, Charset.forName("UTF-8")));
+            String jsonText = readAll(reader); // odczytanie całego ciągu znaków
+            return new JSONObject(jsonText); // zwracanie obiektu typu JSON na podstawie tekstu
+        } finally {
+            inputStream.close();
+        }
+    }
+
+    public static JSONArray readJsonFromUrlToArray(String url) throws IOException, JSONException {
         /* Otwarcie strumienia wejściowego */
         InputStream inputStream = new URL(url).openStream();
         try {
