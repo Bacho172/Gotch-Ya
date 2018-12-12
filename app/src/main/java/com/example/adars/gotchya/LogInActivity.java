@@ -44,7 +44,6 @@ public class LogInActivity extends AppCompatActivity {
     private Button check;
     private TextView textViewSignedUser;
     private GoogleSignInAccount account;
-    private GoogleSignInAccount acc;
     private GoogleSignInClient mGoogleSignInClient;
 
     @Override
@@ -63,7 +62,7 @@ public class LogInActivity extends AppCompatActivity {
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = acc.getEmail();
+                String email = account.getEmail();
                 String mac_address = "123";
                 String model = "iphone";
                 String name = "X20";
