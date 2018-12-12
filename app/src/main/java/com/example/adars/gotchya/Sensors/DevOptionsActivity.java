@@ -1,39 +1,39 @@
 package com.example.adars.gotchya.Sensors;
 
-import android.Manifest;
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.example.adars.gotchya.R;
 
 public class DevOptionsActivity extends AppCompatActivity {
-    Button gps;
-    Button accel;
+    private Button Buttonstart;
+    private TextView textViewLongitude;
+    private TextView textViewLatitude;
+    private Boolean isRunning = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dev_options);
-        accel=findViewById(R.id.buttonAccel);
-        gps=findViewById(R.id.buttonGPS);
-        ActivityCompat.requestPermissions(this , new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.INTERNET,},1);
-
-        accel.setOnClickListener(new View.OnClickListener() {
+        textViewLatitude = findViewById(R.id.textViewLatitude);
+        textViewLongitude = findViewById(R.id.textViewLongitude);
+        Buttonstart = findViewById(R.id.buttonStart);
+        Buttonstart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isRunning=!isRunning;
+                if (isRunning) {
+                        startService(new Intent(getApplicationContext(), GPSService.class));
 
-            }
-        });
-        gps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+                }
+            else{
+                    stopService(new Intent(getApplicationContext(),GPSService.class));
 
+                }
             }
         });
     }

@@ -14,12 +14,12 @@ import java.util.Locale;
 
 public class SensorsReceiver extends BroadcastReceiver {
     List<Address> addresses;
-
+   static public  Sensors_data sensors_data = new Sensors_data();
     @Override
     public void onReceive(Context context, Intent intent) {
         String latitude = intent.getStringExtra("latitude");
         String longitude = intent.getStringExtra("longitude");
-        Sensors_data sensors_data = new Sensors_data();
+         sensors_data = new Sensors_data();
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());
         try {
             addresses = geocoder.getFromLocation(Double.parseDouble(latitude), Double.parseDouble(longitude), 1);

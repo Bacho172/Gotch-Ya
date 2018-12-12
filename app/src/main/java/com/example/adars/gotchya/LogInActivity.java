@@ -175,7 +175,7 @@ public class LogInActivity extends AppCompatActivity {
                 updateUI(null);
             }
         });
-        
+
         /*
         String login = editTextLogin.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();

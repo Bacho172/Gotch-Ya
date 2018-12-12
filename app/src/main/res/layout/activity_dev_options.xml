@@ -7,25 +7,37 @@
     tools:context=".Sensors.DevOptionsActivity">
 
     <Button
-        android:id="@+id/buttonAccel"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="121dp"
-        android:layout_marginLeft="121dp"
-        android:layout_marginTop="115dp"
-        android:layout_marginBottom="20dp"
-        android:text="Accel"
-        app:layout_constraintBottom_toTopOf="@+id/buttonGPS"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/buttonGPS"
+        android:id="@+id/buttonStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="284dp"
-        android:text="GPS"
+        android:layout_marginStart="137dp"
+        android:layout_marginLeft="137dp"
+        android:layout_marginBottom="280dp"
+        android:text="Start"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/buttonAccel"
-        app:layout_constraintTop_toBottomOf="@+id/buttonAccel" />
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewMoving"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="137dp"
+        tools:layout_editor_absoluteY="293dp" />
+
+    <TextView
+        android:id="@+id/textViewLatitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="137dp"
+        tools:layout_editor_absoluteY="358dp" />
+
+    <TextView
+        android:id="@+id/textViewLongitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        tools:layout_editor_absoluteX="137dp"
+        tools:layout_editor_absoluteY="325dp" />
 </android.support.constraint.ConstraintLayout>
