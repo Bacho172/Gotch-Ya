@@ -21,6 +21,11 @@ public class DevOptionsActivity extends AppCompatActivity {
     private BroadcastReceiver receiver;
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    unregisterReceiver(receiver);
+    }
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dev_options);

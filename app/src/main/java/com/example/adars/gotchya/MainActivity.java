@@ -40,8 +40,12 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     private void imageButtonGetStartedClick() {
+      /*
         User rememberedUser = Functions.loadUserData(this);
         if (rememberedUser != null) UserModel.getInstance().logIn(rememberedUser);
         startActivity(new Intent(this, rememberedUser != null ? MainMenuActivity.class : LogInActivity.class));
+    */
+      startActivity(new Intent(this,LogInActivity.class));
+
     }
 }
