@@ -28,8 +28,7 @@ public class WebServiceAccess {
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException e) {
-            System.err.println("Odmowa dostępu !!!\n " + e.getMessage());
-            return true;
+            return false;
         }
         return false;
     }
