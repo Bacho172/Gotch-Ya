@@ -14,8 +14,11 @@ import java.util.Locale;
 
 public class SensorsReceiver extends BroadcastReceiver {
     List<Address> addresses;
-   static public  Sensors_data sensors_data = new Sensors_data();
-    @Override
+   static Sensors_data sensors_data = new Sensors_data();
+  static Sensors_data getSensors_data(){
+      return sensors_data;
+  }
+   @Override
     public void onReceive(Context context, Intent intent) {
         String latitude = intent.getStringExtra("latitude");
         String longitude = intent.getStringExtra("longitude");
