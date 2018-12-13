@@ -1,7 +1,17 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 28
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+    }
+        compileSdkVersion 28
     defaultConfig {
         applicationId "com.example.adars.gotchya"
         minSdkVersion 16
@@ -34,9 +44,9 @@ dependencies {
     implementation 'com.android.support:design:28.0.0'
     implementation 'com.android.support:support-vector-drawable:28.0.0'
     implementation 'com.android.support:support-v4:28.0.0'
-    implementation 'com.google.http-client:google-http-client-android:+'
-    implementation 'com.google.api-client:google-api-client-android:+'
-    implementation 'com.google.api-client:google-api-client-gson:+'
+    implementation 'com.google.http-client:google-http-client-android:1.27.0'
+    implementation 'com.google.api-client:google-api-client-android:1.27.0'
+    implementation 'com.google.api-client:google-api-client-gson:1.27.0'
     testImplementation 'junit:junit:4.12'
     testImplementation 'androidx.test:core:1.0.0'
     testImplementation 'org.mockito:mockito-core:1.10.19'
