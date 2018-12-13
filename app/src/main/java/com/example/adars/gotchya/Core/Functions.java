@@ -9,13 +9,18 @@ import android.widget.TextView;
 import com.example.adars.gotchya.DataModel.DomainModel.User;
 import com.example.adars.gotchya.R;
 
+import org.apache.http.NameValuePair;
+
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.util.List;
 
 /**
  * Created by Adam Bachorz on 06.11.2018.
@@ -100,6 +105,26 @@ public final class Functions {
             System.err.println("Nie można wczytać obrazka: \nURL: " + url + "\nUserID: " + userID);
             return null;
         }
+    }
+
+    public static String getQuery(List<NameValuePair> parameters) throws UnsupportedEncodingException
+    {
+        StringBuilder result = new StringBuilder();
+        boolean first = true;
+
+        for (NameValuePair pair : parameters)
+        {
+            if (first)
+                first = false;
+            else
+                result.append("&");
+
+            result.append(URLEncoder.encode(pair.getName(), "UTF-8"));
+            result.append("=");
+            result.append(URLEncoder.encode(pair.getValue(), "UTF-8"));
+        }
+
+        return result.toString();
     }
 
     /**

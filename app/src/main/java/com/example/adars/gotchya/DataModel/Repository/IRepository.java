@@ -1,5 +1,7 @@
 package com.example.adars.gotchya.DataModel.Repository;
 
+import com.example.adars.gotchya.DataModel.DomainModel.Entity;
+
 import java.util.ArrayList;
 
 /**
@@ -7,7 +9,12 @@ import java.util.ArrayList;
  */
 public interface IRepository<E> {
     ArrayList<E> getAll();
-    E getOneByID(Integer ID);
+    default E getOneByID(Integer ID) {
+        for (E entity : getAll()) {
+            if (((Entity) entity).getID() == ID) return entity;
+        }
+        return null;
+    }
     void insert(E entity);
     void update(E entity);
     void delete(E entity);

@@ -23,11 +23,6 @@ public final class PrivilegeRepository implements IRepository<Privilege> {
     }
 
     @Override
-    public Privilege getOneByID(Integer ID) {
-        return null;
-    }
-
-    @Override
     public void insert(Privilege entity) {
 
     }

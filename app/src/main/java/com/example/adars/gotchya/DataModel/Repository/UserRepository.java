@@ -60,14 +60,6 @@ public final class UserRepository implements IRepository<User> {
         return list;
     }
 
-    @Override
-    public User getOneByID(Integer ID) {
-        for (User user : getAll()) {
-            if (user.getID() == ID) return user;
-        }
-        return null;
-    }
-
     public User getOneByLoginAndPassword(String login, String password) {
         for (User user : getAll()) {
             if (user.getLogin().equals(login) && user.getPassword().equals(password)) {

@@ -23,11 +23,6 @@ public final class DeviceRepository implements IRepository<Device> {
     }
 
     @Override
-    public Device getOneByID(Integer ID) {
-        return null;
-    }
-
-    @Override
     public void insert(Device entity) {
 
     }
