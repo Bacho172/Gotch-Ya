@@ -59,6 +59,9 @@ public class LogInActivity extends AppCompatActivity {
         signInButtonGoogle = findViewById(R.id.sign_out_button);
         signInButtonGoogle.setSize(SignInButton.SIZE_STANDARD);
         textViewSignedUser = findViewById(R.id.textViewSignedUser);
+        if (account == null) {
+            imageButtonLogOut.setVisibility(View.GONE);
+        }
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
