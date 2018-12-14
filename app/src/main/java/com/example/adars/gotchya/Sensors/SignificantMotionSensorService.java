@@ -20,19 +20,18 @@ public class SignificantMotionSensorService extends android.app.Service {
     @Override
     public void onCreate() {
         super.onCreate();
-         significantMotionSensor = new SignificantMotionSensor();
+        significantMotionSensor = new SignificantMotionSensor();
+        sensorManager.requestTriggerSensor(significantMotionSensor, sensor);
     }
 
     private class SignificantMotionSensor extends TriggerEventListener {
-        void SignificantMotionSensor() {
+        public SignificantMotionSensor() {
             sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
             sensor = sensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION);
-            sensorManager.requestTriggerSensor(significantMotionSensor, sensor);
         }
 
         @Override
         public void onTrigger(TriggerEvent event) {
-           // Log.e("tag","dziala");
             Toast.makeText(SignificantMotionSensorService.this, "moving", Toast.LENGTH_LONG).show();
             sensorManager.requestTriggerSensor(significantMotionSensor, sensor);
         }

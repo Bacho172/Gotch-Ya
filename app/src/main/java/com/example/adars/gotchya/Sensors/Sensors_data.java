@@ -8,7 +8,7 @@ public class Sensors_data {
     String country;
     String postalCode;
    // String isMoving;
-    void Sensors_data() {
+    public  Sensors_data() {
 
     }
 }

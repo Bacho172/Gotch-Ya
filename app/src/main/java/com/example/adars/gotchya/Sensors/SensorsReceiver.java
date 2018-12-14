@@ -22,6 +22,7 @@ public class SensorsReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
       /*
+      //to bedzie ok
         if (intent.getAction() == "accelometer_update") {
             String isMoving = intent.getStringExtra("isMoving");
             sensors_data.isMoving = isMoving;

@@ -53,14 +53,14 @@ public class DeviceInfo {
     }
 
     private String collectName() {
-        return "Telefon "+Build.MANUFACTURER;
+        return "Telefon " + Build.MANUFACTURER;
     }
 
     private String collectSystem() {
-        return "Android "+Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
+        return "Android " + Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
     }
 
-    void DeviceInfo() {
+    public DeviceInfo() {
 
     }
 
