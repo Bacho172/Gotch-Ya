@@ -58,10 +58,12 @@ public class DevOptionsActivity extends AppCompatActivity {
                 if (isRunning) {
                     startService(new Intent(getApplicationContext(), GPSService.class));
                     startService(new Intent(getApplicationContext(), AccelometerService.class));
+                    startService(new Intent(getApplicationContext(),SignificantMotionSensorService.class));
                     Buttonstart.setText("Stop");
                 } else {
                     stopService(new Intent(getApplicationContext(), GPSService.class));
                     stopService(new Intent(getApplicationContext(), AccelometerService.class));
+                    stopService(new Intent(getApplicationContext(),SignificantMotionSensorService.class));
                     textViewLatitude.setText(" ");
                     textViewLongitude.setText(" ");
                     Buttonstart.setText("Start");

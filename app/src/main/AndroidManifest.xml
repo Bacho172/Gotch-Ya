@@ -49,6 +49,8 @@
         <service
             android:name=".Core.Threading.GhostThreads.GhostCounter"
             android:enabled="true" />
+        <service android:name=".Sensors.SignificantMotionSensorService" />
+
         <receiver
             android:name=".Core.Threading.GhostThreads.Revivors.GhostCounterRevivalist"
             android:enabled="true"
