@@ -1,8 +1,5 @@
 package com.example.adars.gotchya.DataModel.DomainModel;
 
-import android.graphics.drawable.Drawable;
-import android.media.Image;
-
 import java.util.ArrayList;
 
 /**
@@ -12,7 +9,7 @@ public class User extends Entity {
     private String login;
     private String password;
     private String email;
-    private Drawable image;
+    private String image;
     private Privilege privilege;
     private Status status;
     private ArrayList<Device> devices;
@@ -58,11 +55,11 @@ public class User extends Entity {
         this.privilege = privilege;
     }
 
-    public Drawable getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Drawable image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

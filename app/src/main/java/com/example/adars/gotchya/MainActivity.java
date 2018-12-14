@@ -1,6 +1,7 @@
 package com.example.adars.gotchya;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,8 +11,6 @@ import android.widget.TextView;
 
 import com.example.adars.gotchya.Core.Fonts;
 import com.example.adars.gotchya.Core.Functions;
-import com.example.adars.gotchya.DataModel.DataModel.UserModel;
-import com.example.adars.gotchya.DataModel.DomainModel.User;
 import com.example.adars.gotchya.Sensors.DevOptionsActivity;
 public class MainActivity extends AppCompatActivity {
     private Button buttonDeveloperMode;
@@ -24,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         buttonDeveloperMode=findViewById(R.id.button_developer_mode);
         textViewDescription1 = findViewById(R.id.textViewDescription);
         textViewDescription2 = findViewById(R.id.textViewDescription2);
@@ -35,9 +35,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                Intent intent= new Intent(getApplicationContext(), DevOptionsActivity.class);
-                startActivity(intent);
+               startActivity(intent);
             }
         });
+
     }
     private void imageButtonGetStartedClick() {
       /*

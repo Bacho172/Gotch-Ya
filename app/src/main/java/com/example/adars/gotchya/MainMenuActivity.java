@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import com.example.adars.gotchya.Core.Functions;
 import com.example.adars.gotchya.Core.Threading.GhostThreads.GhostCounter;
 import com.example.adars.gotchya.Core.Threading.ThreadHelper;
 import com.example.adars.gotchya.DataModel.DataModel.UserModel;
+import com.example.adars.gotchya.DataModel.Repository.ApplicationReportRepository;
 
 import java.util.concurrent.TimeUnit;
 
@@ -24,6 +26,7 @@ public class MainMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private ImageButton imageButtonRun;
+    private Button checkPOST;
     private boolean toggled = false;
 
     GhostCounter ghostCounter;
@@ -55,6 +58,10 @@ public class MainMenuActivity extends AppCompatActivity
         long interval = ThreadHelper.convertToMillis(1, TimeUnit.SECONDS);
         ghostCounter = new GhostCounter(this, interval, true);
         startService(ghostCounter.getIntent());
+
+        checkPOST = findViewById(R.id.button_check_POST);
+        checkPOST.setOnClickListener((l) ->
+                ApplicationReportRepository.getInstance().insert(ApplicationReportRepository.example()));
     }
 
     private void imageButtonRunClick() {

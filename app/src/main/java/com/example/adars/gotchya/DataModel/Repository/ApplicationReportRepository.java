@@ -2,18 +2,23 @@ package com.example.adars.gotchya.DataModel.Repository;
 
 import com.example.adars.gotchya.Core.API.WebServiceAccess;
 import com.example.adars.gotchya.Core.Functions;
+import com.example.adars.gotchya.Core.Threading.ThreadHelper;
 import com.example.adars.gotchya.DataModel.DomainModel.ApplicationReport;
+import com.example.adars.gotchya.DataModel.DomainModel.Device;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.net.ssl.HttpsURLConnection;
@@ -36,36 +41,84 @@ public final class ApplicationReportRepository implements IRepository<Applicatio
         return null;
     }
 
+    public static ApplicationReport example() {
+        ApplicationReport report = new ApplicationReport();
+        report.setCreatedAt(new Date());
+        report.setUpdatedAt(new Date());
+        report.setDeviceIP("192.168.1.1");
+        report.setSpeed("340");
+        report.setNearestObject("Dom");
+        report.setCoordinates("1010101");
+        report.setFrontCameraImage("fc");//("https://eatliver.b-cdn.net/wp-content/uploads/2016/03/face1.jpg");
+        report.setBackCameraImage("bc");//("https://www.rako.eu/common/images/realizations/152/gallery/3822.jpg");
+        Device device = new Device();
+        device.setID(111);
+        report.setDevice(device);
+        return report;
+    }
+
     @Override
     public void insert(ApplicationReport entity) {
-        try {
-            WebServiceAccess access = new WebServiceAccess(getTableName());
-            URL url = new URL(access.getURL());
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            connection.setReadTimeout(10000);
-            connection.setConnectTimeout(15000);
-            connection.setRequestMethod("POST");
-            connection.setDoInput(true);
-            connection.setDoOutput(true);
+        ThreadHelper.runAsync(() ->{
+            try {
+                WebServiceAccess access = new WebServiceAccess("test");
+                URL url = new URL(access.getURL());
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+                connection.setReadTimeout(10000);
+                connection.setConnectTimeout(15000);
+                connection.setRequestMethod("POST");
+                connection.setDoInput(true);
+                connection.setDoOutput(true);
 
-            List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-            parameters.add(new BasicNameValuePair("kolumna","wartość"));
+                List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+                //parameters.add(new BasicNameValuePair("idApplicationReport", entity.getID().toString()));
+                parameters.add(new BasicNameValuePair("idDevice", entity.getDevice().getID().toString()));
+                parameters.add(new BasicNameValuePair("BackCameraImage", entity.getBackCameraImage()));
+                parameters.add(new BasicNameValuePair("FrontCameraImage", entity.getFrontCameraImage()));
+                parameters.add(new BasicNameValuePair("Coordinates", entity.getCoordinates()));
+                parameters.add(new BasicNameValuePair("Speed", entity.getSpeed()));
+                parameters.add(new BasicNameValuePair("DeviceIP", entity.getDeviceIP()));
+                parameters.add(new BasicNameValuePair("NearestObject", entity.getNearestObject()));
+                //parameters.add(new BasicNameValuePair("created_at", entity.getCreatedAt().toString()));
+                //parameters.add(new BasicNameValuePair("updated_at", entity.getUpdatedAt().toString()));
 
-            OutputStream outputStream = connection.getOutputStream();
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-            writer.write(Functions.getQuery(parameters));
-            writer.flush();
-            writer.close();
-            outputStream.close();
 
-            connection.connect();
-        }
-        catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
-        }
-        catch (IOException ex) {
-            ex.printStackTrace();
-        }
+                OutputStream outputStream = connection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String queryURL = Functions.getQuery(parameters);
+                writer.write(queryURL);
+                writer.flush();
+                writer.close();
+                outputStream.close();
+                connection.connect();
+
+                int responseCode = connection.getResponseCode();
+                String response = "";
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    String line;
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    while ((line = bufferedReader.readLine()) != null) {
+                        response += line;
+                    }
+                }
+                else {
+                    response = responseCode + "";
+                }
+                System.out.println("RESPONSE: " + response);
+            }
+            catch (UnsupportedEncodingException ex) {
+                String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+                System.err.println(Functions.getExecutionError(getClass(), methodName, ex));
+                ex.printStackTrace();
+            }
+            catch (IOException ex) {
+                String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+                System.err.println(Functions.getExecutionError(getClass(), methodName, ex));
+                ex.printStackTrace();
+            }
+        });
+
     }
 
     @Override
