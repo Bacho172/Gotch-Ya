@@ -10,29 +10,33 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 
-
-
 public class SignificantMotionSensorService extends android.app.Service {
     private SensorManager sensorManager;
     private Sensor sensor;
-    private TriggerEventListener triggerEventListener;
     private Boolean isMoving = false;
+    private SignificantMotionSensor significantMotionSensor;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION);
-        triggerEventListener = new TriggerEventListener() {
-            @Override
-            public void onTrigger(TriggerEvent event) {
-                Toast.makeText(getApplicationContext(), "moving", Toast.LENGTH_SHORT);
-            }
-        };
-        sensorManager.requestTriggerSensor(triggerEventListener, sensor);
+         significantMotionSensor = new SignificantMotionSensor();
     }
 
-    
+    private class SignificantMotionSensor extends TriggerEventListener {
+        void SignificantMotionSensor() {
+            sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+            sensor = sensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION);
+            sensorManager.requestTriggerSensor(significantMotionSensor, sensor);
+        }
+
+        @Override
+        public void onTrigger(TriggerEvent event) {
+            Toast.makeText(SignificantMotionSensorService.this, "moving", Toast.LENGTH_SHORT).show();
+            sensorManager.requestTriggerSensor(significantMotionSensor, sensor);
+        }
+    }
+
+
     @Override
     public IBinder onBind(Intent intent) {
         return null;
