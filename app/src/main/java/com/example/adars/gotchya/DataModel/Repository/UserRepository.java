@@ -1,7 +1,5 @@
 package com.example.adars.gotchya.DataModel.Repository;
 
-import android.graphics.drawable.Drawable;
-
 import com.example.adars.gotchya.Core.API.WebServiceAccess;
 import com.example.adars.gotchya.Core.Functions;
 import com.example.adars.gotchya.DataModel.DomainModel.Privilege;
@@ -42,8 +40,7 @@ public final class UserRepository implements IRepository<User> {
                 user.setID(jsonObject.getInt("iduser"));
                 user.setLogin(jsonObject.getString("name"));
                 user.setEmail(jsonObject.getString("email"));
-                Drawable image = Functions.imageFromURL(jsonObject.getString("image"), user.getID());
-                user.setImage(image);
+                user.setImage(jsonObject.getString("image"));
                 user.setPrivilege(new Privilege(jsonObject.getString("privilege")));
                 user.setStatus(new Status(jsonObject.getString("status")));
 

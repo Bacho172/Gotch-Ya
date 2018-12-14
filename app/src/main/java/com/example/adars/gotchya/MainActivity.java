@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import com.example.adars.gotchya.Core.Fonts;
 import com.example.adars.gotchya.Core.Functions;
-import com.example.adars.gotchya.DataModel.DataModel.UserModel;
-import com.example.adars.gotchya.DataModel.DomainModel.User;
 import com.example.adars.gotchya.Sensors.DevOptionsActivity;
 public class MainActivity extends AppCompatActivity {
     private Button buttonDeveloperMode;
@@ -35,9 +33,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                Intent intent= new Intent(getApplicationContext(), DevOptionsActivity.class);
-                startActivity(intent);
+               startActivity(intent);
             }
         });
+
     }
     private void imageButtonGetStartedClick() {
       /*

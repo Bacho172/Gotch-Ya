@@ -11,6 +11,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.adars.gotchya.Core.Functions;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -40,6 +41,7 @@ public class LogInActivity extends AppCompatActivity {
     private ImageButton imageButtonLogOut;
     private SignInButton signInButtonGoogle;
     private Button check;
+    private Button checkPOST;
     private TextView textViewSignedUser;
     private GoogleSignInAccount account;
     private GoogleSignInClient mGoogleSignInClient;
@@ -120,7 +122,6 @@ public class LogInActivity extends AppCompatActivity {
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
         });
-
     }
 
     @Override
@@ -162,6 +163,12 @@ public class LogInActivity extends AppCompatActivity {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             updateUI(null);
+
+            System.out.println("--------------------------------------------------------");
+            String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+            System.err.println(Functions.getExecutionError(getClass(), methodName, e));
+            e.printStackTrace();
+            System.err.println("Kod błędu: " + e.getStatusCode());
         }
     }
 

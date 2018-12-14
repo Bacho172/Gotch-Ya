@@ -1,14 +1,12 @@
 package com.example.adars.gotchya.DataModel.DomainModel;
 
-import android.graphics.drawable.Drawable;
-
 /**
  * Created by Adam Bachorz on 12.12.2018.
  */
 public class ApplicationReport extends Entity {
 
-    private Drawable frontCameraImage;
-    private Drawable backCameraImage;
+    private String frontCameraImage;
+    private String backCameraImage;
     private String coordinates;
     private String speed;
     private String nearestObject;
@@ -18,19 +16,19 @@ public class ApplicationReport extends Entity {
     public ApplicationReport() {
     }
 
-    public Drawable getFrontCameraImage() {
+    public String getFrontCameraImage() {
         return frontCameraImage;
     }
 
-    public void setFrontCameraImage(Drawable frontCameraImage) {
+    public void setFrontCameraImage(String frontCameraImage) {
         this.frontCameraImage = frontCameraImage;
     }
 
-    public Drawable getBackCameraImage() {
+    public String getBackCameraImage() {
         return backCameraImage;
     }
 
-    public void setBackCameraImage(Drawable backCameraImage) {
+    public void setBackCameraImage(String backCameraImage) {
         this.backCameraImage = backCameraImage;
     }
 
