@@ -1,6 +1,7 @@
 package com.example.adars.gotchya;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         buttonDeveloperMode=findViewById(R.id.button_developer_mode);
         textViewDescription1 = findViewById(R.id.textViewDescription);
         textViewDescription2 = findViewById(R.id.textViewDescription2);
