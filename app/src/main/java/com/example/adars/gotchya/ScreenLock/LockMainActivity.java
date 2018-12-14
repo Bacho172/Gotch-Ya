@@ -16,7 +16,7 @@ import com.example.adars.gotchya.R;
 // User musi nadać uprawnienia, bo są one z grupy "Uprawnień niebezpiecznych"
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class LockMainActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button lock, disable, enable;
     public static final int RESULT_ENABLE = 11;
@@ -78,13 +78,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch(requestCode) {
             case RESULT_ENABLE :
                 if (resultCode == Activity.RESULT_OK) {
-                    Toast.makeText(MainActivity.this, "You have enabled the Admin Device features", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LockMainActivity.this, "You have enabled the Admin Device features", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(MainActivity.this, "Problem to enable the Admin Device features", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LockMainActivity.this, "Problem to enable the Admin Device features", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
-
         super.onActivityResult(requestCode, resultCode, data);
     }
 }
