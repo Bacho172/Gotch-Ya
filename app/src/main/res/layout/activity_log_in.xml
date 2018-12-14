@@ -113,9 +113,9 @@
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/sign_out_button"
-            android:gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:paddingLeft="115dp"
             android:visibility="visible"
             app:layout_constraintBottom_toTopOf="@+id/button_check"
@@ -124,9 +124,9 @@
 
         <TextView
             android:id="@+id/textViewSignedUser"
-            android:gravity="center_vertical"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:paddingLeft="150dp"
             android:text="TextView" />
 
