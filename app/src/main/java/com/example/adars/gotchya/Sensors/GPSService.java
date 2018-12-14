@@ -76,6 +76,5 @@ public class GPSService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        locationManager.removeUpdates(gps);
     }
 }

@@ -34,6 +34,8 @@ public class DevOptionsActivity extends AppCompatActivity {
         textViewLatitude = findViewById(R.id.textViewLatitude);
         textViewLongitude = findViewById(R.id.textViewLongitude);
         Buttonstart = findViewById(R.id.buttonStart);
+      //  test test1;
+      //  test1 = new test();
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -45,12 +47,7 @@ public class DevOptionsActivity extends AppCompatActivity {
             }
         };
         registerReceiver(receiver, new IntentFilter("new_data"));
-        DeviceInfo deviceInfo=new DeviceInfo();
-        deviceInfo.collectData();
-        //Toast.makeText(this,deviceInfo.getMAcAddress(), Toast.LENGTH_SHORT).show();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION},1);
-        }
         Buttonstart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

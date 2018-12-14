@@ -7,6 +7,7 @@ import android.hardware.SensorManager;
 import android.hardware.TriggerEvent;
 import android.hardware.TriggerEventListener;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 
@@ -31,7 +32,8 @@ public class SignificantMotionSensorService extends android.app.Service {
 
         @Override
         public void onTrigger(TriggerEvent event) {
-            Toast.makeText(SignificantMotionSensorService.this, "moving", Toast.LENGTH_SHORT).show();
+           // Log.e("tag","dziala");
+            Toast.makeText(SignificantMotionSensorService.this, "moving", Toast.LENGTH_LONG).show();
             sensorManager.requestTriggerSensor(significantMotionSensor, sensor);
         }
     }
