@@ -40,7 +40,7 @@ public class LogInActivity extends AppCompatActivity {
      */
     private ImageButton imageButtonLogOut;
     private SignInButton signInButtonGoogle;
-    private Button check;
+  //  private Button check;
     private Button checkPOST;
     private TextView textViewSignedUser;
     private GoogleSignInAccount account;
@@ -50,7 +50,7 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-        check = findViewById(R.id.button_check);
+     //   check = findViewById(R.id.button_check);
         // editTextLogin = findViewById(R.id.editTextLogin);
         //editTextPassword = findViewById(R.id.editTextPassword);
         //checkBoxRemember = findViewById(R.id.checkBoxRemember);
@@ -62,7 +62,7 @@ public class LogInActivity extends AppCompatActivity {
         if (account == null) {
             imageButtonLogOut.setVisibility(View.GONE);
         }
-        check.setOnClickListener(new View.OnClickListener() {
+  /*      check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String email = account.getEmail();
@@ -112,7 +112,7 @@ public class LogInActivity extends AppCompatActivity {
                 }
 
             }
-        });
+        });*/
         GoogleSignInOptions gso;
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
