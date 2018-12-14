@@ -2,7 +2,6 @@ package com.example.adars.gotchya.Core;
 
 import android.content.Context;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -14,11 +13,9 @@ import org.apache.http.NameValuePair;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -97,15 +94,16 @@ public final class Functions {
         return result;
     }
 
-    public static Drawable imageFromURL(String url, int userID) {
-        try {
-            InputStream inputStream = (InputStream) new URL(url).getContent();
-            return Drawable.createFromStream(inputStream, "userImage" + userID);
-        } catch (Exception e) {
-            System.err.println("Nie można wczytać obrazka: \nURL: " + url + "\nUserID: " + userID);
-            return null;
-        }
-    }
+//    public static Drawable imageFromURL(String url, int userID) {
+//        try {
+//            InputStream inputStream = (InputStream) new URL(url).getContent();
+//            return Drawable.createFromStream(inputStream, "userImage" + userID);
+//        } catch (Exception e) {
+//            System.err.println("Nie można wczytać obrazka: \nURL: " + url + "\nUserID: " + userID + "\nPowód: " + e.getMessage());
+//            e.printStackTrace();
+//            return null;
+//        }
+//    }
 
     public static String getQuery(List<NameValuePair> parameters) throws UnsupportedEncodingException
     {

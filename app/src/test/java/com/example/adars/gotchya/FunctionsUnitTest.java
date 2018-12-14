@@ -1,10 +1,12 @@
 package com.example.adars.gotchya;
 
+import com.example.adars.gotchya.Core.API.WebServiceAccess;
 import com.example.adars.gotchya.Core.Functions;
 
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
+
 /**
  * Created by Adam Bachorz on 06.11.2018.
  */
@@ -21,8 +23,8 @@ public class FunctionsUnitTest {
 
     @Test
     public void correct_WebServiceURL() {
-        WebServiceUrlParser parser = new WebServiceUrlParser("users");
-        assertEquals("https://gotch-ya.herokuapp.com/api/users", parser.getURL());
+        WebServiceAccess access = new WebServiceAccess("users");
+        assertEquals("https://gotch-ya.herokuapp.com/api/users", access.getURL());
     }
 
 }
