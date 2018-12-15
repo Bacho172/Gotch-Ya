@@ -13,6 +13,7 @@ import android.os.IBinder;
 
 
 public class GPSService extends Service {
+    public static final String GPPSERVICE_INTENT="gps_update";
     private LocationManager locationManager = null;
     private GPS gps;
     private static final int INTERVAL = 1000;
@@ -33,7 +34,7 @@ public class GPSService extends Service {
         @Override
         public void onLocationChanged(Location location) {
             lastLocation.set(location);
-            Intent i = new Intent("gps_update");
+            Intent i = new Intent(GPPSERVICE_INTENT);
             i.putExtra("latitude", String.valueOf(location.getLatitude()));
             i.putExtra("longitude", String.valueOf(location.getLongitude()));
             sendBroadcast(i);

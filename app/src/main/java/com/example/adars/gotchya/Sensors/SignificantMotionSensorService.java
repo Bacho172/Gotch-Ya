@@ -12,9 +12,10 @@ import android.widget.Toast;
 
 
 public class SignificantMotionSensorService extends android.app.Service {
+    public static final String SIGNIFICANT_MOTION_SERSOR_SERVICE_INTENT = "significant motion sensor service intent";
+    public static final String SIGNIFICANT_MOTION_SENOSR_SERVICE_INTENT_EXTRA_IS_MOVING = "moving";
     private SensorManager sensorManager;
     private Sensor sensor;
-    private Boolean isMoving = false;
     private SignificantMotionSensor significantMotionSensor;
 
     @Override
@@ -32,11 +33,12 @@ public class SignificantMotionSensorService extends android.app.Service {
 
         @Override
         public void onTrigger(TriggerEvent event) {
-            Toast.makeText(SignificantMotionSensorService.this, "moving", Toast.LENGTH_LONG).show();
+            Intent i = new Intent(SIGNIFICANT_MOTION_SERSOR_SERVICE_INTENT);
+            i.putExtra(SIGNIFICANT_MOTION_SENOSR_SERVICE_INTENT_EXTRA_IS_MOVING, "true");
+            sendBroadcast(i);
             sensorManager.requestTriggerSensor(significantMotionSensor, sensor);
         }
     }
-
 
     @Override
     public IBinder onBind(Intent intent) {
