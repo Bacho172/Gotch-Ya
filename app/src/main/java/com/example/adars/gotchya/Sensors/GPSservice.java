@@ -2,7 +2,6 @@ package com.example.adars.gotchya.Sensors;
 
 import android.annotation.SuppressLint;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -12,8 +11,10 @@ import android.os.Bundle;
 import android.os.IBinder;
 
 
-public class GPSService extends Service {
-    public static final String GPPSERVICE_INTENT="gps_update";
+public class GPSservice extends Service {
+    public static final String GPS_SERVICE_INTENT = "gps_update";
+    public static final String GPS_SERVICE_INTENT_EXTRA_LONGITUDE = "longitude";
+    public static final String GPS_SERVICE_INTENT_EXTRA_LATITUDE = "latitude";
     private LocationManager locationManager = null;
     private GPS gps;
     private static final int INTERVAL = 1000;
@@ -34,9 +35,9 @@ public class GPSService extends Service {
         @Override
         public void onLocationChanged(Location location) {
             lastLocation.set(location);
-            Intent i = new Intent(GPPSERVICE_INTENT);
-            i.putExtra("latitude", String.valueOf(location.getLatitude()));
-            i.putExtra("longitude", String.valueOf(location.getLongitude()));
+            Intent i = new Intent(GPS_SERVICE_INTENT);
+            i.putExtra(GPS_SERVICE_INTENT_EXTRA_LATITUDE, String.valueOf(location.getLatitude()));
+            i.putExtra(GPS_SERVICE_INTENT_EXTRA_LONGITUDE, String.valueOf(location.getLongitude()));
             sendBroadcast(i);
         }
 

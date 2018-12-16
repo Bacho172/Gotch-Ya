@@ -34,7 +34,7 @@
         <activity
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
-        <service android:name=".Sensors.GPSService"
+        <service android:name=".Sensors.GPSservice"
             android:enabled="true"/>
         <receiver android:name=".Sensors.SensorsReceiver"
             android:enabled="true"

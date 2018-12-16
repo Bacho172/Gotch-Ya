@@ -7,13 +7,11 @@ import android.hardware.SensorManager;
 import android.hardware.TriggerEvent;
 import android.hardware.TriggerEventListener;
 import android.os.IBinder;
-import android.util.Log;
-import android.widget.Toast;
 
 
 public class SignificantMotionSensorService extends android.app.Service {
-    public static final String SIGNIFICANT_MOTION_SERSOR_SERVICE_INTENT = "significant motion sensor service intent";
-    public static final String SIGNIFICANT_MOTION_SENOSR_SERVICE_INTENT_EXTRA_IS_MOVING = "moving";
+    public static final String SIGNIFICANT_MOTION_SENSOR_SERVICE_INTENT = "significant motion sensor service intent";
+    public static final String SIGNIFICANT_MOTION_SENSOR_SERVICE_INTENT_EXTRA_IS_MOVING = "moving";
     private SensorManager sensorManager;
     private Sensor sensor;
     private SignificantMotionSensor significantMotionSensor;
@@ -33,8 +31,8 @@ public class SignificantMotionSensorService extends android.app.Service {
 
         @Override
         public void onTrigger(TriggerEvent event) {
-            Intent i = new Intent(SIGNIFICANT_MOTION_SERSOR_SERVICE_INTENT);
-            i.putExtra(SIGNIFICANT_MOTION_SENOSR_SERVICE_INTENT_EXTRA_IS_MOVING, "true");
+            Intent i = new Intent(SIGNIFICANT_MOTION_SENSOR_SERVICE_INTENT);
+            i.putExtra(SIGNIFICANT_MOTION_SENSOR_SERVICE_INTENT_EXTRA_IS_MOVING, "true");
             sendBroadcast(i);
             sensorManager.requestTriggerSensor(significantMotionSensor, sensor);
         }
