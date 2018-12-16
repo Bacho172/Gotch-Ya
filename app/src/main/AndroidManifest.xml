@@ -36,16 +36,8 @@
             android:label="@string/title_activity_settings" />
         <service android:name=".Sensors.GPSservice"
             android:enabled="true"/>
-        <receiver android:name=".Sensors.SensorsReceiver"
-            android:enabled="true"
-            android:label="sensors_update"
-            >
-            <intent-filter>
-                <action android:name="gps_update"/>
-                <action android:name="accelometer_update"/>
-            </intent-filter>
-        </receiver>
-
+       <service android:name=".Sensors.SignificantMotionSensorService"
+           android:enabled="true"/>
         <receiver android:name=".ScreenLock.MyAdmin" android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data android:name="android.app.device_admin"
                 android:resource="@xml/policies" />

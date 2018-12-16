@@ -7,7 +7,6 @@ public class Sensors_data {
     String city;
     String country;
     String postalCode;
-   // String isMoving;
     public  Sensors_data() {
 
     }

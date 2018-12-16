@@ -37,9 +37,9 @@ public class DevOptionsActivity extends AppCompatActivity {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (isRunning) {
-                    Sensors_data dataFromBroadcast = SensorsReceiver.getSensors_data();
-                    textViewLatitude.setText(dataFromBroadcast.latitude);
-                    textViewLongitude.setText(dataFromBroadcast.longitde);
+               //     Sensors_data dataFromBroadcast = SensorsReceiver.getSensors_data();
+                  //  textViewLatitude.setText(dataFromBroadcast.latitude);
+                 //   textViewLongitude.setText(dataFromBroadcast.longitde);
                 }
             }
         };
