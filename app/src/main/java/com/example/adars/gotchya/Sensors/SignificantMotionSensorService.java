@@ -23,6 +23,11 @@ public class SignificantMotionSensorService extends android.app.Service {
         sensorManager.requestTriggerSensor(significantMotionSensor, sensor);
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        return super.onStartCommand(intent, flags, startId);
+    }
+
     private class SignificantMotionSensor extends TriggerEventListener {
         public SignificantMotionSensor() {
             sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
