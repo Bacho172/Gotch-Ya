@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.adars.gotchya.Core.Functions;
 import com.example.adars.gotchya.Core.Threading.GhostThreads.GhostCounter;
+import com.example.adars.gotchya.Core.Threading.GhostThreads.GhostTracker;
 import com.example.adars.gotchya.Core.Threading.ThreadHelper;
 import com.example.adars.gotchya.DataModel.DataModel.UserModel;
 import com.example.adars.gotchya.DataModel.DomainModel.ApplicationReport;
@@ -36,6 +37,7 @@ public class MainMenuActivity extends AppCompatActivity
     private boolean toggled = false;
 
     GhostCounter ghostCounter;
+    GhostTracker ghostTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +63,10 @@ public class MainMenuActivity extends AppCompatActivity
         imageButtonRun = findViewById(R.id.imageButtonToggleSecurity);
         imageButtonRun.setOnClickListener((l) -> imageButtonRunClick());
 
-        long interval = ThreadHelper.convertToMillis(1, TimeUnit.SECONDS);
-        ghostCounter = new GhostCounter(this, interval, true);
-        startService(ghostCounter.getIntent());
+        long interval = ThreadHelper.convertToMillis(10, TimeUnit.SECONDS);
+        //ghostCounter = new GhostCounter(this, interval, true);
+        ghostTracker = new GhostTracker(this, interval);
+        //startService(ghostCounter.getIntent());
 
         checkPOST = findViewById(R.id.button_check_POST);
         checkPOST.setOnClickListener((l) ->
@@ -78,6 +81,10 @@ public class MainMenuActivity extends AppCompatActivity
         imageButtonRun.setImageDrawable(getResources().getDrawable(drawableID));
 
         if (toggled) {
+            long interval = ThreadHelper.convertToMillis(10, TimeUnit.SECONDS);
+            ghostTracker = new GhostTracker(this, interval);
+            //ghostTracker.start(); // TBE
+
             DeviceInfo deviceInfo = new DeviceInfo();
             Device device = new Device();
             device.setID(111);
@@ -103,7 +110,9 @@ public class MainMenuActivity extends AppCompatActivity
             //ApplicationReportRepository.getInstance().insert(report);
         }
         else {
-
+            stopService(ghostTracker.getIntent());
+            ghostTracker.stop();
+            ghostTracker = null;
         }
     }
 
@@ -156,6 +165,7 @@ public class MainMenuActivity extends AppCompatActivity
     @Override
     protected void onDestroy() {
         stopService(ghostCounter.getIntent());
+        stopService(ghostTracker.getIntent());
         super.onDestroy();
     }
 }
