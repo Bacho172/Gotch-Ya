@@ -255,4 +255,8 @@ public abstract class ThreadHelper extends Service {
     public Intent getIntent() {
         return intent;
     }
+
+    public Context getContext() {
+        return context;
+    }
 }
