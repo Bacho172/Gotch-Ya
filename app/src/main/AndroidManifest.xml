@@ -49,12 +49,11 @@
         </receiver>
 
 
-
+        <!-- Ghost Counter -->
         <service
             android:name=".Core.Threading.GhostThreads.GhostCounter"
             android:enabled="true" />
         <service android:name=".Sensors.SignificantMotionSensorService" />
-
         <receiver
             android:name=".Core.Threading.GhostThreads.Revivors.GhostCounterRevivalist"
             android:enabled="true"
@@ -62,6 +61,20 @@
             android:label="RestartServiceWhenStopped">
             <intent-filter>
                 <action android:name="ReviveMe" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Ghost Tracker -->
+        <service
+            android:name=".Core.Threading.GhostThreads.GhostTracker"
+            android:enabled="true" />
+        <receiver
+            android:name=".Core.Threading.GhostThreads.Revivors.GhostTrackerRevivalist"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+            <intent-filter>
+                <action android:name="KeepTracking" />
             </intent-filter>
         </receiver>
 
