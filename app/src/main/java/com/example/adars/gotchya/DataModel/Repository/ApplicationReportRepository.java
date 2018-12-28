@@ -46,13 +46,14 @@ public final class ApplicationReportRepository implements IRepository<Applicatio
         report.setCreatedAt(new Date());
         report.setUpdatedAt(new Date());
         report.setDeviceIP("192.168.1.1");
-        report.setSpeed("340");
-        report.setNearestObject("Dom");
-        report.setCoordinates("1010101");
-        report.setFrontCameraImage("fc");//("https://eatliver.b-cdn.net/wp-content/uploads/2016/03/face1.jpg");
-        report.setBackCameraImage("bc");//("https://www.rako.eu/common/images/realizations/152/gallery/3822.jpg");
+        report.setSpeed("999999");
+        report.setNearestObject("Dom Mietka żula");
+        report.setCoordinates("111:111:111");
+        report.setFrontCameraImage("https://eatliver.b-cdn.net/wp-content/uploads/2016/03/face1.jpg");
+        report.setBackCameraImage("https://www.rako.eu/common/images/realizations/152/gallery/3822.jpg");
         Device device = new Device();
         device.setID(111);
+        device.setMacAddress("7e:6e:09:b2:77:f8");
         report.setDevice(device);
         return report;
     }
@@ -61,7 +62,7 @@ public final class ApplicationReportRepository implements IRepository<Applicatio
     public void insert(ApplicationReport entity) {
         ThreadHelper.runAsync(() ->{
             try {
-                WebServiceAccess access = new WebServiceAccess("test");
+                WebServiceAccess access = new WebServiceAccess("applicationreports");
                 URL url = new URL(access.getURL());
                 HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
                 connection.setReadTimeout(10000);
@@ -72,13 +73,14 @@ public final class ApplicationReportRepository implements IRepository<Applicatio
 
                 List<NameValuePair> parameters = new ArrayList<NameValuePair>();
                 //parameters.add(new BasicNameValuePair("idApplicationReport", entity.getID().toString()));
-                parameters.add(new BasicNameValuePair("idDevice", entity.getDevice().getID().toString()));
-                parameters.add(new BasicNameValuePair("BackCameraImage", entity.getBackCameraImage()));
-                parameters.add(new BasicNameValuePair("FrontCameraImage", entity.getFrontCameraImage()));
-                parameters.add(new BasicNameValuePair("Coordinates", entity.getCoordinates()));
-                parameters.add(new BasicNameValuePair("Speed", entity.getSpeed()));
-                parameters.add(new BasicNameValuePair("DeviceIP", entity.getDeviceIP()));
-                parameters.add(new BasicNameValuePair("NearestObject", entity.getNearestObject()));
+                //parameters.add(new BasicNameValuePair("idDevice", entity.getDevice().getID().toString()));
+                parameters.add(new BasicNameValuePair("back_camera_image", entity.getBackCameraImage()));
+                parameters.add(new BasicNameValuePair("front_camera_image", entity.getFrontCameraImage()));
+                parameters.add(new BasicNameValuePair("mac_address", entity.getDevice().getMacAddress()));
+                parameters.add(new BasicNameValuePair("coordinates", entity.getCoordinates()));
+                parameters.add(new BasicNameValuePair("speed", entity.getSpeed()));
+                //parameters.add(new BasicNameValuePair("DeviceIP", entity.getDeviceIP()));
+                parameters.add(new BasicNameValuePair("nearest_object", entity.getNearestObject()));
                 //parameters.add(new BasicNameValuePair("created_at", entity.getCreatedAt().toString()));
                 //parameters.add(new BasicNameValuePair("updated_at", entity.getUpdatedAt().toString()));
 

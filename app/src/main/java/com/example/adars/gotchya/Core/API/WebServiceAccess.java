@@ -46,7 +46,7 @@ public class WebServiceAccess {
     }
 
     public String getURL() {
-        return apiUrl + Functions.getDataVector(true, routeParameters);
+        return apiUrl + Functions.getDataVector(true, routeParameters) + "?";
     }
 
     public Object lastParameter() {
