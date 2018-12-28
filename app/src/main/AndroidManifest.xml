@@ -36,24 +36,21 @@
             android:label="@string/title_activity_settings" />
         <service android:name=".Sensors.GPSservice"
             android:enabled="true"/>
-       <service android:name=".Sensors.SignificantMotionSensorService"
+        <service android:name=".Sensors.SignificantMotionSensorService"
            android:enabled="true"/>
         <receiver android:name=".ScreenLock.MyAdmin" android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data android:name="android.app.device_admin"
                 android:resource="@xml/policies" />
-
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED"/>
             </intent-filter>
-
         </receiver>
 
-
+        <!-- GHOST THREADS -->
         <!-- Ghost Counter -->
         <service
             android:name=".Core.Threading.GhostThreads.GhostCounter"
             android:enabled="true" />
-        <service android:name=".Sensors.SignificantMotionSensorService" />
         <receiver
             android:name=".Core.Threading.GhostThreads.Revivors.GhostCounterRevivalist"
             android:enabled="true"
