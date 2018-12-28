@@ -34,7 +34,7 @@ public class MainMenuActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
-//        setTitle("Witaj '" + UserModel.getInstance().getCurrentUser().getLogin() + "'");
+        setTitle(R.string.app_name);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
