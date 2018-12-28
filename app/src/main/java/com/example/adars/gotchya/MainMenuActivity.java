@@ -17,7 +17,6 @@ import com.example.adars.gotchya.Core.Functions;
 import com.example.adars.gotchya.Core.Threading.GhostThreads.GhostTracker;
 import com.example.adars.gotchya.Core.Threading.ThreadHelper;
 import com.example.adars.gotchya.DataModel.DataModel.UserModel;
-import com.example.adars.gotchya.DataModel.Repository.ApplicationReportRepository;
 
 import java.util.concurrent.TimeUnit;
 
@@ -54,9 +53,9 @@ public class MainMenuActivity extends AppCompatActivity
         imageButtonRun = findViewById(R.id.imageButtonToggleSecurity);
         imageButtonRun.setOnClickListener((l) -> imageButtonRunClick());
 
-        checkPOST = findViewById(R.id.button_check_POST);
-        checkPOST.setOnClickListener((l) ->
-                ApplicationReportRepository.getInstance().insert(ApplicationReportRepository.example()));
+//        checkPOST = findViewById(R.id.button_check_POST);
+//        checkPOST.setOnClickListener((l) ->
+//                ApplicationReportRepository.getInstance().insert(ApplicationReportRepository.example()));
     }
 
     private void imageButtonRunClick() {
