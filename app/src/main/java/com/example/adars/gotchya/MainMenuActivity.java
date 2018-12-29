@@ -66,8 +66,9 @@ public class MainMenuActivity extends AppCompatActivity
         imageButtonRun.setImageDrawable(getDrawable(drawableID));
 
         if (toggled) {
-            long interval = ThreadHelper.convertToMillis(10, TimeUnit.SECONDS);
-            ghostTracker = new GhostTracker(this, interval);
+            long listenerInterval = ThreadHelper.convertToMillis(100, TimeUnit.MILLISECONDS);
+            long sendingInterval = ThreadHelper.convertToMillis(10, TimeUnit.SECONDS);
+            ghostTracker = new GhostTracker(this.getApplicationContext(), listenerInterval, sendingInterval);
             ghostTracker.start();
         }
         else {

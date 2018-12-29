@@ -1,7 +1,6 @@
 package com.example.adars.gotchya.Core.Threading.GhostThreads;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import com.example.adars.gotchya.Core.Threading.ThreadHelper;
 import com.example.adars.gotchya.DataModel.DomainModel.ApplicationReport;
@@ -9,6 +8,7 @@ import com.example.adars.gotchya.DataModel.DomainModel.Device;
 import com.example.adars.gotchya.Sensors.DeviceInfo;
 import com.example.adars.gotchya.Sensors.SensorsDataCreator;
 import com.example.adars.gotchya.Sensors.Sensors_data;
+import com.example.adars.gotchya.Sensors.StandardAccelerometer;
 
 import java.util.Date;
 
@@ -17,22 +17,37 @@ import java.util.Date;
  */
 public class GhostTracker extends ThreadHelper {
 
+    private StandardAccelerometer acceleometer;
+    private long sendingInterval;
+
     public GhostTracker() {
         super();
     }
 
-    public GhostTracker(Context context, long interval) {
-        super(context, interval, true);
+    public GhostTracker(Context context, long listenerInterval, long sendingInterval) {
+        super(context, listenerInterval, true);
+        this.sendingInterval = sendingInterval;
+        acceleometer = new StandardAccelerometer(context);
     }
 
     @Override
     protected void onRun() {
+        if (acceleometer.phoneIsMoving()) {
+            //sendData();
+            System.out.println("Ktoś zajebał telefon !");
+            delay(sendingInterval);
+        } else System.out.println("OK");
+    }
+
+    private void sendData() {
         System.out.println("Pobieranie informacji do raportu !");
         DeviceInfo deviceInfo = new DeviceInfo();
         Device device = new Device();
         device.setID(111);
         device.setMacAddress(deviceInfo.getMAcAddress());
-        Toast.makeText(getContext(), device.getMacAddress(), Toast.LENGTH_LONG).show();
+
+        System.out.println("MAC: " + device.getMacAddress());
+        //Toast.makeText(getContext(), device.getMacAddress(), Toast.LENGTH_LONG).show();
 
         Sensors_data sensorsData = SensorsDataCreator.createSensorData(this,"","");
 
@@ -56,6 +71,10 @@ public class GhostTracker extends ThreadHelper {
     @Override
     protected String reviveSpell() {
         return "KeepTracking";
+    }
+
+    public StandardAccelerometer getAcceleometer() {
+        return acceleometer;
     }
 
     public void start() {startThread();}

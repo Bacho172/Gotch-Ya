@@ -1,9 +1,6 @@
 package com.example.adars.gotchya.Sensors;
 
-import android.bluetooth.BluetoothAdapter;
 import android.os.Build;
-
-import com.example.adars.gotchya.LogInActivity;
 
 import java.net.NetworkInterface;
 import java.util.Collections;
@@ -61,7 +58,7 @@ public class DeviceInfo {
     }
 
     public DeviceInfo() {
-
+        collectData();
     }
 
     void collectData() {
