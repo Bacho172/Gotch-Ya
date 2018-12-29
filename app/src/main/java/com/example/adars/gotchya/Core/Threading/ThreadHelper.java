@@ -1,5 +1,6 @@
 package com.example.adars.gotchya.Core.Threading;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Service;
 import android.content.Context;
@@ -19,8 +20,8 @@ import java.util.logging.Logger;
 public abstract class ThreadHelper extends Service {
 
     private Thread thread;
-    private Context context;
     private Intent intent;
+    protected Activity activity;
     protected long interval = 100;
     protected boolean running, paused = false, infinite = true,
             immortal = false, continueWork = false;
@@ -44,20 +45,20 @@ public abstract class ThreadHelper extends Service {
         init();
     }
 
-    public ThreadHelper(Context context, long interval) {
+    public ThreadHelper(Activity activity, long interval) {
         super();
         this.interval = interval;
-        this.context = context;
-        intent = new Intent(context, getClass());
+        this.activity = activity;
+        intent = new Intent(activity.getApplicationContext(), getClass());
         init();
     }
 
-    public ThreadHelper(Context context, long interval, boolean immortal) {
+    public ThreadHelper(Activity activity, long interval, boolean immortal) {
         super();
         this.interval = interval;
-        this.context = context;
+        this.activity = activity;
         this.immortal = immortal;
-        intent = new Intent(context, getClass());
+        intent = new Intent(activity.getApplicationContext(), getClass());
         stickyHashCode = hashCode();
         stickyValues.put(stickyHashCode,
                 new String[] {STICKY_LABEL.INTERVAL, STICKY_LABEL.IMMORTAL, STICKY_LABEL.CONTINUE_WORK},
@@ -256,7 +257,7 @@ public abstract class ThreadHelper extends Service {
         return intent;
     }
 
-    public Context getContext() {
-        return context;
+    public Activity getActivity() {
+        return activity;
     }
 }

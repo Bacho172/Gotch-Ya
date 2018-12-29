@@ -1,6 +1,6 @@
 package com.example.adars.gotchya.Core.Threading.GhostThreads;
 
-import android.content.Context;
+import android.app.Activity;
 
 import com.example.adars.gotchya.Core.Threading.ThreadHelper;
 
@@ -16,12 +16,8 @@ public class GhostCounter extends ThreadHelper {
         super();
     }
 
-    public GhostCounter(Context context, long interval, boolean immortal) {
-        super(context, interval, immortal);
-    }
-
-    public GhostCounter(int jump, Context context, long interval, boolean immortal) {
-        super(context, interval, immortal);
+    public GhostCounter(Activity activity, long interval, int jump) {
+        super(activity, interval);
         this.jump = jump;
     }
 

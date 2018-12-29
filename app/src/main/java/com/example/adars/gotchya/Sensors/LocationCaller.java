@@ -1,13 +1,17 @@
 package com.example.adars.gotchya.Sensors;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
+
+import com.example.adars.gotchya.R;
 
 /**
  * Created by Adam Bachorz on 29.12.2018.
@@ -20,17 +24,19 @@ public class LocationCaller implements LocationListener {
     private String longitudeDirection;
     private String latitudeDirection;
 
-    public LocationCaller(Context context) {
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+    public LocationCaller(Activity activity) {
+        locationManager = (LocationManager) activity.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
         Location location;
 
         boolean accessFineLocationGranted =
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                ActivityCompat.checkSelfPermission(activity.getApplicationContext(),
+                        Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         boolean accessCoarseLocationGranted =
-                ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+                ActivityCompat.checkSelfPermission(activity.getApplicationContext(),
+                        Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
         if (!accessFineLocationGranted && !accessCoarseLocationGranted) {
-            // TODO: Zapytanie o uprawnienia
+            Snackbar.make(activity.findViewById(R.id.main_menu_layout), "Brak włączonej lokalizacji", Snackbar.LENGTH_SHORT).show();
         }
 
         location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
