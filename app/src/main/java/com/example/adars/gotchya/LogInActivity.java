@@ -54,13 +54,13 @@ public class LogInActivity extends AppCompatActivity {
         // editTextLogin = findViewById(R.id.editTextLogin);
         //editTextPassword = findViewById(R.id.editTextPassword);
         //checkBoxRemember = findViewById(R.id.checkBoxRemember);
-        imageButtonLogOut = findViewById(R.id.imageButtonLogOut);
-        imageButtonLogOut.setOnClickListener(l -> imageButtonLogOutClick());
+       // imageButtonLogOut = findViewById(R.id.imageButtonLogOut);
+      //  imageButtonLogOut.setOnClickListener(l -> imageButtonLogOutClick());
         signInButtonGoogle = findViewById(R.id.sign_out_button);
         signInButtonGoogle.setSize(SignInButton.SIZE_STANDARD);
-        textViewSignedUser = findViewById(R.id.textViewSignedUser);
+      //  textViewSignedUser = findViewById(R.id.textViewSignedUser);
         if (account == null) {
-            imageButtonLogOut.setVisibility(View.GONE);
+         //   imageButtonLogOut.setVisibility(View.GONE);
         }
   /*      check.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,13 +145,13 @@ public class LogInActivity extends AppCompatActivity {
 
     private void updateUI(@Nullable GoogleSignInAccount account) {
         if (account != null) {
-            imageButtonLogOut.setVisibility(View.VISIBLE);
+       //     imageButtonLogOut.setVisibility(View.VISIBLE);
             signInButtonGoogle.setVisibility(View.GONE);
-            textViewSignedUser.setText(account.getEmail());
+    //        textViewSignedUser.setText(account.getEmail());
         } else {
             imageButtonLogOut.setVisibility(View.GONE);
             signInButtonGoogle.setVisibility(View.VISIBLE);
-            textViewSignedUser.setText(" ");
+       //     textViewSignedUser.setText(" ");
             Toast.makeText(getApplicationContext(), "Log out ", Toast.LENGTH_LONG).show();
         }
     }
