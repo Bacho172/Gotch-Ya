@@ -73,4 +73,20 @@ public class LocationCaller implements LocationListener {
     public void onProviderDisabled(String provider) {
 
     }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public String getLongitudeDirection() {
+        return longitudeDirection;
+    }
+
+    public String getLatitudeDirection() {
+        return latitudeDirection;
+    }
 }

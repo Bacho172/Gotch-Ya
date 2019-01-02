@@ -10,6 +10,8 @@ import com.example.adars.gotchya.DataModel.DomainModel.Device;
 import com.example.adars.gotchya.R;
 import com.example.adars.gotchya.Sensors.DeviceInfo;
 import com.example.adars.gotchya.Sensors.LocationCaller;
+import com.example.adars.gotchya.Sensors.SensorsDataCreator;
+import com.example.adars.gotchya.Sensors.Sensors_data;
 import com.example.adars.gotchya.Sensors.StandardAccelerometer;
 
 import java.util.Date;
@@ -76,10 +78,14 @@ public class GhostTracker extends ThreadHelper {
         report.setUpdatedAt(new Date());
         report.setDeviceIP("192.168.1." + (int)(0.1 + Math.random() * 10));
         report.setSpeed((0.1 + Math.random() * 10) + "");
-        report.setNearestObject("Uniwersytet Kazimierza Wielkiego");
 
         report.setCoordinates(locationCaller.getCoordinates());
         Snackbar.make(view, report.getCoordinates(), Snackbar.LENGTH_LONG).show();
+
+        String latitude = locationCaller.getLatitude() + "";
+        String longitude = locationCaller.getLongitude() + "";
+        Sensors_data sensorsData = SensorsDataCreator.createSensorData(activity.getBaseContext(), longitude, latitude);
+        report.setNearestObject(sensorsData.getAddress());
 
         //TODO: Zdjęcia z kamer do URL !!!
         report.setFrontCameraImage("");
