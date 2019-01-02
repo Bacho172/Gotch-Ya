@@ -24,20 +24,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-        buttonDeveloperMode=findViewById(R.id.button_developer_mode);
+      // buttonDeveloperMode=findViewById(R.id.button_developer_mode);
         textViewDescription1 = findViewById(R.id.textViewDescription);
         textViewDescription2 = findViewById(R.id.textViewDescription2);
         Functions.setFont(this, textViewDescription1, Fonts.FONT_AVENIR_NextLTProRegular);
         Functions.setFont(this, textViewDescription2, Fonts.FONT_AVENIR_NextLTProRegular);
         imageButtonGetStarted = findViewById(R.id.imageButtonGetStarted);
         imageButtonGetStarted.setOnClickListener((l) -> imageButtonGetStartedClick());
-        buttonDeveloperMode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               Intent intent= new Intent(getApplicationContext(), DevOptionsActivity.class);
-               startActivity(intent);
-            }
-        });
+
 
     }
     private void imageButtonGetStartedClick() {
