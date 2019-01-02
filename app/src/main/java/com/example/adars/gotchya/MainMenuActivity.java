@@ -69,11 +69,12 @@ public class MainMenuActivity extends AppCompatActivity
             long listenerInterval = ThreadHelper.convertToMillis(100, TimeUnit.MILLISECONDS);
             long sendingInterval = ThreadHelper.convertToMillis(10, TimeUnit.SECONDS);
             ghostTracker = new GhostTracker(this, listenerInterval, sendingInterval);
-            ghostTracker.start();
+            //ghostTracker.start();
+            startService(ghostTracker.getIntent());
         }
         else {
             stopService(ghostTracker.getIntent());
-            ghostTracker.stop();
+            //ghostTracker.stop();
             ghostTracker = null;
         }
     }

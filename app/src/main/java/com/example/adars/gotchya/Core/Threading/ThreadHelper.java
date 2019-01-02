@@ -34,6 +34,7 @@ public abstract class ThreadHelper extends Service {
     }
 
     protected abstract class STICKY_LABEL {
+        public static final String ACTIVITY = "activity";
         public static final String INTERVAL = "interval";
         public static final String IMMORTAL = "immortal";
         public static final String UNINTERRUPTED = "uninterrupted";
@@ -49,6 +50,9 @@ public abstract class ThreadHelper extends Service {
         super();
         this.interval = interval;
         this.activity = activity;
+        stickyValues.put(stickyHashCode,
+                new String[] {STICKY_LABEL.ACTIVITY},
+                new Object[] {activity});
         intent = new Intent(activity.getApplicationContext(), getClass());
         init();
     }
@@ -61,8 +65,8 @@ public abstract class ThreadHelper extends Service {
         intent = new Intent(activity.getApplicationContext(), getClass());
         stickyHashCode = hashCode();
         stickyValues.put(stickyHashCode,
-                new String[] {STICKY_LABEL.INTERVAL, STICKY_LABEL.IMMORTAL, STICKY_LABEL.CONTINUE_WORK},
-                new Object[] {interval, immortal, continueWork});
+                new String[] {STICKY_LABEL.ACTIVITY, STICKY_LABEL.INTERVAL, STICKY_LABEL.IMMORTAL, STICKY_LABEL.CONTINUE_WORK},
+                new Object[] {activity, interval, immortal, continueWork});
         init();
     }
 
@@ -259,5 +263,9 @@ public abstract class ThreadHelper extends Service {
 
     public Activity getActivity() {
         return activity;
+    }
+
+    public Activity getStickyActivity() {
+        return (Activity) stickyValues.get(stickyHashCode, STICKY_LABEL.ACTIVITY);
     }
 }

@@ -19,7 +19,7 @@ import java.util.Date;
  */
 public class GhostTracker extends ThreadHelper {
 
-    private StandardAccelerometer acceleometer;
+    private StandardAccelerometer accelerometer;
     private LocationCaller locationCaller;
     private View view;
     private long sendingInterval;
@@ -29,13 +29,17 @@ public class GhostTracker extends ThreadHelper {
 
     public GhostTracker() {
         super();
+        this.activity = getStickyActivity();
+        accelerometer = new StandardAccelerometer(activity.getApplicationContext());
+        locationCaller = new LocationCaller(this.activity);
+        view = this.activity.findViewById(R.id.main_menu_layout);
     }
 
     public GhostTracker(Activity activity, long listenerInterval, long sendingInterval) {
         super(activity, listenerInterval, true);
         this.sendingInterval = sendingInterval;
         this.listenerInterval = listenerInterval;
-        acceleometer = new StandardAccelerometer(activity.getApplicationContext());
+        accelerometer = new StandardAccelerometer(activity.getApplicationContext());
         locationCaller = new LocationCaller(this.activity);
         view = this.activity.findViewById(R.id.main_menu_layout);
 
@@ -43,7 +47,7 @@ public class GhostTracker extends ThreadHelper {
 
     @Override
     protected void onRun() {
-        if (acceleometer.phoneIsMoving() || phoneStolen) {
+        if (accelerometer.phoneIsMoving() || phoneStolen) {
             attackTime += listenerInterval;
             if (attackTime >= sendingInterval) {
                 hitAlert();
@@ -83,8 +87,8 @@ public class GhostTracker extends ThreadHelper {
         return "KeepTracking";
     }
 
-    public StandardAccelerometer getAcceleometer() {
-        return acceleometer;
+    public StandardAccelerometer getAccelerometer() {
+        return accelerometer;
     }
 
     public void hitAlert() {
@@ -95,7 +99,7 @@ public class GhostTracker extends ThreadHelper {
         if (phoneStolen) phoneStolen = false;
     }
 
-    public void start() {startThread();}
+    public void start() { startThread();}
 
     public void stop() { cancelAlert(); stopThread();}
 }
