@@ -23,7 +23,9 @@ public class GhostTracker extends ThreadHelper {
     private LocationCaller locationCaller;
     private View view;
     private long sendingInterval;
+    private long listenerInterval;
     private boolean phoneStolen = false;
+    private long attackTime = 0;
 
     public GhostTracker() {
         super();
@@ -32,6 +34,7 @@ public class GhostTracker extends ThreadHelper {
     public GhostTracker(Activity activity, long listenerInterval, long sendingInterval) {
         super(activity, listenerInterval, true);
         this.sendingInterval = sendingInterval;
+        this.listenerInterval = listenerInterval;
         acceleometer = new StandardAccelerometer(activity.getApplicationContext());
         locationCaller = new LocationCaller(this.activity);
         view = this.activity.findViewById(R.id.main_menu_layout);
@@ -41,10 +44,13 @@ public class GhostTracker extends ThreadHelper {
     @Override
     protected void onRun() {
         if (acceleometer.phoneIsMoving() || phoneStolen) {
-            hitAlert();
-            sendData();
-            delay(sendingInterval);
-        }
+            attackTime += listenerInterval;
+            if (attackTime >= sendingInterval) {
+                hitAlert();
+                sendData();
+                attackTime = 0;
+            }
+        } else System.out.println("OK");
     }
 
     private void sendData() {
