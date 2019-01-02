@@ -33,16 +33,10 @@ public class LogInActivity extends AppCompatActivity {
 
     //TBE
     private static final int RC_SIGN_IN = 9001;
-    /*
-     private EditText editTextLogin;
-     private EditText editTextPassword;
-     private CheckBox checkBoxRemember;
-     */
-    private ImageButton imageButtonLogOut;
+
     private SignInButton signInButtonGoogle;
-  //  private Button check;
+
     private Button checkPOST;
-    private TextView textViewSignedUser;
     private GoogleSignInAccount account;
     private GoogleSignInClient mGoogleSignInClient;
 
@@ -50,69 +44,8 @@ public class LogInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_log_in);
-     //   check = findViewById(R.id.button_check);
-        // editTextLogin = findViewById(R.id.editTextLogin);
-        //editTextPassword = findViewById(R.id.editTextPassword);
-        //checkBoxRemember = findViewById(R.id.checkBoxRemember);
-       // imageButtonLogOut = findViewById(R.id.imageButtonLogOut);
-      //  imageButtonLogOut.setOnClickListener(l -> imageButtonLogOutClick());
         signInButtonGoogle = findViewById(R.id.sign_out_button);
         signInButtonGoogle.setSize(SignInButton.SIZE_STANDARD);
-      //  textViewSignedUser = findViewById(R.id.textViewSignedUser);
-        if (account == null) {
-         //   imageButtonLogOut.setVisibility(View.GONE);
-        }
-  /*      check.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String email = account.getEmail();
-                String mac_address = "123";
-                String model = "iphone";
-                String name = "X20";
-                String system = "Kali linux";
-                URL url = null;
-                try {
-                    url = new URL("https://gotch-ya.herokuapp.com/api/devices");
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    HttpURLConnection client = (HttpURLConnection) url.openConnection();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                HttpURLConnection client = null;
-                try {
-                    client.setRequestMethod("POST");
-                } catch (ProtocolException e) {
-                    e.printStackTrace();
-                }
-                client.setRequestProperty("gmail", email);
-                client.setRequestProperty("mac_address", mac_address);
-                client.setRequestProperty("model", model);
-                client.setRequestProperty("name", name);
-                client.setRequestProperty("system", system);
-                client.setDoOutput(true);
-                OutputStream outputPost = null;
-                try {
-                    outputPost = new BufferedOutputStream(client.getOutputStream());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                //  writeStream(outputPost);
-                try {
-                    outputPost.flush();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                try {
-                    outputPost.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });*/
         GoogleSignInOptions gso;
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -131,7 +64,10 @@ public class LogInActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         account = GoogleSignIn.getLastSignedInAccount(this);
-
+        updateUI(account);
+        if (account != null) {
+            startActivity(new Intent(this, MainMenuActivity.class));
+        }
     }
 
     @Override
@@ -145,13 +81,11 @@ public class LogInActivity extends AppCompatActivity {
 
     private void updateUI(@Nullable GoogleSignInAccount account) {
         if (account != null) {
-       //     imageButtonLogOut.setVisibility(View.VISIBLE);
-            signInButtonGoogle.setVisibility(View.GONE);
-    //        textViewSignedUser.setText(account.getEmail());
+
+            signInButtonGoogle.setVisibility(View.INVISIBLE);
         } else {
-            imageButtonLogOut.setVisibility(View.GONE);
+
             signInButtonGoogle.setVisibility(View.VISIBLE);
-       //     textViewSignedUser.setText(" ");
             Toast.makeText(getApplicationContext(), "Log out ", Toast.LENGTH_LONG).show();
         }
     }
@@ -184,22 +118,6 @@ public class LogInActivity extends AppCompatActivity {
             }
         });
 
-        /*
-        String login = editTextLogin.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
-        if (login.isEmpty() || password.isEmpty()) {
-            Toast.makeText(this, "Nie podano wszystkich danych", Toast.LENGTH_LONG).show();
-            return;
-        }
-        User user = UserModel.getInstance().logIn(login, password);
-        if (user == null) {
-            Toast.makeText(this, "Logowanie zakończone niepowodzeniem. \nZły login lub hasło", Toast.LENGTH_LONG).show();
-        } else {
-            if (checkBoxRemember.isChecked()) {
-                Functions.saveUserData(this, UserModel.getInstance().getCurrentUser());
-            }
-            startActivity(new Intent(this, MainMenuActivity.class));
-        }
-*/
+
     }
 }
