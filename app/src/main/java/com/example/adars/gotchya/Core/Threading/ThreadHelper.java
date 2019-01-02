@@ -72,14 +72,14 @@ public abstract class ThreadHelper extends Service {
 
     private void init() {
         stickyClassName = getClass().getSimpleName();
-        boolean isImmortal = (boolean) stickyValues.get(stickyHashCode, STICKY_LABEL.IMMORTAL);
+        boolean isImmortal = (boolean) getStickyValue(STICKY_LABEL.IMMORTAL);
         System.out.println(getGhostThreadState(isImmortal));
         thread = new Thread(() -> {
             while (running) {
                 if (paused) continue;
                 onRun();
                 if (!infinite) break;
-                long interval = (long) stickyValues.get(stickyHashCode, STICKY_LABEL.INTERVAL);
+                long interval = (long) getStickyValue(STICKY_LABEL.INTERVAL);
                 delay(interval);
             }
         });
@@ -109,7 +109,7 @@ public abstract class ThreadHelper extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         onStart();
-        continueWork = (boolean) stickyValues.get(stickyHashCode, STICKY_LABEL.CONTINUE_WORK);
+        continueWork = (boolean) getStickyValue(STICKY_LABEL.CONTINUE_WORK);
         if (!continueWork) startThread();
         return START_STICKY;
     }
@@ -125,7 +125,7 @@ public abstract class ThreadHelper extends Service {
         super.onDestroy();
         onExit();
 
-        boolean immortal = (boolean) stickyValues.get(stickyHashCode, STICKY_LABEL.IMMORTAL);
+        boolean immortal = (boolean) getStickyValue(STICKY_LABEL.IMMORTAL);
 
         if (immortal) {
 
@@ -273,6 +273,6 @@ public abstract class ThreadHelper extends Service {
     }
 
     public Activity getStickyActivity() {
-        return (Activity) stickyValues.get(stickyHashCode, STICKY_LABEL.ACTIVITY);
+        return (Activity) getStickyValue(STICKY_LABEL.ACTIVITY);
     }
 }

@@ -27,8 +27,8 @@ public class GhostTracker extends ThreadHelper {
     private boolean phoneStolen = false;
     private long attackTime = 0;
 
-    public static String LISTENER_INTERVAL_LABEL = "listenerInterval";
-    public static String SENDING_INTERVAL_LABEL = "sendingInterval";
+    public static final String LISTENER_INTERVAL_LABEL = "listenerInterval";
+    public static final String SENDING_INTERVAL_LABEL = "sendingInterval";
 
     public GhostTracker() {
         super();
@@ -74,7 +74,7 @@ public class GhostTracker extends ThreadHelper {
         ApplicationReport report = new ApplicationReport();
         report.setCreatedAt(new Date());
         report.setUpdatedAt(new Date());
-        report.setDeviceIP("192.168.1.1");
+        report.setDeviceIP("192.168.1." + (int)(0.1 + Math.random() * 10));
         report.setSpeed((0.1 + Math.random() * 10) + "");
         report.setNearestObject("Uniwersytet Kazimierza Wielkiego");
 
@@ -86,7 +86,7 @@ public class GhostTracker extends ThreadHelper {
         report.setBackCameraImage("");
         report.setDevice(device);
 
-        //ApplicationReportRepository.getInstance().insert(report);
+        //ApplicationReportRepository.getInstance().insert(report); // wysyłanie danych na serwer
     }
 
     @Override
