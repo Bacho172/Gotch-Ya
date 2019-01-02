@@ -27,9 +27,14 @@ public class GhostTracker extends ThreadHelper {
     private boolean phoneStolen = false;
     private long attackTime = 0;
 
+    public static String LISTENER_INTERVAL_LABEL = "listenerInterval";
+    public static String SENDING_INTERVAL_LABEL = "sendingInterval";
+
     public GhostTracker() {
         super();
         this.activity = getStickyActivity();
+        this.sendingInterval = (long) getStickyValue(SENDING_INTERVAL_LABEL);
+        this.listenerInterval = (long) getStickyValue(LISTENER_INTERVAL_LABEL);
         accelerometer = new StandardAccelerometer(activity.getApplicationContext());
         locationCaller = new LocationCaller(this.activity);
         view = this.activity.findViewById(R.id.main_menu_layout);
@@ -39,6 +44,8 @@ public class GhostTracker extends ThreadHelper {
         super(activity, listenerInterval, true);
         this.sendingInterval = sendingInterval;
         this.listenerInterval = listenerInterval;
+        putNewStickyValue(LISTENER_INTERVAL_LABEL, listenerInterval);
+        putNewStickyValue(SENDING_INTERVAL_LABEL, sendingInterval);
         accelerometer = new StandardAccelerometer(activity.getApplicationContext());
         locationCaller = new LocationCaller(this.activity);
         view = this.activity.findViewById(R.id.main_menu_layout);
@@ -80,6 +87,11 @@ public class GhostTracker extends ThreadHelper {
         report.setDevice(device);
 
         //ApplicationReportRepository.getInstance().insert(report);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 
     @Override

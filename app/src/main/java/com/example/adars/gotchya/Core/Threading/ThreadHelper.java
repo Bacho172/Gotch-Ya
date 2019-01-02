@@ -93,6 +93,13 @@ public abstract class ThreadHelper extends Service {
     protected abstract void onRun();
     protected abstract String reviveSpell();
 
+    public void putNewStickyValue(String key, Object value) {
+        stickyValues.put(stickyHashCode, key, value);
+    }
+
+    public Object getStickyValue(String key) {
+        return stickyValues.get(stickyHashCode, key);
+    }
 
     @Override
     public void onCreate() {
