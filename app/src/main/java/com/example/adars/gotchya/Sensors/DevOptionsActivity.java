@@ -5,6 +5,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.hardware.camera2.CameraAccessException;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -19,49 +21,28 @@ public class DevOptionsActivity extends AppCompatActivity {
     private TextView textViewLatitude;
     private Boolean isRunning = false;
     private BroadcastReceiver receiver;
+    private GuardCamera guardCamera;
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(receiver);
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dev_options);
-        textViewLatitude = findViewById(R.id.textViewLatitude);
-        textViewLongitude = findViewById(R.id.textViewLongitude);
         Buttonstart = findViewById(R.id.buttonStart);
-        receiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (isRunning) {
-//                    Sensors_data dataFromBroadcast = SensorsReceiver.getSensors_data();
-//                    textViewLatitude.setText(dataFromBroadcast.latitude);
-//                    textViewLongitude.setText(dataFromBroadcast.longitde);
-                }
-            }
-        };
-        registerReceiver(receiver, new IntentFilter("new_data"));
-        requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-        Buttonstart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                isRunning = !isRunning;
-                if (isRunning) {
-                    startService(new Intent(getApplicationContext(), GPSservice.class));
-                    startService(new Intent(getApplicationContext(), SignificantMotionSensorService.class));
-                    Buttonstart.setText("Stop");
-                } else {
-                    stopService(new Intent(getApplicationContext(), GPSservice.class));
-                    stopService(new Intent(getApplicationContext(), SignificantMotionSensorService.class));
-                    textViewLatitude.setText(" ");
-                    textViewLongitude.setText(" ");
-                    Buttonstart.setText("Start");
+        try {
+            guardCamera = new GuardCamera(getApplicationContext(), this);
+        } catch (CameraAccessException e) {
+            e.printStackTrace();
+        }
+        Buttonstart.setOnClickListener((l) -> start());
+        //  Bitmap bitmap = guardCamera.getLastPhoto();
 
-                }
-            }
-        });
+    }
+    private void start(){
+        guardCamera.takePhoto(getApplicationContext());
     }
 }
