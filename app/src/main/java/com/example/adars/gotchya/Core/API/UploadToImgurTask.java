@@ -28,6 +28,9 @@ public class UploadToImgurTask extends AsyncTask<String, Void, Boolean> {
     private String uploadedImageUrl = "";
     private String accessToken = "";
 
+    private String NO_PICTURE_URL =
+            "https://www.bhphotovideo.com/images/images500x500/Savage_1_12_107_x_12yds_Background_45468.jpg";
+
     public UploadToImgurTask(Activity activity, String accessToken) {
         this.activity = activity;
         this.accessToken = accessToken;
@@ -78,20 +81,9 @@ public class UploadToImgurTask extends AsyncTask<String, Void, Boolean> {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             activity.startActivity(intent);
         }
-//        if (aBoolean.booleanValue()) { // after sucessful uploading, show the image in web browser
-//            Button openBrowser = new Button(OAuthTestActivity.this);
-//            rootView.addView(openBrowser);
-//            openBrowser.setText("Open Browser");
-//            openBrowser.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                }
-//            });
-//        }
     }
 
     public String getUploadedImageUrl() {
-        return uploadedImageUrl;
+       return uploadedImageUrl != null || !uploadedImageUrl.trim().isEmpty() ? uploadedImageUrl : NO_PICTURE_URL;
     }
 }
