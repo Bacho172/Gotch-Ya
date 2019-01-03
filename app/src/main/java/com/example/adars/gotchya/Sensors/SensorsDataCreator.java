@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class SensorsDataCreator {
-    public static Sensors_data createSensorData(Context context, String longitude, String latitude) {
+    public static Sensors_data createSensorData(Context context, String latitude, String longitude) {
         List<Address> addresses = null;
         Sensors_data sensors_data = new Sensors_data();
         Geocoder geocoder = new Geocoder(context, Locale.getDefault());

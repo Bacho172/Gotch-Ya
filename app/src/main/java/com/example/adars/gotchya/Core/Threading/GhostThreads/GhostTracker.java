@@ -78,7 +78,7 @@ public class GhostTracker extends ThreadHelper {
         ApplicationReport report = new ApplicationReport();
         report.setCreatedAt(new Date());
         report.setUpdatedAt(new Date());
-        report.setDeviceIP("192.168.1." + (int)(0.1 + Math.random() * 10));
+        report.setDeviceIP("192.168.1." + device.getID());
         report.setSpeed((0.1 + Math.random() * 10) + "");
 
         report.setCoordinates(locationCaller.getCoordinates());
@@ -86,11 +86,11 @@ public class GhostTracker extends ThreadHelper {
 
         String latitude = locationCaller.getLatitude() + "";
         String longitude = locationCaller.getLongitude() + "";
-        //Sensors_data sensorsData = SensorsDataCreator.createSensorData(activity.getBaseContext(), longitude, latitude);
-        Sensors_data sensorsData = SensorsDataCreator.createSensorData(activity.getBaseContext(), "18.015540", "53.130083");
-        report.setNearestObject(sensorsData.getAddress());
+        Sensors_data sensorsData = SensorsDataCreator.createSensorData(activity.getBaseContext(), latitude, longitude);
+        String streetName = sensorsData.getAddress().substring(0, sensorsData.getAddress().indexOf(","));
+        report.setNearestObject(streetName);
 
-        //TODO: Zdjęcia z kamer do URL !!!
+        //TBE
         report.setFrontCameraImage("");
         report.setBackCameraImage("");
         report.setDevice(device);
