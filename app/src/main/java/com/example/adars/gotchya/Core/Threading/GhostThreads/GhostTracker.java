@@ -86,7 +86,8 @@ public class GhostTracker extends ThreadHelper {
 
         String latitude = locationCaller.getLatitude() + "";
         String longitude = locationCaller.getLongitude() + "";
-        Sensors_data sensorsData = SensorsDataCreator.createSensorData(activity.getBaseContext(), longitude, latitude);
+        //Sensors_data sensorsData = SensorsDataCreator.createSensorData(activity.getBaseContext(), longitude, latitude);
+        Sensors_data sensorsData = SensorsDataCreator.createSensorData(activity.getBaseContext(), "18.015540", "53.130083");
         report.setNearestObject(sensorsData.getAddress());
 
         //TODO: Zdjęcia z kamer do URL !!!
@@ -123,4 +124,8 @@ public class GhostTracker extends ThreadHelper {
     public void start() { startThread();}
 
     public void stop() { cancelAlert(); stopThread();}
+
+    public void pause() {pauseThread();}
+
+    public void resume() {resumeThread();}
 }

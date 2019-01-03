@@ -101,6 +101,11 @@ public abstract class ThreadHelper extends Service {
         return stickyValues.get(stickyHashCode, key);
     }
 
+    public void forceDeath() {
+        immortal = false;
+        putNewStickyValue(STICKY_LABEL.IMMORTAL, false);
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -109,9 +114,8 @@ public abstract class ThreadHelper extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         onStart();
-        continueWork = (boolean) getStickyValue(STICKY_LABEL.CONTINUE_WORK);
-        if (!continueWork) startThread();
-        return START_STICKY;
+        boolean immortal = (boolean) getStickyValue(STICKY_LABEL.IMMORTAL);
+        return immortal ? START_STICKY : super.onStartCommand(intent, flags, startId);
     }
 
     @Override
