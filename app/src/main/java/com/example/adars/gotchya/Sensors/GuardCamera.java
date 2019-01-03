@@ -44,6 +44,6 @@ GuardCamera(){
             public void onPictureTaken(byte[] data, Camera camera) {
                 //to do
             }
-        }
+        };
 
 }
