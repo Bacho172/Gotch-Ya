@@ -38,13 +38,14 @@ public class MainActivity extends AppCompatActivity {
         Functions.setFont(this, textViewDescription2, Fonts.FONT_AVENIR_NextLTProRegular);
         imageButtonGetStarted = findViewById(R.id.imageButtonGetStarted);
         imageButtonGetStarted.setOnClickListener((l) -> imageButtonGetStartedClick());
-        startActivity(new Intent(this, DevOptionsActivity.class));
+        testCamera=findViewById(R.id.button_test);
+        testCamera.setOnClickListener((l) -> testCameraGetClick());
 
     }
 
     private void testCameraGetClick() {
 
-
+        startActivity(new Intent(this, DevOptionsActivity.class));
     }
 
 

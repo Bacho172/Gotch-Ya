@@ -16,11 +16,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <TextureView
-        android:id="@+id/textureView"
-        android:layout_width="272dp"
-        android:layout_height="362dp"
-        tools:layout_editor_absoluteX="56dp"
-        tools:layout_editor_absoluteY="16dp" />
-
 </android.support.constraint.ConstraintLayout>

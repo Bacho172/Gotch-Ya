@@ -17,10 +17,6 @@ import com.example.adars.gotchya.R;
 
 public class DevOptionsActivity extends AppCompatActivity {
     private Button Buttonstart;
-    private TextView textViewLongitude;
-    private TextView textViewLatitude;
-    private Boolean isRunning = false;
-    private BroadcastReceiver receiver;
     private GuardCamera guardCamera;
 
     @Override
@@ -42,7 +38,8 @@ public class DevOptionsActivity extends AppCompatActivity {
         //  Bitmap bitmap = guardCamera.getLastPhoto();
 
     }
-    private void start(){
-        guardCamera.takePhoto(getApplicationContext());
+
+    private void start() {
+        guardCamera.takePhoto();
     }
 }
