@@ -28,7 +28,7 @@ public class MainMenuActivity extends AppCompatActivity
     private boolean toggled = false;
 
     private long listenerInterval = ThreadHelper.convertToMillis(100, TimeUnit.MILLISECONDS);
-    private long sendingInterval = ThreadHelper.convertToMillis(7, TimeUnit.SECONDS);
+    private long sendingInterval = ThreadHelper.convertToMillis(5, TimeUnit.SECONDS);
     GhostTracker ghostTracker;
 
     @Override
@@ -71,6 +71,7 @@ public class MainMenuActivity extends AppCompatActivity
         imageButtonRun.setImageDrawable(getDrawable(drawableID));
 
         if (toggled) {
+            performHomeButtonPress();
             if (ghostTracker != null) {
                 ghostTracker = new GhostTracker(this, listenerInterval, sendingInterval);
             }
@@ -83,6 +84,13 @@ public class MainMenuActivity extends AppCompatActivity
             //stopService(ghostTracker.getIntent());
             //ghostTracker = null;
         }
+    }
+
+    private void performHomeButtonPress() {
+        Intent homeIntent = new Intent(Intent.ACTION_MAIN);
+        homeIntent.addCategory( Intent.CATEGORY_HOME );
+        homeIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(homeIntent);
     }
 
 
