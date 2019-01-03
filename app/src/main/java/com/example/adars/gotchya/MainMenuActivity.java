@@ -72,17 +72,19 @@ public class MainMenuActivity extends AppCompatActivity
 
         if (toggled) {
             performHomeButtonPress();
-            if (ghostTracker != null) {
+            if (ghostTracker == null) {
                 ghostTracker = new GhostTracker(this, listenerInterval, sendingInterval);
             }
+            //ghostTracker.loop();
             ghostTracker.start();
-            startService(ghostTracker.getIntent());
+            //startService(ghostTracker.getIntent());
         }
         else {
-            ghostTracker.forceDeath();
+            ghostTracker.setRunning(false);
+            //ghostTracker.forceDeath();
             ghostTracker.stop();
             //stopService(ghostTracker.getIntent());
-            //ghostTracker = null;
+            ghostTracker = null;
         }
     }
 
@@ -141,7 +143,7 @@ public class MainMenuActivity extends AppCompatActivity
 
     @Override
     protected void onDestroy() {
-        stopService(ghostTracker.getIntent());
+        //stopService(ghostTracker.getIntent());
         super.onDestroy();
     }
 }

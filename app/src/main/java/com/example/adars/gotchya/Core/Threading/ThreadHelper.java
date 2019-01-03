@@ -260,6 +260,10 @@ public abstract class ThreadHelper extends Service {
         return running;
     }
 
+    public void setRunning(boolean running) {
+        this.running = running;
+    }
+
     public boolean isPaused() {
         return paused;
     }

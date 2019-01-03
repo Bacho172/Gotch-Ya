@@ -18,6 +18,7 @@ import android.media.Image;
 import android.media.ImageReader;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.util.Size;
@@ -51,6 +52,7 @@ public class GuardCamera {
     private CameraDevice cameraDevice;
     private Context context;
     private Activity activity;
+    private String photoPath;
     private int CameraType;
     private SurfaceHolder sHolder;
     private Bitmap lastPhoto;
@@ -69,19 +71,20 @@ public class GuardCamera {
 
         @Override
         public void onDisconnected(CameraDevice camera) {
-
+            cameraDevice.close();
         }
 
         @Override
         public void onError(CameraDevice camera, int error) {
+            cameraDevice.close();
         }
     };
 
 
-    public GuardCamera(Context context, Activity activity, int CameraType) throws CameraAccessException {
-        cameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
-        this.context = context;
+    public GuardCamera(Activity activity, Looper looper, int CameraType) throws CameraAccessException {
+        this.context = activity.getApplicationContext();
         this.activity = activity;
+        cameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
         this.CameraType = CameraType;
         if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this.activity, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_CAMERA_REQUEST_CODE);
@@ -90,10 +93,12 @@ public class GuardCamera {
 
         try {
             cameraId = cameraManager.getCameraIdList();
-        int a=6;
+            int a = 6;
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+
+        Handler handler = null;
 
 
         if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
@@ -107,10 +112,9 @@ public class GuardCamera {
 
         }
         if (CameraType == BACK_CAMERA) {
-            cameraManager.openCamera(cameraId[0], stateCallback, null);
-
+            cameraManager.openCamera(cameraId[0], stateCallback, handler);
         } else {
-            cameraManager.openCamera(cameraId[1], stateCallback, null);
+            cameraManager.openCamera(cameraId[1], stateCallback, handler);
         }
     }
 
@@ -120,6 +124,7 @@ public class GuardCamera {
 
     public void takePhoto() {
 
+        String currentPath = null;
         if (cameraDevice == null)
             return;
 
@@ -156,7 +161,8 @@ public class GuardCamera {
             } else {
                 title = "selfie_camera";
             }
-            file = new File(Environment.getExternalStorageDirectory() + "/" + title + counter + ".jpg");
+            currentPath = Environment.getExternalStorageDirectory() + "/" + title + counter + ".jpg";
+            file = new File(currentPath);
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader imageReader) {
@@ -220,8 +226,13 @@ public class GuardCamera {
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
+
+        photoPath = currentPath;
     }
 
+    public String getPhotoPath() {
+        return photoPath;
+    }
 }
 /*    public void takePhoto(Context context) {
 

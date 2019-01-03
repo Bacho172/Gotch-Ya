@@ -3,7 +3,6 @@ package com.example.adars.gotchya.Core.API;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
-import android.provider.MediaStore;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -28,8 +27,9 @@ public class ImgurAPI {
     private static final String AUTHORIZATION_URL = "https://api.imgur.com/oauth2/authorize";
     private static final String CLIENT_ID = "CLIENT_ID";
 
-    public ImgurAPI(Activity activity) {
+    public ImgurAPI(Activity activity, String picturePath) {
         this.activity = activity;
+        this.picturePath = picturePath;
         init();
     }
 
@@ -74,12 +74,9 @@ public class ImgurAPI {
             System.out.println("access_token = " + accessToken);
             System.out.println("refresh_token = " + refreshToken);
 
-
             //Wybór zdj
-            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            activity.startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
-
-
+//            Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+//            activity.startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE);
         }
     }
 
@@ -98,5 +95,9 @@ public class ImgurAPI {
     public boolean pictureReadyToUpload() {
         return picturePath != null && picturePath.length() > 0
                 && accessToken != null && accessToken.length() > 0;
+    }
+
+    public String getPicturePath() {
+        return picturePath;
     }
 }

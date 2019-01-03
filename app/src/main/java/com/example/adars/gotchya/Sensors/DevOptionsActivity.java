@@ -1,17 +1,8 @@
 package com.example.adars.gotchya.Sensors;
 
-import android.Manifest;
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.hardware.camera2.CameraAccessException;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.example.adars.gotchya.R;
 
@@ -30,14 +21,14 @@ public class DevOptionsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dev_options);
         Buttonstart = findViewById(R.id.buttonStart);
-        try {
-        //    guardCameraBack = new GuardCamera(getApplicationContext(), this, GuardCamera.BACK_CAMERA);
-            guardCameraSelfie = new GuardCamera(getApplicationContext(), this, GuardCamera.SELFIE_CAMERA);
-
-
-        } catch (CameraAccessException e) {
-            e.printStackTrace();
-        }
+//        try {
+//        //    guardCameraBack = new GuardCamera(this, GuardCamera.BACK_CAMERA);
+//            guardCameraSelfie = new GuardCamera(this, GuardCamera.SELFIE_CAMERA);
+//
+//
+//        } catch (CameraAccessException e) {
+//            e.printStackTrace();
+//        }
         Buttonstart.setOnClickListener((l) -> start());
         //  Bitmap bitmap = guardCamera.getLastPhoto();
 
@@ -47,5 +38,6 @@ public class DevOptionsActivity extends AppCompatActivity {
       // guardCameraBack.takePhoto();
 
        guardCameraSelfie.takePhoto();
+       System.out.println("dev dev " + guardCameraSelfie.getPhotoPath());
     }
 }
