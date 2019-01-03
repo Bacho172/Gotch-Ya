@@ -17,7 +17,8 @@ import com.example.adars.gotchya.R;
 
 public class DevOptionsActivity extends AppCompatActivity {
     private Button Buttonstart;
-    private GuardCamera guardCamera;
+    private GuardCamera guardCameraBack;
+    private GuardCamera guardCameraSelfie;
 
     @Override
     protected void onDestroy() {
@@ -30,7 +31,10 @@ public class DevOptionsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_dev_options);
         Buttonstart = findViewById(R.id.buttonStart);
         try {
-            guardCamera = new GuardCamera(getApplicationContext(), this);
+        //    guardCameraBack = new GuardCamera(getApplicationContext(), this, GuardCamera.BACK_CAMERA);
+            guardCameraSelfie = new GuardCamera(getApplicationContext(), this, GuardCamera.SELFIE_CAMERA);
+
+
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -40,6 +44,8 @@ public class DevOptionsActivity extends AppCompatActivity {
     }
 
     private void start() {
-        guardCamera.takePhoto();
+      // guardCameraBack.takePhoto();
+
+       guardCameraSelfie.takePhoto();
     }
 }

@@ -1,14 +1,11 @@
 package com.example.adars.gotchya.Sensors;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
-import android.hardware.Camera;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
 import android.hardware.camera2.CameraCharacteristics;
@@ -27,12 +24,7 @@ import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Surface;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.widget.Toast;
 
-import com.example.adars.gotchya.MainActivity;
-
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -41,11 +33,12 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class GuardCamera {
     private static final int MY_CAMERA_REQUEST_CODE = 100;
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
+    public static final int BACK_CAMERA = 0;
+    public static final int SELFIE_CAMERA = 1;
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -53,18 +46,25 @@ public class GuardCamera {
         ORIENTATIONS.append(Surface.ROTATION_180, 270);
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
+
     private CameraManager cameraManager;
     private CameraDevice cameraDevice;
     private Context context;
     private Activity activity;
+    private int CameraType;
     private SurfaceHolder sHolder;
     private Bitmap lastPhoto;
     private File file;
     private Handler mBackgroundHandler;
+    private int counter = 0;
+    String[] cameraId = null;
+
     CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
         @Override
         public void onOpened(CameraDevice camera) {
+
             cameraDevice = camera;
+            int a = 9;
         }
 
         @Override
@@ -78,18 +78,19 @@ public class GuardCamera {
     };
 
 
-    public GuardCamera(Context context, Activity activity) throws CameraAccessException {
+    public GuardCamera(Context context, Activity activity, int CameraType) throws CameraAccessException {
         cameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
         this.context = context;
-        this.activity=activity;
+        this.activity = activity;
+        this.CameraType = CameraType;
         if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this.activity, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_CAMERA_REQUEST_CODE);
             return;
         }
 
-        String cameraId = null;
         try {
-            cameraId = cameraManager.getCameraIdList()[0];
+            cameraId = cameraManager.getCameraIdList();
+        int a=6;
         } catch (CameraAccessException e) {
             e.printStackTrace();
         }
@@ -105,8 +106,12 @@ public class GuardCamera {
             // for ActivityCompat#requestPermissions for more details.
 
         }
-        cameraManager.openCamera(cameraId, stateCallback, null);
+        if (CameraType == BACK_CAMERA) {
+            cameraManager.openCamera(cameraId[0], stateCallback, null);
 
+        } else {
+            cameraManager.openCamera(cameraId[1], stateCallback, null);
+        }
     }
 
     public Bitmap getLastPhoto() {
@@ -133,9 +138,9 @@ public class GuardCamera {
                 height = jpegSizes[0].getHeight();
             }
             final ImageReader reader = ImageReader.newInstance(width, height, ImageFormat.JPEG, 1);
-              List<Surface> outputSurface = new ArrayList<>(2);
+            List<Surface> outputSurface = new ArrayList<>(2);
             outputSurface.add(reader.getSurface());
-           //  outputSurface.add(new Surface(textureView.getSurfaceTexture()));
+            //  outputSurface.add(new Surface(textureView.getSurfaceTexture()));
 
             final CaptureRequest.Builder captureBuilder = cameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_STILL_CAPTURE);
             captureBuilder.addTarget(reader.getSurface());
@@ -144,8 +149,14 @@ public class GuardCamera {
             //Check orientation base on device
             int rotation = this.activity.getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
-
-            file = new File(Environment.getExternalStorageDirectory() + "/" +"obrazek" + ".jpg");
+            counter++;
+            String title = "";
+            if (this.CameraType == BACK_CAMERA) {
+                title = "back_camera";
+            } else {
+                title = "selfie_camera";
+            }
+            file = new File(Environment.getExternalStorageDirectory() + "/" + title + counter + ".jpg");
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader imageReader) {
