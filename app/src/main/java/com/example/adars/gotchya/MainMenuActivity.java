@@ -27,6 +27,8 @@ public class MainMenuActivity extends AppCompatActivity
     private Button checkPOST;
     private boolean toggled = false;
 
+    private long listenerInterval = ThreadHelper.convertToMillis(100, TimeUnit.MILLISECONDS);
+    private long sendingInterval = ThreadHelper.convertToMillis(7, TimeUnit.SECONDS);
     GhostTracker ghostTracker;
 
     @Override
@@ -56,6 +58,9 @@ public class MainMenuActivity extends AppCompatActivity
 //        checkPOST = findViewById(R.id.button_check_POST);
 //        checkPOST.setOnClickListener((l) ->
 //                ApplicationReportRepository.getInstance().insert(ApplicationReportRepository.example()));
+
+        ghostTracker = new GhostTracker(this, listenerInterval, sendingInterval);
+
     }
 
     private void imageButtonRunClick() {
@@ -66,17 +71,17 @@ public class MainMenuActivity extends AppCompatActivity
         imageButtonRun.setImageDrawable(getDrawable(drawableID));
 
         if (toggled) {
-            long listenerInterval = ThreadHelper.convertToMillis(100, TimeUnit.MILLISECONDS);
-            long sendingInterval = ThreadHelper.convertToMillis(7, TimeUnit.SECONDS);
-            ghostTracker = new GhostTracker(this, listenerInterval, sendingInterval);
+            if (ghostTracker != null) {
+                ghostTracker = new GhostTracker(this, listenerInterval, sendingInterval);
+            }
             ghostTracker.start();
-            //startService(ghostTracker.getIntent());
+            startService(ghostTracker.getIntent());
         }
         else {
             ghostTracker.forceDeath();
             ghostTracker.stop();
-            stopService(ghostTracker.getIntent());
-            ghostTracker = null;
+            //stopService(ghostTracker.getIntent());
+            //ghostTracker = null;
         }
     }
 

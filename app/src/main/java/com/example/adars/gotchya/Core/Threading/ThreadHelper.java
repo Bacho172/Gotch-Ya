@@ -204,18 +204,18 @@ public abstract class ThreadHelper extends Service {
     protected void startThread() {
         if (!running) {
             running = true;
-        } else return;
-        thread.start();
+            thread.start();
+        }
     }
 
     protected void stopThread() {
         if (running) {
             running = false;
-        } else return;
-        try {
-            thread.join();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ThreadHelper.class.getName()).log(Level.SEVERE, null, ex);
+            try {
+                thread.join();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ThreadHelper.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
