@@ -6,7 +6,6 @@ package com.example.adars.gotchya.DataModel.DomainModel;
 public class ApplicationReport extends Entity {
 
     private String frontCameraImage;
-    private String backCameraImage;
     private String coordinates;
     private String speed;
     private String nearestObject;
@@ -22,14 +21,6 @@ public class ApplicationReport extends Entity {
 
     public void setFrontCameraImage(String frontCameraImage) {
         this.frontCameraImage = frontCameraImage;
-    }
-
-    public String getBackCameraImage() {
-        return backCameraImage;
-    }
-
-    public void setBackCameraImage(String backCameraImage) {
-        this.backCameraImage = backCameraImage;
     }
 
     public String getCoordinates() {

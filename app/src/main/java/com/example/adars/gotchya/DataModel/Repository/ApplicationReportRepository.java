@@ -59,8 +59,7 @@ public final class ApplicationReportRepository implements IRepository<Applicatio
         report.setSpeed("999999");
         report.setNearestObject("Dom Mietka żula");
         report.setCoordinates("111:111:111");
-        report.setFrontCameraImage("https://eatliver.b-cdn.net/wp-content/uploads/2016/03/face1.jpg");
-        report.setBackCameraImage("https://www.rako.eu/common/images/realizations/152/gallery/3822.jpg");
+        //report.setFrontCameraImage("https://eatliver.b-cdn.net/wp-content/uploads/2016/03/face1.jpg");
         Device device = new Device();
         device.setID(111);
         device.setMacAddress("7e:6e:09:b2:77:f8");

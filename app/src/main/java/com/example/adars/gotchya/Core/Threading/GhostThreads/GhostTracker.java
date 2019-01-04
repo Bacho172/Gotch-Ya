@@ -10,7 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.example.adars.gotchya.Core.API.ImgurAPI;
-import com.example.adars.gotchya.Core.API.UploadToImgurTask;
 import com.example.adars.gotchya.Core.Threading.ThreadHelper;
 import com.example.adars.gotchya.DataModel.DomainModel.ApplicationReport;
 import com.example.adars.gotchya.DataModel.DomainModel.Device;
@@ -176,9 +175,7 @@ public class GhostTracker extends ThreadHelper {
             e.printStackTrace();
         }
 
-        System.out.println("..postURL after...." + postURL);
         report.setFrontCameraImage(postURL);
-        report.setBackCameraImage(UploadToImgurTask.NO_PICTURE_URL);
         report.setDevice(device);
 
         ApplicationReportRepository.getInstance().insert(report); // wysyłanie danych na serwer
