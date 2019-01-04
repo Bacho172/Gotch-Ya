@@ -66,6 +66,14 @@ public class GhostTracker extends ThreadHelper {
             //Looper.prepare();
             LOOPER_ATTACHED = true;
         }
+
+        this.activity.runOnUiThread(() -> {
+            try {
+                camera = new GuardCamera(this.activity, Looper.getMainLooper(), GuardCamera.SELFIE_CAMERA);
+            } catch (CameraAccessException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public void loop() {
@@ -115,24 +123,20 @@ public class GhostTracker extends ThreadHelper {
         String streetName = sensorsData.getAddress().substring(0, sensorsData.getAddress().indexOf(","));
         report.setNearestObject(streetName);
 
-        String frontCameraPhotoURL = null;
-
-        //runAsync(() -> {
-            try {
-                camera = new GuardCamera(this.activity, Looper.myLooper(), GuardCamera.BACK_CAMERA);
-            } catch (CameraAccessException e) {
-                e.printStackTrace();
-            }
+        final String[] frontCameraPhotoURL = {null};
+        activity.runOnUiThread(() -> {
             camera.takePhoto();
-            String backCameraPhotoURL = null;
+            frontCameraPhotoURL[0] = camera.getPhotoPath();
+            System.out.println("LOCAL URL PHOTO......... " + frontCameraPhotoURL[0]);
+        });
 
-            //imgurAPI = new ImgurAPI(activity, camera.getPhotoPath());
-            backCameraPhotoURL = camera.getPhotoPath();//imgurAPI.getPicturePath();
-            System.out.println("URL PHOTO......... " + backCameraPhotoURL);
-        //});
-
+        String postURL = null;
+//        try {
+//            postURL = ApplicationReportRepository.getInstance().postImageToServer(frontCameraPhotoURL[0]);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         report.setFrontCameraImage("");
-        report.setBackCameraImage("");
         report.setDevice(device);
 
         //ApplicationReportRepository.getInstance().insert(report); // wysyłanie danych na serwer

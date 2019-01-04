@@ -1,16 +1,27 @@
 package com.example.adars.gotchya.DataModel.Repository;
 
+import android.os.NetworkOnMainThreadException;
+
 import com.example.adars.gotchya.Core.API.WebServiceAccess;
 import com.example.adars.gotchya.Core.Functions;
 import com.example.adars.gotchya.Core.Threading.ThreadHelper;
 import com.example.adars.gotchya.DataModel.DomainModel.ApplicationReport;
 import com.example.adars.gotchya.DataModel.DomainModel.Device;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.HttpMultipartMode;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -56,6 +67,125 @@ public final class ApplicationReportRepository implements IRepository<Applicatio
         device.setMacAddress("7e:6e:09:b2:77:f8");
         report.setDevice(device);
         return report;
+    }
+
+    public String postImageToServer(String imageURL) throws IOException {
+        final String[] sResponse = {null};
+        ThreadHelper.runAsync(() -> {
+            try {
+                WebServiceAccess access = new WebServiceAccess("test");
+                HttpClient httpClient = new DefaultHttpClient();
+                HttpPost postRequest = new HttpPost(access.getURL());
+                MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+    //        try {
+    //            reqEntity.addPart("name", new StringBody("Name"));
+    //            reqEntity.addPart("Id", new StringBody("ID"));
+    //            reqEntity.addPart("title",new StringBody("TITLE"));
+    //            reqEntity.addPart("caption", new StringBody("Caption"));
+    //
+    //        } catch (UnsupportedEncodingException e) {
+    //            e.printStackTrace();
+    //        }
+                try{
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    //bitmap.compress(Bitmap.CompressFormat.JPEG, 75, bos);
+                    byte[] data = bos.toByteArray();
+                    ByteArrayBody bab = new ByteArrayBody(data, imageURL);
+                    reqEntity.addPart("image", bab);
+                }
+                catch(Exception e){
+                    //Log.v("Exception in Image", ""+e);
+                    try {
+                        reqEntity.addPart("picture", new StringBody(""));
+                    } catch (UnsupportedEncodingException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+                postRequest.setEntity(reqEntity);
+                HttpResponse response = null;
+                try {
+                    response = httpClient.execute(postRequest);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+                StringBuilder s = new StringBuilder();
+                while ((sResponse[0] = reader.readLine()) != null) {
+                    s = s.append(sResponse[0]);
+                }
+                System.out.println("URL FROM SERVER........." + sResponse[0]);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (UnsupportedOperationException e) {
+                e.printStackTrace();
+            } catch (NetworkOnMainThreadException e) {
+                e.printStackTrace();
+            }
+        });
+        return sResponse[0];
+    }
+
+    public String postImageToServerV2(String imageURL) throws IOException {
+        String response = "";
+        //ThreadHelper.runAsync(() ->{
+            try {
+                WebServiceAccess access = new WebServiceAccess("test");
+                URL url = new URL(access.getURL());
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+                connection.setReadTimeout(10000);
+                connection.setConnectTimeout(15000);
+                connection.setRequestMethod("POST");
+                connection.setDoInput(true);
+                connection.setDoOutput(true);
+
+                List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+                //parameters.add(new BasicNameValuePair("idApplicationReport", entity.getID().toString()));
+                //parameters.add(new BasicNameValuePair("idDevice", entity.getDevice().getID().toString()));
+                parameters.add(new BasicNameValuePair("image", imageURL));
+
+
+                OutputStream outputStream = connection.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String queryURL = Functions.getQuery(parameters);
+                writer.write(queryURL);
+                writer.flush();
+                writer.close();
+                outputStream.close();
+                connection.connect();
+
+                int responseCode = connection.getResponseCode();
+
+
+                if (responseCode == HttpsURLConnection.HTTP_OK) {
+                    String line;
+                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                    while ((line = bufferedReader.readLine()) != null) {
+                        response += line;
+                    }
+                }
+                else {
+                    response = responseCode + "";
+                }
+                System.out.println("RESPONSE: " + response);
+                return response;
+            }
+            catch (UnsupportedEncodingException ex) {
+                String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+                System.err.println(Functions.getExecutionError(getClass(), methodName, ex));
+                ex.printStackTrace();
+            }
+            catch (IOException ex) {
+                String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+                System.err.println(Functions.getExecutionError(getClass(), methodName, ex));
+                ex.printStackTrace();
+            }
+            catch (NetworkOnMainThreadException ex) {
+                String methodName = Thread.currentThread().getStackTrace()[1].getMethodName();
+                System.err.println(Functions.getExecutionError(getClass(), methodName, ex));
+                ex.printStackTrace();
+            }
+        //});
+        return response;
     }
 
     @Override

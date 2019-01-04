@@ -75,13 +75,10 @@ public class MainMenuActivity extends AppCompatActivity
             if (ghostTracker == null) {
                 ghostTracker = new GhostTracker(this, listenerInterval, sendingInterval);
             }
-            //ghostTracker.loop();
             ghostTracker.start();
             //startService(ghostTracker.getIntent());
         }
         else {
-            ghostTracker.setRunning(false);
-            //ghostTracker.forceDeath();
             ghostTracker.stop();
             //stopService(ghostTracker.getIntent());
             ghostTracker = null;
