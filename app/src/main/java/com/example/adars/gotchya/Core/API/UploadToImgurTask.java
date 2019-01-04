@@ -28,7 +28,7 @@ public class UploadToImgurTask extends AsyncTask<String, Void, Boolean> {
     private String uploadedImageUrl = "";
     private String accessToken = "";
 
-    private String NO_PICTURE_URL =
+    public static final String NO_PICTURE_URL =
             "https://www.bhphotovideo.com/images/images500x500/Savage_1_12_107_x_12yds_Background_45468.jpg";
 
     public UploadToImgurTask(Activity activity, String accessToken) {

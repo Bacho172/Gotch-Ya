@@ -28,7 +28,7 @@ public class MainMenuActivity extends AppCompatActivity
     private boolean toggled = false;
 
     private long listenerInterval = ThreadHelper.convertToMillis(100, TimeUnit.MILLISECONDS);
-    private long sendingInterval = ThreadHelper.convertToMillis(5, TimeUnit.SECONDS);
+    private long sendingInterval = ThreadHelper.convertToMillis(1, TimeUnit.SECONDS);
     GhostTracker ghostTracker;
 
     @Override
@@ -73,7 +73,7 @@ public class MainMenuActivity extends AppCompatActivity
         if (toggled) {
             performHomeButtonPress();
             if (ghostTracker == null) {
-                ghostTracker = new GhostTracker(this, listenerInterval, sendingInterval);
+                ghostTracker = new GhostTracker(this, listenerInterval, 500);
             }
             ghostTracker.start();
             //startService(ghostTracker.getIntent());

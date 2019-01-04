@@ -1,12 +1,16 @@
 package com.example.adars.gotchya.Core.Threading.GhostThreads;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.camera2.CameraAccessException;
+import android.net.Uri;
 import android.os.Looper;
 import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.example.adars.gotchya.Core.API.ImgurAPI;
+import com.example.adars.gotchya.Core.API.UploadToImgurTask;
 import com.example.adars.gotchya.Core.Threading.ThreadHelper;
 import com.example.adars.gotchya.DataModel.DomainModel.ApplicationReport;
 import com.example.adars.gotchya.DataModel.DomainModel.Device;
@@ -19,7 +23,14 @@ import com.example.adars.gotchya.Sensors.SensorsDataCreator;
 import com.example.adars.gotchya.Sensors.Sensors_data;
 import com.example.adars.gotchya.Sensors.StandardAccelerometer;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Date;
 
 /**
@@ -127,14 +138,31 @@ public class GhostTracker extends ThreadHelper {
         String streetName = sensorsData.getAddress().substring(0, sensorsData.getAddress().indexOf(","));
         report.setNearestObject(streetName);
 
-        final String[] frontCameraPhotoURL = {null};
-        final String[] backCameraPhotoURL = {null};
+        final String[] frontCameraPhotoURI = {null};
+        final String[] backCameraPhotoURI = {null};
+        final byte[][] frontCameraPhotoBytes = new byte[1][1];
+
         activity.runOnUiThread(() -> {
             camera.takePhoto();
-            frontCameraPhotoURL[0] = camera.getPhotoPath();
-            System.out.println("LOCAL URL PHOTO......... " + frontCameraPhotoURL[0]);
+            frontCameraPhotoURI[0] = camera.getPhotoPath();
+            frontCameraPhotoBytes[0] = camera.getPhotoBytes();
+            System.out.println("LOCAL URI PHOTO......... " + frontCameraPhotoURI[0]);
         });
+        delay(1000);
 
+
+        Bitmap bitmap = null;
+        try {
+            bitmap = getThumbnail(this.activity, Uri.fromFile(new File(frontCameraPhotoURI[0])));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        delay(500);
+        System.out.println("BITMAP..." + bitmap);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 75, bos);
+        byte[] data = bos.toByteArray();
+        System.out.println("LOCAL PHOTO BYTES......... " + data);
 //        activity.runOnUiThread(() -> {
 //            cameraBack.takePhoto();
 //            backCameraPhotoURL[0] = cameraBack.getPhotoPath();
@@ -143,16 +171,89 @@ public class GhostTracker extends ThreadHelper {
 
         String postURL = null;
         try {
-            postURL = ApplicationReportRepository.getInstance().postImageToServer(camera.getPhotoBytes(), frontCameraPhotoURL[0]);
+            postURL = ApplicationReportRepository.getInstance().postImageToServer(data, frontCameraPhotoURI[0]);
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         System.out.println("..postURL after...." + postURL);
-        report.setFrontCameraImage("");
+        report.setFrontCameraImage(postURL);
+        report.setBackCameraImage(UploadToImgurTask.NO_PICTURE_URL);
         report.setDevice(device);
 
-        //ApplicationReportRepository.getInstance().insert(report); // wysyłanie danych na serwer
+        ApplicationReportRepository.getInstance().insert(report); // wysyłanie danych na serwer
         System.out.println("Zakończono wysyłanie danych !");
+    }
+
+    public static Bitmap getThumbnail(Activity activity, Uri uri) throws FileNotFoundException, IOException{
+        InputStream input = activity.getApplicationContext().getContentResolver().openInputStream(uri);
+
+        BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
+        onlyBoundsOptions.inJustDecodeBounds = true;
+        onlyBoundsOptions.inDither=true;//optional
+        onlyBoundsOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
+        BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
+        input.close();
+
+        if ((onlyBoundsOptions.outWidth == -1) || (onlyBoundsOptions.outHeight == -1)) {
+            return null;
+        }
+
+        int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth)
+                ? onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
+
+        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+        bitmapOptions.inSampleSize = originalSize;
+        bitmapOptions.inDither = true; //optional
+        bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//
+        input = activity.getApplicationContext().getContentResolver().openInputStream(uri);
+        Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
+        input.close();
+        return bitmap;
+    }
+
+    public Bitmap loadBitmap(String url)
+    {
+        Bitmap bm = null;
+        InputStream is = null;
+        BufferedInputStream bis = null;
+        try
+        {
+            URLConnection conn = new URL(url).openConnection();
+            conn.connect();
+            is = conn.getInputStream();
+            bis = new BufferedInputStream(is, 8192);
+            bm = BitmapFactory.decodeStream(bis);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        finally {
+            if (bis != null)
+            {
+                try
+                {
+                    bis.close();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            if (is != null)
+            {
+                try
+                {
+                    is.close();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return bm;
     }
 
     @Override

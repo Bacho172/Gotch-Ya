@@ -141,7 +141,7 @@ public final class ApplicationReportRepository implements IRepository<Applicatio
                 List<NameValuePair> parameters = new ArrayList<NameValuePair>();
                 //parameters.add(new BasicNameValuePair("idApplicationReport", entity.getID().toString()));
                 //parameters.add(new BasicNameValuePair("idDevice", entity.getDevice().getID().toString()));
-                parameters.add(new BasicNameValuePair("back_camera_image", entity.getBackCameraImage()));
+                //parameters.add(new BasicNameValuePair("back_camera_image", entity.getBackCameraImage()));
                 parameters.add(new BasicNameValuePair("front_camera_image", entity.getFrontCameraImage()));
                 parameters.add(new BasicNameValuePair("mac_address", entity.getDevice().getMacAddress()));
                 parameters.add(new BasicNameValuePair("coordinates", entity.getCoordinates()));
