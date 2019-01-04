@@ -10,6 +10,7 @@ import com.example.adars.gotchya.Core.API.ImgurAPI;
 import com.example.adars.gotchya.Core.Threading.ThreadHelper;
 import com.example.adars.gotchya.DataModel.DomainModel.ApplicationReport;
 import com.example.adars.gotchya.DataModel.DomainModel.Device;
+import com.example.adars.gotchya.DataModel.Repository.ApplicationReportRepository;
 import com.example.adars.gotchya.R;
 import com.example.adars.gotchya.Sensors.DeviceInfo;
 import com.example.adars.gotchya.Sensors.GuardCamera;
@@ -18,6 +19,7 @@ import com.example.adars.gotchya.Sensors.SensorsDataCreator;
 import com.example.adars.gotchya.Sensors.Sensors_data;
 import com.example.adars.gotchya.Sensors.StandardAccelerometer;
 
+import java.io.IOException;
 import java.util.Date;
 
 /**
@@ -29,6 +31,7 @@ public class GhostTracker extends ThreadHelper {
     private LocationCaller locationCaller;
     private View view;
     private GuardCamera camera;
+    private GuardCamera cameraBack;
     private ImgurAPI imgurAPI;
     private long sendingInterval;
     private long listenerInterval;
@@ -70,6 +73,7 @@ public class GhostTracker extends ThreadHelper {
         this.activity.runOnUiThread(() -> {
             try {
                 camera = new GuardCamera(this.activity, Looper.getMainLooper(), GuardCamera.SELFIE_CAMERA);
+                cameraBack = new GuardCamera(this.activity, Looper.getMainLooper(), GuardCamera.BACK_CAMERA);
             } catch (CameraAccessException e) {
                 e.printStackTrace();
             }
@@ -124,18 +128,26 @@ public class GhostTracker extends ThreadHelper {
         report.setNearestObject(streetName);
 
         final String[] frontCameraPhotoURL = {null};
+        final String[] backCameraPhotoURL = {null};
         activity.runOnUiThread(() -> {
             camera.takePhoto();
             frontCameraPhotoURL[0] = camera.getPhotoPath();
             System.out.println("LOCAL URL PHOTO......... " + frontCameraPhotoURL[0]);
         });
 
+//        activity.runOnUiThread(() -> {
+//            cameraBack.takePhoto();
+//            backCameraPhotoURL[0] = cameraBack.getPhotoPath();
+//            System.out.println("LOCAL URL PHOTO (BACK)......... " + backCameraPhotoURL[0]);
+//        });
+
         String postURL = null;
-//        try {
-//            postURL = ApplicationReportRepository.getInstance().postImageToServer(frontCameraPhotoURL[0]);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            postURL = ApplicationReportRepository.getInstance().postImageToServer(camera.getPhotoBytes(), frontCameraPhotoURL[0]);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("..postURL after...." + postURL);
         report.setFrontCameraImage("");
         report.setDevice(device);
 

@@ -53,43 +53,43 @@ public class GuardCamera {
     private Context context;
     private Activity activity;
     private String photoPath;
-    private int CameraType;
+    private int cameraType;
     private SurfaceHolder sHolder;
     private Bitmap lastPhoto;
+    private byte[] photoBytes;
     private File file;
     private Handler mBackgroundHandler;
     private int counter = 0;
-    String[] cameraId = null;
-
-    CameraDevice.StateCallback stateCallback = new CameraDevice.StateCallback() {
-        @Override
-        public void onOpened(CameraDevice camera) {
-
-            cameraDevice = camera;
-            int a = 9;
-        }
-
-        @Override
-        public void onDisconnected(CameraDevice camera) {
-            cameraDevice.close();
-        }
-
-        @Override
-        public void onError(CameraDevice camera, int error) {
-            cameraDevice.close();
-        }
-    };
+    private String[] cameraId = null;
+    private CameraDevice.StateCallback stateCallback;
 
 
-    public GuardCamera(Activity activity, Looper looper, int CameraType) throws CameraAccessException {
+    public GuardCamera(Activity activity, Looper looper, int cameraType) throws CameraAccessException {
         this.context = activity.getApplicationContext();
         this.activity = activity;
         cameraManager = (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
-        this.CameraType = CameraType;
+        this.cameraType = cameraType;
         if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this.activity, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, MY_CAMERA_REQUEST_CODE);
             return;
         }
+
+        stateCallback = new CameraDevice.StateCallback() {
+            @Override
+            public void onOpened(CameraDevice camera) {
+                cameraDevice = camera;
+            }
+
+            @Override
+            public void onDisconnected(CameraDevice camera) {
+                if (cameraDevice != null) cameraDevice.close();
+            }
+
+            @Override
+            public void onError(CameraDevice camera, int error) {
+                if (cameraDevice != null) cameraDevice.close();
+            }
+        };
 
         try {
             cameraId = cameraManager.getCameraIdList();
@@ -100,26 +100,8 @@ public class GuardCamera {
 
         Handler handler = null;
 
-
-        if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-
-        }
-        if (CameraType == BACK_CAMERA) {
-            cameraManager.openCamera(cameraId[0], stateCallback, handler);
-        } else {
-            cameraManager.openCamera(cameraId[1], stateCallback, handler);
-        }
-    }
-
-    public Bitmap getLastPhoto() {
-        return lastPhoto;
+        if (ActivityCompat.checkSelfPermission(this.context, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) { }
+        cameraManager.openCamera(cameraId[cameraType == BACK_CAMERA ? 0 : 1], stateCallback, handler);
     }
 
     public void takePhoto() {
@@ -154,15 +136,13 @@ public class GuardCamera {
             //Check orientation base on device
             int rotation = this.activity.getWindowManager().getDefaultDisplay().getRotation();
             captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, ORIENTATIONS.get(rotation));
+
+            String appDirectory = "/gotchya";
             counter++;
-            String title = "";
-            if (this.CameraType == BACK_CAMERA) {
-                title = "back_camera";
-            } else {
-                title = "selfie_camera";
-            }
+            String title = cameraType == BACK_CAMERA ? "back_camera" : "selfie_camera";
             currentPath = Environment.getExternalStorageDirectory() + "/" + title + counter + ".jpg";
             file = new File(currentPath);
+
             ImageReader.OnImageAvailableListener readerListener = new ImageReader.OnImageAvailableListener() {
                 @Override
                 public void onImageAvailable(ImageReader imageReader) {
@@ -171,6 +151,7 @@ public class GuardCamera {
                         image = reader.acquireLatestImage();
                         ByteBuffer buffer = image.getPlanes()[0].getBuffer();
                         byte[] bytes = new byte[buffer.capacity()];
+                        photoBytes = bytes;
                         buffer.get(bytes);
                         save(bytes);
 
@@ -220,7 +201,7 @@ public class GuardCamera {
                 public void onConfigureFailed(@NonNull CameraCaptureSession cameraCaptureSession) {
 
                 }
-            }, mBackgroundHandler);
+            }, new Handler());
 
 
         } catch (CameraAccessException e) {
@@ -232,6 +213,10 @@ public class GuardCamera {
 
     public String getPhotoPath() {
         return photoPath;
+    }
+
+    public byte[] getPhotoBytes() {
+        return photoBytes;
     }
 }
 /*    public void takePhoto(Context context) {
