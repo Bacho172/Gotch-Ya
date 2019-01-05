@@ -1,7 +1,11 @@
 package com.example.adars.gotchya.Core;
 
+import android.app.Activity;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -10,9 +14,11 @@ import com.example.adars.gotchya.R;
 
 import org.apache.http.NameValuePair;
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -123,6 +129,39 @@ public final class Functions {
         }
 
         return result.toString();
+    }
+
+    public static Bitmap bitmapFromURI(Activity activity, Uri uri) throws IOException{
+        InputStream input = activity.getApplicationContext().getContentResolver().openInputStream(uri);
+
+        BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
+        onlyBoundsOptions.inJustDecodeBounds = true;
+        onlyBoundsOptions.inDither=true;//optional
+        onlyBoundsOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
+        BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
+        input.close();
+
+        if ((onlyBoundsOptions.outWidth == -1) || (onlyBoundsOptions.outHeight == -1)) {
+            return null;
+        }
+
+        int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth)
+                ? onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
+
+        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+        bitmapOptions.inSampleSize = originalSize;
+        bitmapOptions.inDither = true; //optional
+        bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//
+        input = activity.getApplicationContext().getContentResolver().openInputStream(uri);
+        Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
+        input.close();
+        return bitmap;
+    }
+
+    public static byte[] bitmapToByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 75, bos);
+        return bos.toByteArray();
     }
 
     /**

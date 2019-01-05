@@ -2,7 +2,6 @@ package com.example.adars.gotchya.Core.Threading.GhostThreads;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.hardware.camera2.CameraAccessException;
 import android.net.Uri;
 import android.os.Looper;
@@ -10,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.example.adars.gotchya.Core.API.ImgurAPI;
+import com.example.adars.gotchya.Core.Functions;
 import com.example.adars.gotchya.Core.Threading.ThreadHelper;
 import com.example.adars.gotchya.DataModel.DomainModel.ApplicationReport;
 import com.example.adars.gotchya.DataModel.DomainModel.Device;
@@ -22,14 +22,8 @@ import com.example.adars.gotchya.Sensors.SensorsDataCreator;
 import com.example.adars.gotchya.Sensors.Sensors_data;
 import com.example.adars.gotchya.Sensors.StandardAccelerometer;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.Date;
 
 /**
@@ -121,12 +115,13 @@ public class GhostTracker extends ThreadHelper {
         Device device = new Device();
         device.setID(111);
         device.setMacAddress(deviceInfo.getMAcAddress());
+        System.out.println("MAC....." + device.getMacAddress());
 
         ApplicationReport report = new ApplicationReport();
         report.setCreatedAt(new Date());
         report.setUpdatedAt(new Date());
         report.setDeviceIP("192.168.1." + device.getID());
-        report.setSpeed((0.1 + Math.random() * 10) + "");
+        report.setSpeed((int)(0.1 + Math.random() * 10) + "");
 
         report.setCoordinates(locationCaller.getCoordinates());
         Snackbar.make(view, report.getCoordinates(), Snackbar.LENGTH_LONG).show();
@@ -147,110 +142,37 @@ public class GhostTracker extends ThreadHelper {
             frontCameraPhotoBytes[0] = camera.getPhotoBytes();
             System.out.println("LOCAL URI PHOTO......... " + frontCameraPhotoURI[0]);
         });
-        delay(1000);
+        delay(700);
 
 
         Bitmap bitmap = null;
         try {
-            bitmap = getThumbnail(this.activity, Uri.fromFile(new File(frontCameraPhotoURI[0])));
+            bitmap = Functions.bitmapFromURI(this.activity, Uri.fromFile(new File(frontCameraPhotoURI[0])));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        delay(500);
+        delay(1000);
+
         System.out.println("BITMAP..." + bitmap);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 75, bos);
-        byte[] data = bos.toByteArray();
+        byte[] data = Functions.bitmapToByteArray(bitmap);
         System.out.println("LOCAL PHOTO BYTES......... " + data);
-//        activity.runOnUiThread(() -> {
-//            cameraBack.takePhoto();
-//            backCameraPhotoURL[0] = cameraBack.getPhotoPath();
-//            System.out.println("LOCAL URL PHOTO (BACK)......... " + backCameraPhotoURL[0]);
-//        });
 
-        String postURL = null;
-        try {
-            postURL = ApplicationReportRepository.getInstance().postImageToServer(data, frontCameraPhotoURI[0]);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        String postURL = null;
+//        try {
+//            postURL = ApplicationReportRepository.getInstance().postImageToServer(data, frontCameraPhotoURI[0]);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
-        report.setFrontCameraImage(postURL);
+        report.setFrontCameraImagebyteArray(data);
         report.setDevice(device);
 
-        ApplicationReportRepository.getInstance().insert(report); // wysyłanie danych na serwer
-        System.out.println("Zakończono wysyłanie danych !");
-    }
-
-    public static Bitmap getThumbnail(Activity activity, Uri uri) throws FileNotFoundException, IOException{
-        InputStream input = activity.getApplicationContext().getContentResolver().openInputStream(uri);
-
-        BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
-        onlyBoundsOptions.inJustDecodeBounds = true;
-        onlyBoundsOptions.inDither=true;//optional
-        onlyBoundsOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//optional
-        BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
-        input.close();
-
-        if ((onlyBoundsOptions.outWidth == -1) || (onlyBoundsOptions.outHeight == -1)) {
-            return null;
-        }
-
-        int originalSize = (onlyBoundsOptions.outHeight > onlyBoundsOptions.outWidth)
-                ? onlyBoundsOptions.outHeight : onlyBoundsOptions.outWidth;
-
-        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-        bitmapOptions.inSampleSize = originalSize;
-        bitmapOptions.inDither = true; //optional
-        bitmapOptions.inPreferredConfig=Bitmap.Config.ARGB_8888;//
-        input = activity.getApplicationContext().getContentResolver().openInputStream(uri);
-        Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
-        input.close();
-        return bitmap;
-    }
-
-    public Bitmap loadBitmap(String url)
-    {
-        Bitmap bm = null;
-        InputStream is = null;
-        BufferedInputStream bis = null;
-        try
-        {
-            URLConnection conn = new URL(url).openConnection();
-            conn.connect();
-            is = conn.getInputStream();
-            bis = new BufferedInputStream(is, 8192);
-            bm = BitmapFactory.decodeStream(bis);
-        }
-        catch (Exception e)
-        {
+        try {
+            ApplicationReportRepository.getInstance().insertV2(report, frontCameraPhotoURI[0]); // wysyłanie danych na serwer
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        finally {
-            if (bis != null)
-            {
-                try
-                {
-                    bis.close();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            if (is != null)
-            {
-                try
-                {
-                    is.close();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return bm;
+        System.out.println("Zakończono wysyłanie danych !");
     }
 
     @Override
@@ -277,7 +199,7 @@ public class GhostTracker extends ThreadHelper {
 
     public void start() { startThread();}
 
-    public void stop() { cancelAlert(); Looper.myLooper().quit(); stopThread();}
+    public void stop() { cancelAlert(); stopThread();}
 
     public void pause() {pauseThread();}
 

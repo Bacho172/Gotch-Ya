@@ -2,9 +2,9 @@ package com.example.adars.gotchya.DataModel.Repository;
 
 import android.os.NetworkOnMainThreadException;
 
+import com.example.adars.gotchya.Core.API.UploadToImgurTask;
 import com.example.adars.gotchya.Core.API.WebServiceAccess;
 import com.example.adars.gotchya.Core.Functions;
-import com.example.adars.gotchya.Core.Threading.ThreadHelper;
 import com.example.adars.gotchya.DataModel.DomainModel.ApplicationReport;
 import com.example.adars.gotchya.DataModel.DomainModel.Device;
 
@@ -15,12 +15,14 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
+import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
@@ -93,7 +95,7 @@ public final class ApplicationReportRepository implements IRepository<Applicatio
                     catch(Exception e){
                         //Log.v("Exception in Image", ""+e);
                         try {
-                            reqEntity.addPart("picture", new StringBody(""));
+                            reqEntity.addPart("image", new StringBody(""));
                         } catch (UnsupportedEncodingException e1) {
                             e1.printStackTrace();
                         }
@@ -126,7 +128,7 @@ public final class ApplicationReportRepository implements IRepository<Applicatio
 
     @Override
     public void insert(ApplicationReport entity) {
-        ThreadHelper.runAsync(() ->{
+        //ThreadHelper.runAsync(() ->{
             try {
                 WebServiceAccess access = new WebServiceAccess("applicationreports");
                 URL url = new URL(access.getURL());
@@ -185,8 +187,66 @@ public final class ApplicationReportRepository implements IRepository<Applicatio
                 System.err.println(Functions.getExecutionError(getClass(), methodName, ex));
                 ex.printStackTrace();
             }
-        });
+        //});
 
+    }
+
+    public void insertV2(ApplicationReport entity, String imageURL) throws IOException {
+
+//       AsyncTask task = new AsyncTask<String, Void, String>() {
+//            @Override
+//            protected String doInBackground(String... strings) {
+        try {
+            WebServiceAccess access = new WebServiceAccess("applicationreports");
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost postRequest = new HttpPost(access.getURL());
+            MultipartEntity reqEntity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
+                    try {
+                        reqEntity.addPart("mac_address", new StringBody(entity.getDevice().getMacAddress()));
+                        reqEntity.addPart("coordinates",new StringBody(entity.getCoordinates()));
+                        reqEntity.addPart("speed", new StringBody(entity.getSpeed()));
+                        reqEntity.addPart("nearest_object", new StringBody(entity.getNearestObject()));
+
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
+            try {
+                ByteArrayBody bab = new ByteArrayBody(entity.getFrontCameraImagebyteArray(), imageURL);
+                byte[] ba = entity.getFrontCameraImagebyteArray();
+                FileBody fb = new FileBody(new File(imageURL));
+                reqEntity.addPart("front_camera_image", fb);
+            }
+            catch(Exception e){
+                //Log.v("Exception in Image", ""+e);
+                try {
+                    reqEntity.addPart("front_camera_image", new StringBody(UploadToImgurTask.NO_PICTURE_URL));
+                } catch (UnsupportedEncodingException e1) {
+                    e1.printStackTrace();
+                }
+            }
+            postRequest.setEntity(reqEntity);
+            HttpResponse response = null;
+            try {
+                response = httpClient.execute(postRequest);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String sResponse = null;
+            BufferedReader reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent(), "UTF-8"));
+            StringBuilder s = new StringBuilder();
+            while ((sResponse = reader.readLine()) != null) {
+                s = s.append(sResponse);
+            }
+            String res = s.toString();
+            System.out.println("RESPONSE...///..." + s.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (UnsupportedOperationException e) {
+            e.printStackTrace();
+        } catch (NetworkOnMainThreadException e) {
+            e.printStackTrace();
+        }
+        //};
     }
 
     @Override
