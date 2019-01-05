@@ -28,7 +28,7 @@ public class MainMenuActivity extends AppCompatActivity
     private boolean toggled = false;
 
     private long listenerInterval = ThreadHelper.convertToMillis(100, TimeUnit.MILLISECONDS);
-    private long sendingInterval = ThreadHelper.convertToMillis(1, TimeUnit.SECONDS);
+    private long sendingInterval = ThreadHelper.convertToMillis(10, TimeUnit.SECONDS);
     GhostTracker ghostTracker;
 
     @Override

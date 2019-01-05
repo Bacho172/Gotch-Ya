@@ -121,7 +121,7 @@ public class GhostTracker extends ThreadHelper {
         report.setCreatedAt(new Date());
         report.setUpdatedAt(new Date());
         report.setDeviceIP("192.168.1." + device.getID());
-        report.setSpeed((int)(0.1 + Math.random() * 10) + "");
+        report.setSpeed((Math.random() > 0.5 ? 2 : 1) + "");
 
         report.setCoordinates(locationCaller.getCoordinates());
         Snackbar.make(view, report.getCoordinates(), Snackbar.LENGTH_LONG).show();
