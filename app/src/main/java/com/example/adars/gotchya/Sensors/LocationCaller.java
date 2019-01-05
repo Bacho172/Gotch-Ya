@@ -56,7 +56,7 @@ public class LocationCaller implements LocationListener {
     }
 
     public String getCoordinates() {
-        return longitude + longitudeDirection + latitude + latitudeDirection;
+        return latitude + latitudeDirection + longitude + longitudeDirection;
     }
 
     @Override
