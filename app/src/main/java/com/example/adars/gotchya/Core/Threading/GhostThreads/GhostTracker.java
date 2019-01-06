@@ -84,19 +84,6 @@ public class GhostTracker extends ThreadHelper {
         });
     }
 
-    public void loop() {
-        while (running) {
-            if (accelerometer.phoneIsMoving() || phoneStolen) {
-                attackTime += listenerInterval;
-                if (attackTime >= sendingInterval) {
-                    hitAlert();
-                    //sendData();
-                    attackTime = 0;
-                }
-            } else System.out.println("OK");
-        }
-    }
-
     @Override
     protected void onRun() {
         if (accelerometer.phoneIsMoving() || phoneStolen) {

@@ -45,7 +45,8 @@
             android:id="@+id/button_test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="test_camera" />
+            android:text="test_camera"
+            android:visibility="invisible" />
 
         <ImageButton
             android:id="@+id/imageButtonGetStarted"
