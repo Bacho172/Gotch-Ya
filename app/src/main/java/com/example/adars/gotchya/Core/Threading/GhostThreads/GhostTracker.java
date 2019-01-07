@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.hardware.camera2.CameraAccessException;
 import android.net.Uri;
 import android.os.Looper;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 
 import com.example.adars.gotchya.Core.API.ImgurAPI;
@@ -15,16 +14,12 @@ import com.example.adars.gotchya.DataModel.DomainModel.ApplicationReport;
 import com.example.adars.gotchya.DataModel.DomainModel.Device;
 import com.example.adars.gotchya.DataModel.Repository.ApplicationReportRepository;
 import com.example.adars.gotchya.R;
-import com.example.adars.gotchya.Sensors.DeviceInfo;
 import com.example.adars.gotchya.Sensors.GuardCamera;
 import com.example.adars.gotchya.Sensors.LocationCaller;
-import com.example.adars.gotchya.Sensors.SensorsDataCreator;
-import com.example.adars.gotchya.Sensors.Sensors_data;
 import com.example.adars.gotchya.Sensors.StandardAccelerometer;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Date;
 
 /**
  * Created by Adam Bachorz on 28.12.2018.
@@ -54,7 +49,7 @@ public class GhostTracker extends ThreadHelper {
         this.listenerInterval = (long) getStickyValue(LISTENER_INTERVAL_LABEL);
         attackTime = sendingInterval;
         accelerometer = new StandardAccelerometer(activity.getApplicationContext());
-        locationCaller = new LocationCaller(this.activity);
+//        locationCaller = new LocationCaller(this.activity);
         view = this.activity.findViewById(R.id.main_menu_layout);
         //Looper.prepare();
     }
@@ -67,7 +62,7 @@ public class GhostTracker extends ThreadHelper {
         putNewStickyValue(LISTENER_INTERVAL_LABEL, listenerInterval);
         putNewStickyValue(SENDING_INTERVAL_LABEL, sendingInterval);
         accelerometer = new StandardAccelerometer(activity.getApplicationContext());
-        locationCaller = new LocationCaller(this.activity);
+//        locationCaller = new LocationCaller(this.activity);
         view = this.activity.findViewById(R.id.main_menu_layout);
         if (!LOOPER_ATTACHED) {
             //Looper.prepare();
@@ -98,35 +93,40 @@ public class GhostTracker extends ThreadHelper {
 
     private void sendData() {
         System.out.println("Pobieranie informacji do raportu !");
-        DeviceInfo deviceInfo = new DeviceInfo();
+        //DeviceInfo deviceInfo = new DeviceInfo();
         Device device = new Device();
         device.setID(111);
-        device.setMacAddress(deviceInfo.getMAcAddress());
+        device.setMacAddress("30:A8:DB:8B:B5:D4");
         System.out.println("MAC....." + device.getMacAddress());
 
         ApplicationReport report = new ApplicationReport();
-        report.setCreatedAt(new Date());
-        report.setUpdatedAt(new Date());
+//        report.setCreatedAt(new Date());
+//        report.setUpdatedAt(new Date());
         report.setDeviceIP("192.168.1." + device.getID());
         report.setSpeed((Math.random() > 0.5 ? 2 : 1) + "");
 
-        report.setCoordinates(locationCaller.getCoordinates());
-        Snackbar.make(view, report.getCoordinates(), Snackbar.LENGTH_LONG).show();
+        String ukw = "Mikolaja Kopernika 1";
+//        String latitude = locationCaller.getLatitude() + "";
+//        String longitude = locationCaller.getLongitude() + "";
+          double latitude = 53.129041;
+          double longitude = 18.012499;
 
-        String latitude = locationCaller.getLatitude() + "";
-        String longitude = locationCaller.getLongitude() + "";
-        Sensors_data sensorsData = SensorsDataCreator.createSensorData(activity.getBaseContext(), latitude, longitude);
-        String streetName = sensorsData.getAddress().substring(0, sensorsData.getAddress().indexOf(","));
-        report.setNearestObject(streetName);
+          double shift = 0;
+          double predictedShift = Math.random() % 0.001;
+          if (predictedShift <= 0.000099) shift = 0.000512;
+          latitude += shift;
+          report.setCoordinates(LocationCaller.generateCoordinates(latitude, longitude));
+
+//        Sensors_data sensorsData = SensorsDataCreator.createSensorData(activity.getBaseContext(), latitude, longitude);
+//        Sensors_data sensorsData = SensorsDataCreator.createSensorData(activity.getBaseContext(), latitude + "", longitude + "");
+//        String streetName = sensorsData.getAddress().substring(0, sensorsData.getAddress().indexOf(","));
+        report.setNearestObject(ukw);
 
         final String[] frontCameraPhotoURI = {null};
-        final String[] backCameraPhotoURI = {null};
-        final byte[][] frontCameraPhotoBytes = new byte[1][1];
 
         activity.runOnUiThread(() -> {
             camera.takePhoto();
             frontCameraPhotoURI[0] = camera.getPhotoPath();
-            frontCameraPhotoBytes[0] = camera.getPhotoBytes();
             System.out.println("LOCAL URI PHOTO......... " + frontCameraPhotoURI[0]);
         });
         delay(700);

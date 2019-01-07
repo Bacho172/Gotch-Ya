@@ -55,6 +55,12 @@ public class LocationCaller implements LocationListener {
         latitudeDirection = latitude < 0 ? "S" : "N";
     }
 
+    public static String generateCoordinates(double latitude, double longitude) {
+        String longitudeDirection = longitude < 0 ? "W" : "E";
+        String latitudeDirection = latitude < 0 ? "S" : "N";
+        return latitude + latitudeDirection + longitude + longitudeDirection;
+    }
+
     public String getCoordinates() {
         return latitude + latitudeDirection + longitude + longitudeDirection;
     }
