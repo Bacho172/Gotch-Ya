@@ -75,7 +75,6 @@ public class GhostTracker extends ThreadHelper {
         this.activity.runOnUiThread(() -> {
             try {
                 camera = new GuardCamera(this.activity, Looper.getMainLooper(), GuardCamera.SELFIE_CAMERA);
-                cameraBack = new GuardCamera(this.activity, Looper.getMainLooper(), GuardCamera.BACK_CAMERA);
             } catch (CameraAccessException e) {
                 e.printStackTrace();
             }
