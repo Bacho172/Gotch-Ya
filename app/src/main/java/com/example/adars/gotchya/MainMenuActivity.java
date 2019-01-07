@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 
 import com.example.adars.gotchya.Core.Functions;
 import com.example.adars.gotchya.Core.Threading.GhostThreads.GhostTracker;
@@ -24,6 +25,7 @@ public class MainMenuActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private ImageButton imageButtonRun;
+    private SeekBar seekBar;
     private Button checkPOST;
     private boolean toggled = false;
 
@@ -36,6 +38,7 @@ public class MainMenuActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
         setTitle(R.string.app_name);
+        seekBar = findViewById(R.id.seekBar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -67,7 +70,7 @@ public class MainMenuActivity extends AppCompatActivity
         toggled = !toggled;
         int drawableID = toggled ?
                 R.drawable.button_wylacz_zabezpieczenie :
-                R.drawable.button_uruchom_zabezpieczenie;
+                R.drawable.launch_guard;
         imageButtonRun.setImageDrawable(getDrawable(drawableID));
 
         if (toggled) {

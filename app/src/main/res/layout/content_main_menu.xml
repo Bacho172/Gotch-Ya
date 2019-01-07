@@ -51,7 +51,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="50sp"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/button_uruchom_zabezpieczenie" />
+            app:srcCompat="@drawable/launch_guard" />
 
         <!--
         <Button

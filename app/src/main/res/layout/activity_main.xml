@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            app:srcCompat="@drawable/button_rozpocznij" />
+            app:srcCompat="@drawable/get_started" />
 
         <Button
             android:id="@+id/button_test"

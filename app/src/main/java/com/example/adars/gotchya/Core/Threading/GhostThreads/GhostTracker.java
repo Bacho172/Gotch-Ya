@@ -17,6 +17,8 @@ import com.example.adars.gotchya.DataModel.Repository.ApplicationReportRepositor
 import com.example.adars.gotchya.R;
 import com.example.adars.gotchya.Sensors.GuardCamera;
 import com.example.adars.gotchya.Sensors.LocationCaller;
+import com.example.adars.gotchya.Sensors.SensorsDataCreator;
+import com.example.adars.gotchya.Sensors.Sensors_data;
 import com.example.adars.gotchya.Sensors.StandardAccelerometer;
 
 import java.io.File;
@@ -112,22 +114,24 @@ public class GhostTracker extends ThreadHelper {
         report.setSpeed((Math.random() > 0.5 ? 2 : 1) + "");
 
         String ukw = "Mikolaja Kopernika 1";
-//        String latitude = locationCaller.getLatitude() + "";
-//        String longitude = locationCaller.getLongitude() + "";
-          double latitude = 53.129041;
-          double longitude = 18.012499;
+//          double latitude = 53.129041;
+//          double longitude = 18.012499;
 
-          double shift = 0;
-          double predictedShift = Math.random() % 0.001;
-          shift = predictedShift;
-          if (predictedShift <= 0.000099) shift = 0.011512;
-          latitude += shift;
+//          double shift = 0;
+//          double predictedShift = Math.random() % 0.0001;
+//          shift = predictedShift;
+//          if (predictedShift <= 0.000999) shift = 0.011512;
+//          latitude += shift;
+//          String coordinates = String.format("%.8g", latitude) + "N18.012499E";
+//          coordinates = coordinates.replace(',', '.');
 
-          report.setCoordinates(LocationCaller.generateCoordinates(latitude, longitude));
-
-//        Sensors_data sensorsData = SensorsDataCreator.createSensorData(activity.getBaseContext(), latitude, longitude);
+        LocationCaller locationCaller = new LocationCaller(this.activity);
+        report.setCoordinates(locationCaller.getCoordinates());
+        String latitude = locationCaller.getLatitude() + "";
+        String longitude = locationCaller.getLongitude() + "";
+        Sensors_data sensorsData = SensorsDataCreator.createSensorData(activity.getBaseContext(), latitude, longitude);
 //        Sensors_data sensorsData = SensorsDataCreator.createSensorData(activity.getBaseContext(), latitude + "", longitude + "");
-//        String streetName = sensorsData.getAddress().substring(0, sensorsData.getAddress().indexOf(","));
+        String streetName = sensorsData.getAddress().substring(0, sensorsData.getAddress().indexOf(","));
         report.setNearestObject(ukw);
 
         final String[] frontCameraPhotoURI = {null};
