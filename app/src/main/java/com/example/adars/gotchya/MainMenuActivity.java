@@ -143,4 +143,5 @@ public class MainMenuActivity extends AppCompatActivity
         //stopService(ghostTracker.getIntent());
         super.onDestroy();
     }
+
 }

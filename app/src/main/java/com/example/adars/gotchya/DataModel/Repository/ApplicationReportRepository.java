@@ -206,6 +206,7 @@ public final class ApplicationReportRepository implements IRepository<Applicatio
                         reqEntity.addPart("coordinates",new StringBody(entity.getCoordinates()));
                         reqEntity.addPart("speed", new StringBody(entity.getSpeed()));
                         reqEntity.addPart("nearest_object", new StringBody(entity.getNearestObject()));
+                        reqEntity.addPart("ip_address", new StringBody(entity.getDeviceIP()));
 
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();

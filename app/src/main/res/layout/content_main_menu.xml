@@ -2,6 +2,7 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
@@ -20,7 +21,7 @@
             layout="@layout/logo_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="150sp"
+            android:layout_marginTop="100sp"
             android:layout_marginBottom="70sp" />
 
         <TextView
@@ -34,18 +35,21 @@
 
         <SeekBar
             android:id="@+id/seekBar"
+            style="@style/Widget.AppCompat.SeekBar"
             android:layout_width="match_parent"
             android:layout_height="36dp"
             android:layout_marginLeft="10sp"
             android:layout_marginRight="10sp"
             android:layout_marginBottom="70sp"
             android:max="120"
-            android:progress="1" />
+            android:progress="1"
+            android:scrollbarSize="50dp" />
 
         <ImageButton
             android:id="@+id/imageButtonToggleSecurity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="50sp"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/button_uruchom_zabezpieczenie" />
 

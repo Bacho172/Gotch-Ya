@@ -10,6 +10,7 @@ import android.view.View;
 import com.example.adars.gotchya.Core.API.ImgurAPI;
 import com.example.adars.gotchya.Core.Functions;
 import com.example.adars.gotchya.Core.Threading.ThreadHelper;
+import com.example.adars.gotchya.DataModel.DataModel.DeviceModel;
 import com.example.adars.gotchya.DataModel.DomainModel.ApplicationReport;
 import com.example.adars.gotchya.DataModel.DomainModel.Device;
 import com.example.adars.gotchya.DataModel.Repository.ApplicationReportRepository;
@@ -82,12 +83,17 @@ public class GhostTracker extends ThreadHelper {
     @Override
     protected void onRun() {
         if (accelerometer.phoneIsMoving() || phoneStolen) {
-            attackTime += listenerInterval;
-            if (attackTime >= sendingInterval) {
-                hitAlert();
-                sendData();
-                attackTime = 0;
-            }
+//            try {
+                attackTime += listenerInterval;
+                if (attackTime >= sendingInterval) {
+                    hitAlert();
+                    sendData();
+                    attackTime = 0;
+                }
+//            } catch (Exception ex) {
+//                System.err.println("!!!!!!!!!!!!!!  SENDING ERROR !!!!!!!!!!!!!!!!!!!\n"
+//                        + ex.getMessage());
+//            }
         } else System.out.println("OK");
     }
 
@@ -102,7 +108,7 @@ public class GhostTracker extends ThreadHelper {
         ApplicationReport report = new ApplicationReport();
 //        report.setCreatedAt(new Date());
 //        report.setUpdatedAt(new Date());
-        report.setDeviceIP("192.168.1." + device.getID());
+        report.setDeviceIP(DeviceModel.getInstance().getIP());
         report.setSpeed((Math.random() > 0.5 ? 2 : 1) + "");
 
         String ukw = "Mikolaja Kopernika 1";
@@ -113,8 +119,10 @@ public class GhostTracker extends ThreadHelper {
 
           double shift = 0;
           double predictedShift = Math.random() % 0.001;
-          if (predictedShift <= 0.000099) shift = 0.000512;
+          shift = predictedShift;
+          if (predictedShift <= 0.000099) shift = 0.011512;
           latitude += shift;
+
           report.setCoordinates(LocationCaller.generateCoordinates(latitude, longitude));
 
 //        Sensors_data sensorsData = SensorsDataCreator.createSensorData(activity.getBaseContext(), latitude, longitude);
