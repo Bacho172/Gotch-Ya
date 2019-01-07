@@ -41,13 +41,6 @@
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
-        <Button
-            android:id="@+id/button_test"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="test_camera"
-            android:visibility="invisible" />
-
         <ImageButton
             android:id="@+id/imageButtonGetStarted"
             android:layout_width="match_parent"
@@ -55,6 +48,13 @@
             android:layout_weight="1"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/button_rozpocznij" />
+
+        <Button
+            android:id="@+id/button_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="test_camera"
+            android:visibility="invisible" />
 
     </LinearLayout>
 

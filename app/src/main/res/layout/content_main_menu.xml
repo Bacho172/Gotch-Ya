@@ -6,14 +6,41 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".MainMenuActivity"
+    android:background="@drawable/main_gradient"
     tools:showIn="@layout/app_bar_main_menu">
 
     <LinearLayout
         android:id="@+id/main_menu_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_vertical|center_horizontal"
+        android:gravity="top"
         android:orientation="vertical">
+
+        <include
+            layout="@layout/logo_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="150sp"
+            android:layout_marginBottom="70sp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Częstotliwość wysyłania raportów (w sekundach)"
+            android:textAlignment="center"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp" />
+
+        <SeekBar
+            android:id="@+id/seekBar"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginLeft="10sp"
+            android:layout_marginRight="10sp"
+            android:layout_marginBottom="70sp"
+            android:max="120"
+            android:progress="1" />
 
         <ImageButton
             android:id="@+id/imageButtonToggleSecurity"
