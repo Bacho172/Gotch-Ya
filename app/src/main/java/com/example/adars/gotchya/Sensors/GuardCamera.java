@@ -135,7 +135,7 @@ public class GuardCamera {
 
             //Check orientation base on device
             //int rotation = this.activity.getWindowManager().getDefaultDisplay().getRotation();
-            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, 270);
+            captureBuilder.set(CaptureRequest.JPEG_ORIENTATION, 0);
 
             String appDirectory = "/gotchya";
             counter++;
