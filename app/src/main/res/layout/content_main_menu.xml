@@ -40,16 +40,24 @@
             android:layout_height="36dp"
             android:layout_marginLeft="10sp"
             android:layout_marginRight="10sp"
-            android:layout_marginBottom="70sp"
             android:max="120"
             android:progress="1"
             android:scrollbarSize="50dp" />
+
+        <TextView
+            android:id="@+id/textViewFreq"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textAlignment="center"
+            android:textColor="@android:color/white"
+            android:textSize="24sp" />
 
         <ImageButton
             android:id="@+id/imageButtonToggleSecurity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50sp"
+            android:layout_marginTop="70sp"
             android:background="@android:color/transparent"
             app:srcCompat="@drawable/launch_guard" />
 

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.example.adars.gotchya.Core.Functions;
 import com.example.adars.gotchya.Core.Threading.GhostThreads.GhostTracker;
@@ -26,6 +27,7 @@ public class MainMenuActivity extends AppCompatActivity
 
     private ImageButton imageButtonRun;
     private SeekBar seekBar;
+    private TextView freq;
     private Button checkPOST;
     private boolean toggled = false;
 
@@ -39,6 +41,25 @@ public class MainMenuActivity extends AppCompatActivity
         setContentView(R.layout.activity_main_menu);
         setTitle(R.string.app_name);
         seekBar = findViewById(R.id.seekBar);
+        freq = findViewById(R.id.textViewFreq);
+        seekBar.setProgress(10);
+        runOnUiThread(() -> freq.setText(seekBar.getProgress()+""));
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                freq.setText(seekBar.getProgress()+"");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
